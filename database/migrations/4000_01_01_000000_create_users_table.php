@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('password');
             $table->string('two_factor_secret')->nullable();
+            $table->string('two_factor_recovery_codes')->nullable();
             $table->string('email')->unique();
             $table->date('email_verified_at')->nullable();
             $table->integer('group_id')->default(3);
