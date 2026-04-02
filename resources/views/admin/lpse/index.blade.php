@@ -1,0 +1,4 @@
+@include('admintable',[
+    'title' => 'LPSE',
+])
+
