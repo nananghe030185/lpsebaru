@@ -15,13 +15,14 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        dd($request->all());
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->intended('dashboard');
+            return redirect()->intended('app.home');
         }
 
         return back()->withErrors([

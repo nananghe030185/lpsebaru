@@ -23,6 +23,11 @@
                                 <div class="form-group">
                                     <label class="col-form-label">Email Address</label>
                                     <input name="email" class="form-control" type="email" required="" placeholder="masukan email anda">
+                                    @error('email')
+                                        <div class="small-text text-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label">Password</label>
@@ -30,6 +35,11 @@
                                         <input class="form-control" type="password" name="password" required=""
                                             placeholder="*********">
                                         <div class="show-hide"><span class="show"> </span></div>
+                                        @error('password')
+                                            <div class="small-text text-danger">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group mb-0">

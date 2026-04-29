@@ -8,6 +8,7 @@ test('login screen can be rendered', function () {
     $response->assertStatus(200);
 });
 
+
 test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
 
