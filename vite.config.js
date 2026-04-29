@@ -8,9 +8,7 @@ export default defineConfig({
         origin: 'https://lpse.geolandmap.co.id',
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-        },
-        // If you are using IPv6 [::1], sometimes forcing 127.0.0.1 helps consistency
-        host: '127.0.0.1', 
+        }
     },
     plugins: [
         laravel({
