@@ -13,7 +13,11 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'public/assets/scss/style.scss',
+                'resources/css/app.css', 
+                'resources/js/app.js'
+            ],
             refresh: true,
         }),
     ],
