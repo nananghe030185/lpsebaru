@@ -6,7 +6,7 @@ export default defineConfig({
     server: {
         cors: {
         // Replace with your specific domain or use true for '*'
-        origin: 'https://lpse.geolandmap.co.id',
+        origin: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
         }
