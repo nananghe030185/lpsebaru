@@ -52,6 +52,8 @@ class KlpdiDataTable extends DataTable
                     ->setTableId('klpdi-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
+                    ->scrollX(true)
+                    ->responsive(true)
                     ->orderBy(0, 'asc')
                     ->selectStyleSingle()
                     ->parameters($this->getBuilderParameters())

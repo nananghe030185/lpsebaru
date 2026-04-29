@@ -41,6 +41,7 @@
     <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
     <script src="{{ asset('assets/js/editors/quill.js') }}"></script>
+    <script src="{{ asset('assets/js/editors/custom-quill.js')}}"></script>
     <script src="{{ asset('assets/js/custom-add-product5.js') }}"></script>
     <script src="{{ asset('assets/js/bookmark/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/custom-validation/validation.js') }}"></script>

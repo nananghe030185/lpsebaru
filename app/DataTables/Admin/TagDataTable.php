@@ -64,6 +64,8 @@ class TagDataTable extends DataTable
                 ->addColumn(['data' => 'status', 'title' =>  __('Status'), 'orderable' => true, 'searchable' => true])
                 ->addColumn(['data' => 'action', 'title' =>  __('Action'), 'orderable' => false, 'searchable' => false])
                 ->minifiedAjax()
+                ->scrollX(true)
+                ->responsive(true)
                 ->selectStyleSingle()
                 ->parameters([
                     'language' => [

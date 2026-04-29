@@ -17,7 +17,5 @@ Route::get('/r/tender/tahapan/{tender:slug}', [TenderController::class, 'tahapan
 Route::get('/r/lelang/{lelang:slug}', [LelangController::class, 'redirect'])->name('redirect.lelang');
 
 require __DIR__.'/admin.php';
-
 require __DIR__.'/member.php';
-
 require __DIR__.'/auth.php';

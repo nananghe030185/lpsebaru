@@ -2,14 +2,14 @@
 
 (function () {
   var editor = new Quill("#editor", {
-    modules: { toolbar: "#toolbar" },
+    modules: { toolbar: true },
     theme: "snow",
-    placeholder: "Enter your messages11111...",
+    placeholder: "Enter your messages...",
   });
 
   var editor1 = new Quill("#editor1", {
     modules: { toolbar: "#toolbar1" },
     theme: "snow",
-    placeholder: "Enter your messages1231313...",
+    placeholder: "Enter your messages...",
   });
 })();

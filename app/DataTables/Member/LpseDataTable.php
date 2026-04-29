@@ -60,6 +60,8 @@ class LpseDataTable extends DataTable
                     ->setTableId('lpse-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
+                    ->scrollX(true)
+                    ->responsive(true)
                     ->orderBy(1, 'asc')
                     ->selectStyleSingle()
                     ->parameters($this->getBuilderParameters())

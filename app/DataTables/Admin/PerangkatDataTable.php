@@ -64,6 +64,8 @@ class PerangkatDataTable extends DataTable
         return $this->builder()
                     ->setTableId('whatsapp-table')
                     ->minifiedAjax()
+                    ->scrollX(true)
+                    ->responsive(true)
                     ->orderBy(1)
                     ->columns($this->getColumns())
                     ->selectStyleSingle()

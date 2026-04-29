@@ -1,0 +1,1 @@
+<button type="submit" name="submit" class="btn btn-primary">{{ __('Simpan') }}</button>

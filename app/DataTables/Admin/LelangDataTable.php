@@ -70,6 +70,8 @@ class LelangDataTable extends DataTable
                     ->setTableId('lelang-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
+                    ->scrollX(true)
+                    ->responsive(true)
                     ->orderBy(1)
                     ->selectStyleSingle()
                     ->parameters($this->getBuilderParameters())

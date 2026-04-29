@@ -57,8 +57,8 @@
                             </div>
                         </div>
                         <div class="card-footer text-end">
-                            <button class="btn btn-primary" type="submit">Submit</button>
-                            <a href="{{ route('admin.whatsapp.index') }}" class="btn btn-secondary">Batal</a>
+                            <x-form.buttonsimpan></x-form.buttonsimpan>
+                            <x-form.buttonbatal href="{{ route('admin.whatsapp.index')}}"></x-form.buttonbatal>
                         </div>
                     </form>
                 </div>

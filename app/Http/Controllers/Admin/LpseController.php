@@ -6,20 +6,12 @@ use App\DataTables\Admin\LpseDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Lpse;
 use App\Models\User;
-use App\Repositories\LpseRepositoryEloquent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
 class LpseController extends Controller
 {
-     private $repository;
-    
-     public function __construct(LpseRepositoryEloquent $repository)
-    {
-        // $this->authorizeResource(User::class, 'user');
-        $this->repository = $repository;
-    }
     /**
      * Display a listing of the resource.
      */

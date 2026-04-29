@@ -17,20 +17,20 @@
         <div class="row">
             <div class="col-sm-12">
                  <form class="row g-3 custom-input" id="userForm" action="{{ route('admin.klpdi.update', $klpdi->id) }}" method="POST" enctype="multipart/form-data">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Edit KLPDI</h4>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Edit KLPDI</h4>
+                        </div>
+                        <div class="card-body">
+                                @csrf
+                                @method('PUT')
+                                @include('admin.klpdi.form')
+                        </div>
+                        <div class="card-footer text-end">
+                            <x-form.buttonsimpan></x-form.buttonsimpan>
+                            <x-form.buttonbatal href="{{ route('admin.klpdi.index')}}"></x-form.buttonbatal>
+                        </div>
                     </div>
-                    <div class="card-body">
-                            @csrf
-                            @method('PUT')
-                            @include('admin.klpdi.form')
-                    </div>
-                    <div class="card-footer text-end">
-                        <button type="submit" name="submit" class="btn btn-primary">{{ __('Simpan') }}</button>
-                        <a href="{{ route('admin.klpdi.index')}}" class="btn btn-danger">{{ __('Batal')}}</a>
-                    </div>
-                </div>
                 </form>
             </div>
         </div>

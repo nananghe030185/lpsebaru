@@ -2,54 +2,36 @@
     <div class="form theme-form">
         <div class="row">
             <div class="col-lg-6">
-                <div class="mt-3">
-                    <label for="kode_lpse">{{ __('Kode LPSE') }}</label>
-                    <input type="number" name="kode_lpse" id="kode_lpse" class="form-control" value="{{ isset($lpse->kode_lpse) ? $lpse->kode_lpse : old('kode_lpse')}}" placeholder="Masukan Kode LPSE" readonly>
-                </div>
-                <div class="mt-3">
-                    <label for="nama_lpse">{{ __('Nama LPSE') }}</label>
-                    <input type="text" name="nama_lpse" id="nama_lpse" class="form-control" value="{{ isset($lpse->nama_lpse) ? $lpse->nama_lpse : old('nama_lpse')}}" placeholder="Masukan Nama LPSE" >
-                </div>
-                <div class="mt-3">
-                    <label for="slug">{{ __('Slug') }}</label>
-                    <input type="text" name="slug" id="slug" class="form-control" value="{{ isset($lpse->slug) ? $lpse->slug : old('slug')}}" placeholder="Masukan slug LPSE" >
-                </div>
-                <div class="mt-3">
-                    <label for="link">{{ __('Link') }}</label>
-                    <input type="text" name="link" id="link" class="form-control" value="{{ isset($lpse->link) ? $lpse->link : old('link')}}" placeholder="Masukan alamat link LPSE" >
-                </div>
+                <x-form.text name="kode_lpse" :required="true" :value="old('kode_lpse', $lpse->kode_lpse ?? '')">Kode LPSE</x-form.text>
+
+                <x-form.text name="nama_lpse" :required="true" :value="old('nama_lpse', $lpse->nama_lpse ?? '')">Nama LPSE</x-form.text>
+                
+                <x-form.text name="slug" :required="true" :value="old('slug', $lpse->slug ?? '')">Slug</x-form.text>
+
+                <x-form.text name="link" :required="true" :value="old('link', $lpse->link ?? '')">Link</x-form.text>
+
             </div>
             <div class="col-lg-6">
-                <div class="mt-3">
-                    <label for="jumlah_paket">{{ __('Jumlah Paket') }}</label>
-                    <input type="number" name="jumlah_paket" id="jumlah_paket" class="form-control" value="{{ isset($lpse->jumlah_paket) ? $lpse->jumlah_paket : old('jumlah_paket')}}" placeholder="Masukan jumlah paketLPSE" >
-                </div>
-                <div class="mt-3">
-                    <label for="jumlah_pagu">{{ __('Jumlah Pagu') }}</label>
-                    <input type="number" name="jumlah_pagu" id="jumlah_pagu" class="form-control" value="{{ isset($lpse->jumlah_pagu) ? $lpse->jumlah_pagu : old('jumlah_pagu')}}" placeholder="Masukan Jumlah Pagu LPSE" >
-                </div>
+                <x-form.text type="number" name="jumlah_paket" :required="true" :value="old('jumlah_paket', $lpse->jumlah_paket ?? '')">Jumlah Paket</x-form.text>
+
+                <x-form.text type="number" name="jumlah_pagu" :required="true" :value="old('jumlah_pagu', $lpse->jumlah_pagu ?? '')">Jumlah Pagu</x-form.text>
+
+
                 <div class="mt-3">
                     <div class="row">
                         <div class="col-6">
-                            <label for="state">{{ __('Status') }}</label>
-                            <select name="state" id="state" class="select2 form-control">
-                                <option value="1" @if ($lpse->state) selected @endif >{{ __('Active') }}</option>
-                                <option value="0" @if (!$lpse->state) selected @endif >{{ __('Inactive') }}</option>
-                            </select>
+                            
+                            <x-form.toggle name="state" :toggle="$lpse" :value="old('state', $lpse->state ?? false)">Status</x-form.toggle>
+
                         </div>
                         <div class="col-6">
-                            <label for="scrape">{{ __('Scrape') }}</label>
-                            <select name="scrape" id="scrape" class="select2 form-control">
-                                <option value="1" @if ($lpse->scrape) selected @endif>{{ __('Active') }}</option>
-                                <option value="0" @if (!$lpse->scrape) selected @endif>{{ __('Inactive') }}</option>
-                            </select>
+                            <x-form.toggle name="scrape" :toggle="$lpse" :value="old('scrape', $lpse->scrape ?? false)">Scrape</x-form.toggle>
+                            
                         </div>
                     </div>
                 </div>
-                <div class="mt-3">
-                    <label for="description">{{ __('Keterangan') }}</label>
-                    <textarea name="description" id="description" cols="30" rows="5" class="form-control">{{ isset($lpse->description) ? $lpse->description : old('description')}}</textarea>
-                </div>
+
+                <x-form.textarea name="description" :value="old('description', $lpse->description ?? '')">Keterangan</x-form.textarea>
             </div>
         </div>
     </div>

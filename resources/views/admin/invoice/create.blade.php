@@ -4,6 +4,7 @@
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/tagify.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/select2.css') }}">
 @endsection
 
 @section('main_content')
@@ -24,8 +25,8 @@
                                 @include('admin.invoice.form')
                         </div>
                         <div class="card-footer text-end">
-                            <button type="submit" name="submit" class="btn btn-primary">{{ __('Simpan') }}</button>
-                            <a href="{{ route('admin.invoice.index')}}" class="btn btn-danger">{{ __('Batal')}}</a>
+                            <x-form.buttonsimpan></x-form.buttonsimpan>
+                            <x-form.buttonbatal href="{{ route('admin.invoice.index')}}"></x-form.buttonbatal>
                         </div>
                     </div>
                 </form>
@@ -36,8 +37,9 @@
 @endsection
 
 @section('scripts')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
+    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
 
     <script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>

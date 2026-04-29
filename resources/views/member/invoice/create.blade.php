@@ -4,6 +4,7 @@
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/tagify.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/select2.css') }}">
 @endsection
 
 @section('main_content')
@@ -36,8 +37,9 @@
 @endsection
 
 @section('scripts')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
+    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
 
     <script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
@@ -60,8 +62,8 @@
                 } else if (durasi == "{{ App\Helpers\AppHelper::getDurasiCorporate() }}") {
                     harga = "{{ App\Helpers\AppHelper::getHargaCorporate() }}";
                 }
-
-                $('#total').val(harga);
+                console.log(Intl.NumberFormat('id-ID')-.format(harga));
+                $('#total').val(Int.format(harga));
             });
         });
     </script>

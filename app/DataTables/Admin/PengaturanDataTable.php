@@ -51,6 +51,8 @@ class PengaturanDataTable extends DataTable
                     ->setTableId('pengaturan-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
+                    ->scrollX(true)
+                    ->responsive(true)
                     ->orderBy(2)
                     ->selectStyleSingle()
                     ->parameters($this->getBuilderParameters())

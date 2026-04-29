@@ -26,8 +26,8 @@
                             @include('admin.pengumuman.form')
                     </div>
                     <div class="card-footer text-end">
-                        <button type="submit" name="submit" class="btn btn-primary">{{ __('Simpan') }}</button>
-                        <a href="{{ route('admin.pengumuman.index')}}" class="btn btn-danger">{{ __('Batal')}}</a>
+                        <x-form.buttonsimpan></x-form.buttonsimpan>
+                        <x-form.buttonbatal href="{{ route('admin.pengumuman.index')}}"></x-form.buttonbatal>
                     </div>
                 </div>
                 </form>
