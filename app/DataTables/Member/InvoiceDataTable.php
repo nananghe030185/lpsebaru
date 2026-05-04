@@ -54,6 +54,12 @@ class InvoiceDataTable extends DataTable
                     return '<span class="badge bg-danger">Unpaid</span>';
                 } elseif ($row->status == 'pending') {
                     return '<span class="badge bg-warning">Pending</span>';
+                } elseif ($row->status == 'expired') {
+                    return '<span class="badge bg-secondary">Expired</span>';
+                } elseif ($row->status == 'failed') {
+                    return '<span class="badge bg-danger">Failed</span>';
+                } elseif ($row->status == 'cancel') {
+                    return '<span class="badge bg-secondary">Cancelled</span>';
                 } else {
                     return '<span class="badge bg-warning">Pending</span>';
                 }

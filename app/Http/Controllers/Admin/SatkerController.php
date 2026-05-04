@@ -25,10 +25,11 @@ class SatkerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Satker $satuan_kerja)
     {
-        $satker = Satker::findOrFail($id);
-        return view('admin.satuankerja.edit', ['satker' => $satker]);
+        // dd($satuan_kerja);
+
+        return view('admin.satuankerja.edit', ['satker' => $satuan_kerja]);
     }
 
     /**
@@ -36,11 +37,16 @@ class SatkerController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
+    // dd($request->all());
+
         DB::beginTransaction();
         try{
             $satker = Satker::findOrFail($id);
             $satker->update([
                 'nama_satker' => $request->nama_satker,
+                'lelang' => $request->lelang ?? false,
+                'swakelola' => $request->swakelola  ?? false,
             ]);
 
             DB::commit();

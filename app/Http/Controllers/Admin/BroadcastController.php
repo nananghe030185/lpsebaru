@@ -83,7 +83,10 @@ class BroadcastController extends Controller
 
     public function telegram()
     {
-        return view('admin.broadcast.telegram');
+        $member = User::where('group_id', 2)->count();
+        $nonmember = User::where('group_id', 3)->count();
+        $semua = User::where('group_id', 3)->OrWhere('group_id', 2)->count();
+        return view('admin.broadcast.telegram', compact('member', 'nonmember', 'semua'));
     }
 
     public function sendOutbox($value, $message)

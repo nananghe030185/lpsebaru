@@ -85,7 +85,7 @@ class TenderDataTable extends DataTable
                         var api = this.api();
                         // Target the "tahap_tender" column (adjust index if needed)
                         var columnIdx = api.column("tahap_tender:name").index();
-                        var select = $("<select name=\"filter\" id=\"filter\" class=\"form-control tahapan_tender\"><option value=\"\">Semua Tahapan</option></select>")
+                        var select = $("<select name=\"filter\" id=\"filter\" class=\"select2 form-control tahapan_tender\"><option value=\"\">Semua Tahapan</option></select>")
                             // .appendTo($(api.column(columnIdx).header()).empty())
                             .appendTo(".filter2")
                             .on("change", function() {
@@ -96,6 +96,26 @@ class TenderDataTable extends DataTable
                             });
                         // Get unique values and append as options
                         api.column(columnIdx).data().unique().sort().each(function(d, j) {
+                            // Remove HTML tags if present
+                            var text = d.replace(/(<([^>]+)>)/gi, "");
+                            if (select.find("option[value=\'" + text + "\']").length === 0) {
+                                select.append("<option value=\"" + text + "\">" + text + "</option>");
+                            }
+                        });
+
+                        var lpse = api.column("lpse.nama_lpse:name").index();
+
+                        var select = $("<select name=\"filter\" id=\"filter\" class=\"select2 klpdi form-control \"><option value=\"\">Semua KLPDI</option></select>")
+                            // .appendTo($(api.column(lpse).header()).empty())
+                            .appendTo(".filter1")
+                            .on("change", function() {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                api.column(lpse)
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+                        // Get unique values and append as options
+                        api.column(lpse).data().unique().sort().each(function(d, j) {
                             // Remove HTML tags if present
                             var text = d.replace(/(<([^>]+)>)/gi, "");
                             if (select.find("option[value=\'" + text + "\']").length === 0) {

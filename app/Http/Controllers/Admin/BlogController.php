@@ -7,20 +7,13 @@ use Illuminate\Http\Request;
 use App\DataTables\Admin\BlogDataTable;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
-use App\Repositories\Admin\BlogRepository;
 use App\Http\Requests\Admin\CreateBlogRequest;
 use App\Http\Requests\Admin\UpdateBlogRequest;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class BlogController extends Controller
 {
-    public $repository;
-    
-    public function __construct(BlogRepository $repository)
-    {
-        // $this->authorizeResource(Blog::class, 'blog');
-        $this->repository = $repository;
-    }
+   
     
     /**
      * Display a listing of the resource.

@@ -45,9 +45,15 @@ class TenderDataTable extends DataTable
                 return Helpers::link(route('redirect.tender', [$tender->slug]), $anchor);
             })
             ->editColumn('tahap_tender', function (Tender $tender) {
-                $link = $tender->lpse->link .'/lelang/' . $tender->tender_id . '/jadwal';
-                $anchor = $tender->tahap_tender;
-                return '<span class="badge badge-light-warning">' . Helpers::link(route('redirect.tender.tahapan', [$tender->slug]), $anchor) . '</span>';
+                 $anchor = '';
+                if($tender->tahap_tender == 'Tender Sudah Selesai'){
+                    $anchor = '<span class="badge badge-light-danger p-2">' . $tender->tahap_tender . '</span>';
+                }else{
+                    $anchor = '<span class="badge badge-light-success p-2">' . $tender->tahap_tender . '</span>';
+                }
+                return Helpers::link(route('redirect.tender.tahapan', [
+                    $tender->slug
+                ]), $anchor);
             })
             ->rawColumns(['checkbox','nama_paket','action','tahap_tender'])
             ->setRowId('id');
@@ -110,6 +116,26 @@ class TenderDataTable extends DataTable
                             });
                         // Get unique values and append as options
                         api.column(columnIdx).data().unique().sort().each(function(d, j) {
+                            // Remove HTML tags if present
+                            var text = d.replace(/(<([^>]+)>)/gi, "");
+                            if (select.find("option[value=\'" + text + "\']").length === 0) {
+                                select.append("<option value=\"" + text + "\">" + text + "</option>");
+                            }
+                        });
+
+                        var lpse = api.column("lpse.nama_lpse:name").index();
+
+                        var select = $("<select name=\"filter\" id=\"filter\" class=\"select2 klpdi form-control \"><option value=\"\">Semua KLPDI</option></select>")
+                            // .appendTo($(api.column(lpse).header()).empty())
+                            .appendTo(".filter1")
+                            .on("change", function() {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                api.column(lpse)
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+                        // Get unique values and append as options
+                        api.column(lpse).data().unique().sort().each(function(d, j) {
                             // Remove HTML tags if present
                             var text = d.replace(/(<([^>]+)>)/gi, "");
                             if (select.find("option[value=\'" + text + "\']").length === 0) {

@@ -19,7 +19,8 @@
 
                  <x-form.text name='kode_provinsi' type='number'  :required=true  :value='old("kode_provinsi", $klpdi->kode_provinsi)'>Kode Provinsi</x-form.text>
 
-                 <x-form.selectstatus name="scrape_daftar_hitam" :selected="$klpdi->scrape_daftar_hitam">Scrape Daftar Hitam</x-form.selectstatus>
+                 <x-form.toggle name="scrape_daftar_hitam" :toggle="$klpdi" :value="old('scrape_daftar_hitam', $klpdi->scrape_daftar_hitam)">Scrape Daftar Hitam</x-form.toggle>
+                 {{-- <x-form.selectstatus name="scrape_daftar_hitam" :selected="$klpdi->scrape_daftar_hitam">Scrape Daftar Hitam</x-form.selectstatus> --}}
             </div>
             <div class="col-lg-6">
             </div>

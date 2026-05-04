@@ -38,11 +38,11 @@ class KomisiController extends Controller
         return response()->json(['message' => 'Tidak ada data yang dipilih.'], 400);
     }
 
-    public function status($id, Request $request)
+    public function status(Int $id, Request $request)
     {
         $model = Komisi::findOrFail($id);
         $model->update(['state' => $request->state]);
  
-        return redirect()->route('admin.laporan.komisi.index')->with('success', 'Komisi update state successfully.');
+        // return redirect()->route('admin.laporan.komisi.index')->with('success', 'Komisi update state successfully.');
     }
 }

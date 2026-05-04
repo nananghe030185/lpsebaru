@@ -14,13 +14,13 @@
         let updatedCount = count + increment;
 
         // Format the number with commas for lakh and crore
-        updatedCount = updatedCount.toLocaleString("en-IN");
+        updatedCount = updatedCount.toLocaleString("id-ID");
 
         counter.innerText = updatedCount;
         setTimeout(updateCount, 1);
       } else {
         // Update counter.innerText with formatted target value
-        counter.innerText = target.toLocaleString("en-IN");
+        counter.innerText = target.toLocaleString("id-ID");
       }
     };
 

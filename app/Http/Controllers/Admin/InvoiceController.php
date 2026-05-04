@@ -124,19 +124,11 @@ class InvoiceController extends Controller
                         'first_name'=> $user->name,
                         'email'=> $user->email,
                         'phone'=> $user->whatsapp,
-                        // 'address'=> 'Sudirman',
-                        // 'city'=> 'Jakarta',
-                        // 'postal_code'=> '12190',
-                        // 'country_code'=> 'IDN'
                     ],
-                        'shipping_address'=> [
+                    'shipping_address'=> [
                         'first_name'=> $user->name,
                         'email'=> $user->email,
                         'phone'=> $user->whatsapp,
-                        // 'address'=> 'Sudirman',
-                        // 'city'=> 'Jakarta',
-                        // 'postal_code'=> '12190',
-                        // 'country_code'=> 'IDN'
                     ]
                 ],
                 'item_details' => [
@@ -158,8 +150,6 @@ class InvoiceController extends Controller
     {
         // Mengambil konfigurasi Server Key
         $serverKey = config('midtrans.server_key');
-
-        
         // Validasi signature key dari Midtrans
         $signatureKey = hash("sha512",
             $request->order_id .
@@ -206,6 +196,11 @@ class InvoiceController extends Controller
                     'pay_date' => now(),
                     'state' => false, // belum dibayar
                 ]);
+
+                // Tambah Komisi User
+                $user = User::findOrFail($invoice->user_id);
+                $komisi = $user->komisi;
+                $user->update(['komisi' => $komisi + ($invoice->total * AppHelper::getPersenKomisi() / 100)])
 
                 // Kirim notifikasi jika diperlukan
                 // $userhelper->user->notify(new InvoiceNotification($invoice));

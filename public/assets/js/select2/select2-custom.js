@@ -10,7 +10,7 @@ setTimeout(function () {
         });
 
         // Single Search Select
-        $(".invoice-status").select2({
+        $(".invoice_status").select2({
             placeholder: "Pilih Status",
             width: "resolve",
             allowClear: true,
@@ -64,12 +64,23 @@ setTimeout(function () {
             allowClear: true,
         });
 
+        $(".klpdi").select2({
+            placeholder: "Pilih Nama KLPDI",
+            width: "resolve",
+            allowClear: true,
+        });
+
         $(".select_status").select2({
             placeholder: "Pilih Status",
             width: "resolve",
             allowClear: true,
         });
 
+        $(".select_user").select2({
+            placeholder: "Pilih User",
+            width: "resolve",
+            allowClear: true,
+        });
         $(".select_channel").select2({
             placeholder: "Pilih Channel",
             width: "resolve",

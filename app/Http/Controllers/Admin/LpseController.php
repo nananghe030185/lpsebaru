@@ -34,6 +34,7 @@ class LpseController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
         $lpse = Lpse::findOrFail($id);
         $lpse->update([
             'kode_lpse' => $request->kode_lpse,
@@ -43,8 +44,8 @@ class LpseController extends Controller
             'jumlah_pagu' => $request->jumlah_pagu,
             'slug' => $request->slug,
             'description' => $request->description,
-            'state' => $request->state,
-            'scrape' => $request->scrape,
+            'state' => $request->state ?? false,
+            'scrape' => $request->scrape ?? false,
         ]);
 
         return redirect()->route('admin.lpse.index')->with('success', __('LPSE berhasil diupdate'));

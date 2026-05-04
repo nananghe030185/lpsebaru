@@ -2,7 +2,7 @@
 
 <div class="mb-3 col">
     <label class="form-label mb-1" for="{{ $name }}">{{$slot}}</label>
-    <select name="{{ $name }}" id="{{ $name }}" {{ $attributes->merge(['class' => 'select2 form-select form-contrzol']) }} {{ $required ? "required" : "" }}>
+    <select name="{{ $name }}" id="{{ $name }}" {{ $attributes->merge(['class' => 'select2 form-select form-control']) }} {{ $required ? "required" : "" }}>
         <option value="" selected disabled>Pilih {{ $slot }}</option>
         @foreach($options as $value => $label)
             <option value="{{ $value }}" {{ $value == $selected ? 'selected' : '' }}>

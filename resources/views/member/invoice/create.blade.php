@@ -62,8 +62,7 @@
                 } else if (durasi == "{{ App\Helpers\AppHelper::getDurasiCorporate() }}") {
                     harga = "{{ App\Helpers\AppHelper::getHargaCorporate() }}";
                 }
-                console.log(Intl.NumberFormat('id-ID')-.format(harga));
-                $('#total').val(Int.format(harga));
+                $('#total').val(harga);
             });
         });
     </script>

@@ -105,13 +105,13 @@ class LpseDataTable extends DataTable
                                 window.location = "' . route('admin.lpse.reload') . '";
                             }',
                         ],
-                        'customation' => [
-                            'text' => '<i class="fa fa-plus"></i> Add New LPSE', // Button text with optional icon
-                            'className' => 'btn btn-primary', // CSS class for styling
-                            'action' => 'function (e, dt, node, config) {
-                                window.location = "' . route('admin.lpse.create') . '";
-                            }',
-                        ],
+                        // 'customation' => [
+                        //     'text' => '<i class="fa fa-plus"></i> Add New LPSE', // Button text with optional icon
+                        //     'className' => 'btn btn-primary', // CSS class for styling
+                        //     'action' => 'function (e, dt, node, config) {
+                        //         window.location = "' . route('admin.lpse.create') . '";
+                        //     }',
+                        // ],
                         'scrape' => [
                             'text' => '<i class="fas fa-sync"></i> Unscrape LPSE', // Button text with icon
                             'className' => 'btn btn-info btn-sm', // CSS class for styling

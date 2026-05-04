@@ -19,12 +19,14 @@ class DashboardController extends Controller
     {
         $lelang = Lelang::count();
         $tender = Tender::count();
+        $member = User::where('group_id', 2)->count();
+        $nonmember = User::where('group_id', 3)->count();
         $tenderkeyword = TenderKeyword::count();
         $fokus = Fokus::count();
         $toplpse = Lpse::where('state',true)->orderBy('jumlah_paket', 'desc')->take(5)->get();
         $users = User::orderBy('created_at', 'desc')->take(5)->get();
         $logs = ErrorLog::orderBy('created_at', 'desc')->take(5)->get();
         $pengumuman = Pengumuman::where('status', true);
-        return view('admin.dashboard.index',compact('lelang', 'tender', 'tenderkeyword', 'fokus', 'toplpse','users','logs'));
+        return view('admin.dashboard.index',compact('lelang', 'tender', 'tenderkeyword', 'fokus', 'toplpse','users','logs', 'member', 'nonmember'));
     }
 }

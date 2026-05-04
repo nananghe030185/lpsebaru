@@ -40,6 +40,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->merge([
             'tanggal_terbit' => now(),
             'status' => 'unpaid',
@@ -55,6 +56,8 @@ class InvoiceController extends Controller
         $request->merge([
             'user_id' => Helpers::getCurrentUserId()
         ]);
+
+
         $snap = $this->submitPayload($request);
         $request->merge([
             'snap_token' => $snap,

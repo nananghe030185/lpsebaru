@@ -32,13 +32,15 @@ class KlpdiController extends Controller
      */
     public function update(Request $request, Klpdi $klpdi)
     {
+
         $request->validate([
             'jenis_klpdi' => 'required|string|max:50',
             'nama_klpdi' => 'required|string|max:255',
             'kode_kabupaten' => 'nullable|string|max:10',
             'kode_klpdi' => 'required|string|max:10',
-            'kode_provinsi' => 'nullable|string|max:10',
+            'kode_provinsi' => 'nullable|string|max:10'
         ]);
+
         $klpdi->update($request->only(['jenis_klpdi', 'nama_klpdi', 'kode_kabupaten', 'kode_klpdi', 'kode_provinsi']));
         
         return redirect()->route('admin.klpdi.index')->with('success', __('Data KLPDI telah diperbarui'));

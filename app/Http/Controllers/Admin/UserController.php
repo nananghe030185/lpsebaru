@@ -11,8 +11,6 @@ use App\DataTables\Admin\UserDataTable;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\Admin\RoleRepository;
-use App\Repositories\Admin\UserRepository;
 use Illuminate\Contracts\Support\Renderable;
 use App\Http\Requests\Admin\CreateUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
@@ -20,17 +18,6 @@ use App\Http\Requests\Admin\UpdateProfileRequest;
 
 class UserController extends Controller
 {
-    private $role;
-
-    private $repository;
-
-    public function __construct(RoleRepository $roleRepository, UserRepository $repository)
-    {
-        // $this->authorizeResource(User::class, 'user');
-        
-        $this->repository = $repository;
-        $this->role = $roleRepository;
-    }
 
     /**
      * Display a listing of the resource.
@@ -106,12 +93,12 @@ class UserController extends Controller
      * Update Status the specified resource from storage.
      *
      * @param  int  $id
-     * @param int $status
      * @return \Illuminate\Http\Response
      */
-    public function status(Request $request, $id)
+    public function status($id, Request $request)
     {
-        return $this->repository->status($id, $request->status);
+        $model = User::findOrFail($id);
+        $model->update(['state' => $request->state]);
     }
 
     /**

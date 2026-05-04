@@ -20,10 +20,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->date('email_verified_at')->nullable();
             $table->integer('group_id')->default(3);
-            $table->boolean('status')->default(false);
+            $table->boolean('state')->default(false);
             $table->integer('system_reserve')->default(0);
             $table->string('perusahaan')->nullable();
             $table->string('kbli', 1000)->nullable();
+            $table->double('komisi')->default(0);
             $table->string('kata_kunci', 1000)->nullable();
             $table->string('whatsapp')->nullable();
             $table->boolean('notif_whatsapp_tender')->default(false);

@@ -112,10 +112,12 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::resource('/admin/tag', TagController::class)->names('admin.tag');
     Route::get('/get-states', [UserController::class,'getStates'])->name('admin.user.get-states');
 
-    // User
+    // User Group
     Route::resource('/admin/user/group', UserGroupController::class)->names('admin.user.group');
+
+    // User
+    Route::put('/admin/user/status/{id}', [UserController::class,'status'])->name('admin.user.state');
     Route::put('/admin/user/update-image/{user}', [UserController::class,'updateImage'])->name('admin.user.update-image');
-    Route::put('/admin/user/status/{id}', [UserController::class,'status'])->name('admin.user.status');
     Route::get('/admin/user/remove-image/{id}', [UserController::class,'removeImage'])->name('admin.user.removeImage');
     Route::put('/admin/user/update-profile/{user}', [UserController::class,'updateProfile'])->name('admin.user.update-profile');
     Route::resource('/admin/user', UserController::class)->names('admin.user');

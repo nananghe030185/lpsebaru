@@ -31,22 +31,25 @@ class UserDataTable extends DataTable
                     'data'   => $row,
                 ]);
             })
-            ->editColumn('status', function ($row) {
+            ->editColumn('state', function ($row) {
                 return view('admin.inc.action', [
                     'toggle' => $row,
-                    'name' => 'status',
-                    'route' => 'admin.user.status',
-                    'value' => $row->status,
+                    'name' => 'state',
+                    'route' => 'admin.user.state',
+                    'value' => $row->state,
                 ]);
+            })
+            ->editColumn('komisi', function($row){
+                return 'Rp. ' . number_format($row->komisi);
             })
             ->editColumn('grup.name', function($row){
                 if($row->group_id == 1){
-                    return '<span class="text-success">Super Admin</span>';
+                    return '<span class="badge bg-info p-2">Super Admin</span>';
                 }else if($row->group_id == 2)
                 {
-                    return '<span class="text-info">Member</span>';
+                    return '<span class="badge bg-success p-2">Member</span>';
                 }else{
-                    return '<span class="text-danger">Non Member</span>';
+                    return '<span class="badge bg-danger p-2">Non Member</span>';
                 }
             })
 
@@ -82,7 +85,7 @@ class UserDataTable extends DataTable
                         var api = this.api();
                         // Target the "user-table" column (adjust index if needed)
                         var columnIdx = api.column("grup.name:name").index();
-                        var select = $("<select name=\"filter\" id=\"filter\" class=\"form-control user-table\"><option value=\"\">Semua Group</option></select>")
+                        var select = $("<select name=\"filter\" id=\"filter\" class=\"select2 form-control select_user\"><option value=\"\">Semua Group</option></select>")
                             // .appendTo($(api.column(columnIdx).header()).empty())
                             .appendTo(".filter2")
                             .on("change", function() {
@@ -135,7 +138,11 @@ class UserDataTable extends DataTable
                 ->title(__('Masa Berlaku'))
                 ->searchable(true)
                 ->orderable(true),
-            Column::make('status')
+            Column::make('komisi')
+                ->title(__('Komisi'))
+                ->orderable(true)
+                ->addClass('text-end'),
+            Column::make('state')
                 ->title(__('Status')),  
         ];
     }

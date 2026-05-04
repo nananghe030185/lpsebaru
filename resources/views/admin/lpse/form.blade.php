@@ -21,11 +21,11 @@
                     <div class="row">
                         <div class="col-6">
                             
-                            <x-form.toggle name="state" :toggle="$lpse" :value="old('state', $lpse->state ?? false)">Status</x-form.toggle>
+                            <x-form.toggle name="state" :toggle="$lpse" :value="old('state', $lpse->state)">Status</x-form.toggle>
 
                         </div>
                         <div class="col-6">
-                            <x-form.toggle name="scrape" :toggle="$lpse" :value="old('scrape', $lpse->scrape ?? false)">Scrape</x-form.toggle>
+                            <x-form.toggle name="scrape" :toggle="$lpse" :value="old('scrape', $lpse->scrape)">Scrape</x-form.toggle>
                             
                         </div>
                     </div>

@@ -62,7 +62,7 @@
     {{-- @include('admin.inc.alerts') --}}
     @if (Session::has('success'))
         <script>
-            toastr.success('suksesssss');
+            toastr.success('Data berhasil diupdate');
         </script>
     @endif
 </body>

@@ -10,6 +10,7 @@
     <!-- Bradcrumb -->
     <x-breadcrumb>LPSE</x-breadcrumb>
 
+    {{-- @dd($lpse) --}}
     {{-- Form --}}
     <div class="container-fluid">
         <div class="row">

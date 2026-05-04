@@ -42,21 +42,26 @@
                                                 role="tablist">
                                                 <li class="nav-item"><a class="nav-link active" id="inbox-pill-tab"
                                                         data-bs-toggle="pill" href="#inbox-pill" role="tab"
-                                                        aria-controls="inbox-pill" aria-selected="false"><svg
+                                                        aria-controls="inbox-pill" aria-selected="false">
+                                                        <svg
                                                             class="stroke-icon">
                                                             <use href="{{ asset('assets/svg/icon-sprite.svg#inbox') }}">
                                                             </use>
                                                         </svg>
-                                                        <div>Member<span class="badge badge-light-primary">35</span>
+                                                        <div>Member<span class="badge badge-light-primary">{{ $member }}</span>
                                                         </div>
                                                     </a></li>
                                                 <li class="nav-item"><a class="nav-link" id="sent-pill-tab"
                                                         data-bs-toggle="pill" href="#sent-pill" role="tab"
-                                                        aria-controls="sent-pill" aria-selected="false"><svg
+                                                        aria-controls="sent-pill" aria-selected="false">
+                                                        <svg
                                                             class="stroke-icon">
-                                                            <use href="{{ asset('assets/svg/icon-sprite.svg#sent') }}">
+                                                            <use href="{{ asset('assets/svg/icon-sprite.svg#inbox') }}">
                                                             </use>
-                                                        </svg>Non Member</a></li>
+                                                        </svg>
+                                                        <div>Non Member<span class="badge badge-light-primary">{{ $nonmember }}</span>
+                                                        </div>
+                                                    </a></li>
                                                 <li class="nav-item"><a class="nav-link" id="starred-pill-tab"
                                                         data-bs-toggle="pill" href="#starred-pill" role="tab"
                                                         aria-controls="starred-pill" aria-selected="false"><svg
@@ -64,7 +69,7 @@
                                                             <use href="{{ asset('assets/svg/icon-sprite.svg#star') }}">
                                                             </use>
                                                         </svg>
-                                                        <div>Semua Pengguna<span class="badge badge-light-primary">6</span>
+                                                        <div>Semua Pengguna<span class="badge badge-light-primary">{{ $semua }}</span>
                                                         </div>
                                                     </a>
                                                 </li>

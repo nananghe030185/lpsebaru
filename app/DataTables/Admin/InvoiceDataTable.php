@@ -53,13 +53,19 @@ class InvoiceDataTable extends DataTable
             })
             ->editColumn('status', function ($row) {
                 if($row->status == 'paid') {
-                    return '<span class="badge bg-success">Paid</span>';
+                    return '<span class="badge bg-success p-2">Paid</span>';
                 } elseif ($row->status == 'unpaid') {
-                    return '<span class="badge bg-danger">Unpaid</span>';
+                    return '<span class="badge bg-danger p-2">Unpaid</span>';
                 } elseif ($row->status == 'pending') {
-                    return '<span class="badge bg-warning">Pending</span>';
+                    return '<span class="badge bg-warning p-2">Pending</span>';
+                } elseif ($row->status == 'expired') {
+                    return '<span class="badge bg-secondary p-2">Expired</span>';
+                } elseif ($row->status == 'failed') {
+                    return '<span class="badge bg-danger p-2">Failed</span>';
+                } elseif ($row->status == 'cancel') {
+                    return '<span class="badge bg-secondary p-2">Cancelled</span>';
                 } else {
-                    return '<span class="badge bg-warning">Pending</span>';
+                    return '<span class="badge bg-warning p-2">Pending</span>';
                 }
             })
             ->editColumn('action', function ($row) {
@@ -144,7 +150,7 @@ class InvoiceDataTable extends DataTable
                     ->initComplete('function() {
                         var api = this.api();
                         var columnIdx = api.column("status:name").index();
-                        var select = $("<select name=\"filter\" id=\"filter\" class=\"form-control invoice-status\"><option value=\"\" class=\"fs-6\">Semua Status</option></select>")
+                        var select = $("<select name=\"filter\" id=\"filter\" class=\"form-control invoice_status\"><option value=\"\" class=\"fs-6\">Semua Status</option></select>")
                             // .appendTo($(api.column(columnIdx).header()).empty())
                             .appendTo(".filter2")
                             .on("change", function() {
