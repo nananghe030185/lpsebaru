@@ -13,7 +13,7 @@ Route::get('/update', function(){
 });
 
 Route::get('/scrape-lpse', function(){
-    Artisan::call('scrape:lpse');
+    Artisan::call('scrape:tender-lpse');
     return 'Done ...<a href="' . route('dashboard') . '">Go to Dashboard</a> <p>'. Artisan::output() .'</p>';
 });
 
