@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Process;
 
 Route::get('/update', function(){
     // Run a simple terminal command
-    $result = Process::run('ls -la');
+    $result = Process::run('composer --version');
 
     // Grab the results
     if ($result->successful()) {
