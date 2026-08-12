@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 Route::get('/install', function(){
     Artisan::call('migrate:fresh --seed');
     Artisan::call('optimize:clear');
+    Artisan::call('app:admin');
 });
 
 Route::get('/', function () {
