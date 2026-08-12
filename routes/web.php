@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\Process;
 
 Route::get('/update', function(){
     // Run a simple terminal command
-    $result = Process::run('composer --version');
+    $result = Process::run('composer update');
 
-    // Grab the results
-    if ($result->successful()) {
-        return $result->output();
-    }
+    // // Grab the results
+    // if ($result->successful()) {
+    //     return $result->output();
+    // }
 
-    return $result->errorOutput();
+    // return $result->errorOutput();
 });
 
 Route::get('/install', function(){
