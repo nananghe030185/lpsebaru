@@ -60,5 +60,6 @@
     </div>
     @include('layouts.dashboard.scripts')
     @include('admin.inc.alerts')
+    ini dari lokalhost
 </body>
 </html>
