@@ -256,8 +256,9 @@
                                 @can('member')
                                     <li>
                                         <!-- create route to user edit profile -->
-                                        <a href="{{ route('app.user.edit', auth()->user()) }}">
+                                        <a href="{{ route('app.user.edit', Auth::user()) }}">
                                             <i data-feather="user"> </i><span>My Profile</span>
+                                        </a>
                                     </li>
                                 @endcan
                                 <li>
