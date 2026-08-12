@@ -7,10 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 
 
 Route::get('/install', function(){
-    Artisan::call('key:generate');
-    Artisan::call('storage:link');
-    Artisan::call('migrate:fresh --seed');
-    Artisan::call('optimize:clear');
+    return 'OK';
 });
 
 Route::get('/', function () {
