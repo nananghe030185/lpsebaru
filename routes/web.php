@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 Route::get('/install', function(){
     Artisan::call('migrate:fresh --seed');
     Artisan::call('optimize:clear');
+    return 'Done ...<a href="' . route('dashboard') . '">Go to Dashboard</a> <p>'. Artisan::output() .'</p>';
 });
 
 Route::get('/', function () {
