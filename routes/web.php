@@ -7,9 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 
 
 Route::get('/install', function(){
-    Artisan::call('make:session-table');
-    Artisan::call('session:table');
-    Artisan::call('migrate');
+    Artisan::call('migrate:fresh --seed');
     Artisan::call('optimize:clear');
 });
 
