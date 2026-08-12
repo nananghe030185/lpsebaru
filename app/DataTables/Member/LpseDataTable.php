@@ -66,9 +66,9 @@ class LpseDataTable extends DataTable
                     ->selectStyleSingle()
                     ->parameters($this->getBuilderParameters())
                     ->buttons([
-                        Button::make('excel')
-                            ->text('<i class="fas fa-file-excel"></i> Export to Excel') // Add icon and custom text
-                            ->className('btn btn-success btn-sm'), // Apply specific Bootstrap classes
+                        // Button::make('excel')
+                        //     ->text('<i class="fas fa-file-excel"></i> Export to Excel') // Add icon and custom text
+                        //     ->className('btn btn-success btn-sm'), // Apply specific Bootstrap classes
                     ])
                     ->addIndex();
     }

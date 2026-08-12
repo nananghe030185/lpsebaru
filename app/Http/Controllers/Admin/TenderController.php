@@ -72,4 +72,19 @@ class TenderController extends Controller
             'target' => $tender->lpse->link . '/lelang/'. $tender->tender_id .'/jadwal'
         ]);
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids', []);
+
+        if (empty($ids)) {
+            return response()->json(['message' => 'No IDs provided.'], 400);
+        }
+
+        Tender::whereIn('id', $ids)->delete();
+
+        // Delete related Fokus records
+        Fokus::whereIn('tender_id', $ids)->delete();
+        return response()->json(['message' => 'Selected rows deleted successfully.']);
+    }
 }

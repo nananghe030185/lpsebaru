@@ -11,6 +11,6 @@
             <p class="sub-content">You may not be able to find the page you are searching for, or it may have been relocated
                 or renamed.</p>
         </div>
-        <div><a class="btn btn-primary btn-lg" href="{{ route('admin.dashboard') }}">BACK TO HOME PAGE</a></div>
+        <div><a class="btn btn-primary btn-lg" href="{{ route('app.dashboard.index') }}">BACK TO HOME PAGE</a></div>
     </div>
 @endsection

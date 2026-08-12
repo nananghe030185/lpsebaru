@@ -7,6 +7,7 @@ use App\Helpers\TableHelper;
 use App\Models\Lelang;
 use App\View\Components\Table;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -30,10 +31,14 @@ class LelangDataTable extends DataTable
             ->addColumn('checkbox', function ($row) {
                 return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
             })
+            ->editColumn('created_at', function (Lelang $lelang) {
+                return TableHelper::tanggal($lelang->created_at);
+            })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
-                    'fokus'  => 'app.lelang-sirup.fokus',
-                    'data'   => $row
+                    'fokusLelang'  => 'app.lelang-sirup.fokus',
+                    'data'   => $row,
+                    'isfokusLelang' => Helpers::isUserFokusLelang($row)
                 ]);
             })
             ->addColumn('nama_paket', function (Lelang $lelang) {
@@ -156,6 +161,10 @@ class LelangDataTable extends DataTable
                 ->printable(false)
                 ->width(10)
                 ->addClass('text-center'),
+            Column::make('created_at')
+                ->title('Tanggal Dibuat')
+                ->searchable(true)
+                ->orderable(true),
             Column::make('nama_paket')
                 ->title('Nama Paket')
                 ->searchable(true)

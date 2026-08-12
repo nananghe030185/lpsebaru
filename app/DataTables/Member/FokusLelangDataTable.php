@@ -30,6 +30,9 @@ class FokusLelangDataTable extends DataTable
             ->addColumn('checkbox', function ($row) {
                 return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
             })
+            ->editColumn('created_at', function (FokusLelang $fokusLelang) {
+                return TableHelper::tanggal($fokusLelang->created_at);
+            })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
                     'delete'  => 'app.fokus-lelang.destroy',
@@ -156,7 +159,7 @@ class FokusLelangDataTable extends DataTable
                             }
                         });
 
-                        $("#fokuslelang-table").on("change", "#select-all", function() {
+                        $("#select-all").on("click", function() {
                             $(".row-checkbox").prop("checked", this.checked);
                         });
                     }');
@@ -177,6 +180,10 @@ class FokusLelangDataTable extends DataTable
                     ->width(10)
                     ->addClass('text-center')
                     ->title('<div class="form-check"><input class="form-check-input checkbox-primary" id="select-all" type="checkbox"></div>'),
+            Column::make('created_at')
+                    ->title(__('Tanggal Dibuat'))
+                    ->searchable(true)
+                    ->orderable(true),
             Column::make('lelang.nama_paket')
                     ->title(__('Nama Paket'))
                     ->orderable(true)

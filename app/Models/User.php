@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,6 +13,7 @@ use Illuminate\Notifications\Notifiable;
 // use Laravel\Jetstream\HasProfilePhoto;
 // use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Override;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -37,6 +40,9 @@ class User extends Authenticatable implements HasMedia
         'id',
     ];
 
+    protected $attributes = [
+        'haloooo' => 'nanang kokokokoko'
+    ];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -57,6 +63,7 @@ class User extends Authenticatable implements HasMedia
     protected $appends = [
         'profile_photo_url',
         'role',
+        'jumlah_downline'
     ];
 
     /**
@@ -83,6 +90,7 @@ class User extends Authenticatable implements HasMedia
     protected $with = [
         'media',
         'grup',
+        // 'upline'
     ];
 
     public static function booted()
@@ -117,5 +125,26 @@ class User extends Authenticatable implements HasMedia
     public function grup() : BelongsTo
     {
         return $this->belongsTo(Groups::class, 'group_id');
+    }
+
+    public function getFullNameAttribute()
+    {
+        return 'nanang hermawan saja';
+    }
+    protected function jumlahDownline():Attribute
+    {
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => User::where('upline' , $attributes['id'])->count()
+        );
+    }
+
+    // public function upline() : BelongsTo
+    // {
+    //     return $this->belongsTo(User::class, 'upline', 'id');
+    // }
+
+    public function getRouteKeyName()
+    {
+        return 'username';
     }
 }

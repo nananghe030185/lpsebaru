@@ -62,6 +62,7 @@ class LpseController extends Controller
     {
         $model = Lpse::findOrFail($id);
         $model->update(['scrape' => $request->status]);
+        
     }
 
     public function unscrapeall()
@@ -76,5 +77,9 @@ class LpseController extends Controller
         // This method can be used to reload the data or perform any necessary actions.
         // For example, you might want to clear cache or refresh data from an external source.
         return redirect()->route('admin.lpse.index')->with('success', __('Data LPSE telah diperbarui'));
+    }
+
+    public function map(){
+        return view('admin.lpse.map');
     }
 }

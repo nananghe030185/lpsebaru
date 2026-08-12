@@ -4,7 +4,7 @@
             <div class="col-lg-6">
                 <x-form.text name="kode_lpse" :required="true" :value="old('kode_lpse', $lpse->kode_lpse ?? '')">Kode LPSE</x-form.text>
 
-                <x-form.text name="nama_lpse" :required="true" :value="old('nama_lpse', $lpse->nama_lpse ?? '')">Nama LPSE</x-form.text>
+                <x-form.text name="nama_lpse" :required="true" :value="old('nama_lpse', $lpse->nama_lpse ?? '')" :autofocus="true">Nama LPSE</x-form.text>
                 
                 <x-form.text name="slug" :required="true" :value="old('slug', $lpse->slug ?? '')">Slug</x-form.text>
 

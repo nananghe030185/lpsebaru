@@ -9,7 +9,7 @@
 
 @section('main_content')
     <!-- Bradcrumb -->
-    <x-breadcrumb>{{__('Pesan Tiket')}}</x-breadcrumb>
+    <x-breadcrumb parent="Invoice" route="{{ route('admin.invoice.index') }}">Create</x-breadcrumb>
 
     <div class="container-fluid">
         <div class="row">

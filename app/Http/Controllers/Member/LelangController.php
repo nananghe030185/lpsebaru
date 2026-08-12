@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FokusLelang;
 use App\Models\Lelang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LelangController extends Controller
 {
@@ -60,5 +61,10 @@ class LelangController extends Controller
         }
 
         return redirect()->route('app.lelang-sirup.index')->with('success', 'Lelang berhasil difokuskan.');
+    }
+
+    public function isfokus()
+    {
+        return true;
     }
 }

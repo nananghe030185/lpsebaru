@@ -10,11 +10,30 @@
                     </a>
             @endif
         @endisset
-
         
+        @isset($fokusLelang)
+            @if($isfokusLelang)
+                <i data-feather="star" class="text-warning"></i>
+            @else
+                <a href="{{ route($fokusLelang, $data) }}" class="star-icon" title="Fokus">
+                    <i data-feather="star"></i>
+                </a>
+            @endif
+        @endisset
 
-        @isset($fokus)
-            <a href="{{ route($fokus, $data) }}" class="star-icon" title="Fokus">
+        @isset($fokusTender)
+            @if ($isFokusTender)
+                <i data-feather="star" class="text-warning"></i>
+            @else
+                <a href="{{ route($fokusTender , $data) }}" class="star-icon" title="Fokus">
+                    <i data-feather="star"></i>
+                </a>
+            @endif
+            
+        @endisset
+
+        @isset($fokusKataKunci)
+            <a href="{{ route($fokusKataKunci , $data) }}" class="star-icon" title="Fokus">
                 <i data-feather="star"></i>
             </a>
         @endisset
@@ -27,7 +46,7 @@
 
         @isset($unfokus)
             <a href="{{ route($unfokus, $data) }}" class="star-icon" title="Unfokus">
-                <i data-feather="x-circle"></i>
+                <i data-feather="trash-2"></i>
             </a>
         @endisset
 

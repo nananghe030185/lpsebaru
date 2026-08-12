@@ -1,4 +1,4 @@
-@props(['name' => '', 'placeholder' => '', 'value' => '', 'readonly' => false, 'required' => false, 'type' => 'text'])
+@props(['name' => '', 'placeholder' => '', 'value' => '', 'readonly' => false, 'required' => false, 'type' => 'text', 'autofocus' => false])
 
 <div class="mt-3">
     <label for="{{ $name }}">{{ $slot }} {!! $required ? '<span class="text-danger">*</span>' : '' !!}</label>

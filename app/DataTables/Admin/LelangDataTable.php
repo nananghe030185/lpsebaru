@@ -27,10 +27,17 @@ class LelangDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('checkbox', function ($row) {
+                return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
+            })
+            ->editColumn('created_at', function (Lelang $lelang) {
+                return TableHelper::tanggal($lelang->created_at);
+            })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
-                    'fokus'  => 'admin.lelang-sirup.fokus',
-                    'data'   => $row
+                    'fokusLelang'  => 'admin.lelang-sirup.fokus',
+                    'data'   => $row,
+                    'isfokusLelang' => Helpers::isUserFokusLelang($row)
                 ]);
             })
             ->addColumn('nama_paket', function (Lelang $lelang) {
@@ -47,7 +54,7 @@ class LelangDataTable extends DataTable
             ->editColumn('is_umk', function (Lelang $lelang) {
                 return $lelang->is_umk ? 'Usaha Kecil/Koperasi' : 'Bukan Usaha Kecil/Koperasi';
             })
-            ->rawColumns(['nama_paket'])
+            ->rawColumns(['checkbox','nama_paket'])
             ->setRowId('id');
     }
 
@@ -75,7 +82,41 @@ class LelangDataTable extends DataTable
                     ->orderBy(1)
                     ->selectStyleSingle()
                     ->parameters($this->getBuilderParameters())
-                    ->buttons([])
+                    ->buttons([
+                        'bulk-delete' => [
+                            'text' => '<i class="fa fa-trash"></i> Bulk Delete', // Button text with optional icon
+                            'className' => 'btn btn-danger', // CSS class for styling
+                            'action' => 'function (e, dt, node, config) {
+                                var selectedIds = [];
+                                $(".row-checkbox:checked").each(function() {
+                                    selectedIds.push($(this).val());
+                                });
+
+                                if (selectedIds.length === 0) {
+                                    alert("Please select at least one row to delete.");
+                                    return;
+                                }
+
+                                if (confirm("Are you sure you want to delete the selected rows?")) {
+                                    $.ajax({
+                                        url: "' . route('admin.lelang-sirup.bulk-delete') . '",
+                                        type: "POST",
+                                        data: {
+                                            ids: selectedIds,
+                                            _token: "' . csrf_token() . '"
+                                        },
+                                        success: function(response) {
+                                            dt.ajax.reload(); // Reload the DataTable
+                                            alert(response.message);
+                                        },
+                                        error: function(xhr, status, error) {
+                                            alert("An error occurred while deleting the rows.");
+                                        }
+                                    });
+                                }
+                            }',
+                        ],
+                    ])
                     ->initComplete('function() {
                         var api = this.api();
                         var columnIdx = api.column("jenis_pengadaan:name").index();
@@ -115,6 +156,10 @@ class LelangDataTable extends DataTable
                                 select2.append("<option value=\"" + text + "\">" + text + "</option>");
                             }
                         });
+
+                        $("#select-all").on("click", function() {
+                            $(".row-checkbox").prop("checked", this.checked);
+                        });
                     }');
     }
 
@@ -127,6 +172,16 @@ class LelangDataTable extends DataTable
             
             Column::make('id')
                 ->hidden(),
+            Column::computed('checkbox')
+                ->title('<div class="form-check"><input class="form-check-input checkbox-primary" id="select-all" type="checkbox"></div>')
+                ->footer('<div class="form-check"><input class="form-check-input checkbox-primary" id="select-all-footer" type="checkbox"></div>')
+                ->exportable(false)
+                ->printable(false)
+                ->width(10)
+                ->addClass('text-center'),
+            Column::make('created_at')
+                  ->title('Tanggal Dibuat')
+                  ->orderable(true),
             Column::make('nama_paket')
                 ->title('Nama Paket')
                 ->searchable(true)

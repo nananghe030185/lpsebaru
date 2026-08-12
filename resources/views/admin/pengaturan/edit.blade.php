@@ -8,7 +8,7 @@
 
 @section('main_content')
     <!-- Bradcrumb -->
-    <x-breadcrumb>{{__('Pengaturan')}}</x-breadcrumb>
+    <x-breadcrumb parent="Pengaturan Aplikasi" route="{{ route('admin.applikasi.index') }}">Edit</x-breadcrumb>
 
     {{-- Form --}}
     <div class="container-fluid">

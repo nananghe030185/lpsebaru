@@ -29,11 +29,15 @@ class TenderDataTable extends DataTable
             ->addColumn('checkbox', function ($row) {
                 return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
             })
+            ->editColumn('created_at', function (Tender $tender) {
+                return TableHelper::tanggal($tender->created_at);
+            })
             // Define the action column with buttons
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
-                    'fokus'  => 'app.tender-lpse.fokus',
-                    'data'   => $row
+                    'fokusTender'  => 'app.tender-lpse.fokus',
+                    'data'   => $row,
+                    'isFokusTender' => Helpers::isUserFokusTender($row)
                 ]);
             })
             ->editColumn('hps', function (Tender $tender) {
@@ -163,6 +167,10 @@ class TenderDataTable extends DataTable
                 ->width(10)
                 ->addClass('text-center')
                 ->title('<div class="form-check"><input class="form-check-input checkbox-primary" id="select-all" type="checkbox"></div>'),
+            Column::make('created_at')
+                ->title('Tanggal Dibuat')
+                ->searchable(true)
+                ->orderable(true),
             Column::make('tender_id')
                   ->title('Kode')
                   ->searchable(true)

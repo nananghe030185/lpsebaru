@@ -163,7 +163,7 @@ class OutboxDataTable extends DataTable
                         selectUpline.append("<option value=\"true\">Terkirim</option>");
                         selectUpline.append("<option value=\"false\">Gagal</option>");
 
-                        $("#outbox-table").on("change", "#select-all", function() {
+                        $("#select-all").on("change", function() {
                             $(".row-checkbox").prop("checked", this.checked);
                         });
                        

@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Lelang extends Model
 {
     protected $guarded = ['id'];
+
+    public function isfokus()
+    {
+        return true;
+    }
 }

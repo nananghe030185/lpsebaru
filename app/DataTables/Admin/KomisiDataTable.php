@@ -160,7 +160,7 @@ class KomisiDataTable extends DataTable
                             }
                         });
 
-                        $("#komisi-table").on("change", "#select-all", function() {
+                        $("#select-all").on("change", function() {
                             $(".row-checkbox").prop("checked", this.checked);
                         });
                        
@@ -186,6 +186,7 @@ class KomisiDataTable extends DataTable
                 ->searchable(false),
             Column::make('state')
                 ->title('Status')
+                ->name('state')
                 ->searchable(),
             Column::make('upline.name')
                 ->title('Upline')

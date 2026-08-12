@@ -16,6 +16,7 @@ return new class extends Migration
             $table->boolean('state')->default(true);
             $table->integer('kode_lpse')->unique()->nullable();
             $table->string('nama_lpse');
+            $table->string('instansi')->nullable();
             $table->string('link')->nullable();
             $table->integer('jumlah_paket')->nullable(false)->default(0);
             $table->double('jumlah_pagu')->nullable(false)->default(0);

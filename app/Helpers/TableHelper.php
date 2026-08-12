@@ -27,5 +27,8 @@ class TableHelper
         }
     }
 
-    
+    public static function tanggal(\DateTime $tanggal)
+    {
+        return $tanggal->format('d/m/Y');
+    }
 }

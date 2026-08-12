@@ -25,11 +25,18 @@ class TenderDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('checkbox', function ($row) {
+                return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
+            })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
-                    'fokus'  => 'admin.tender-lpse.fokus',
-                    'data'   => $row
+                    'fokusTender'  => 'admin.tender-lpse.fokus',
+                    'data'   => $row,
+                    'isFokusTender' => Helpers::isUserFokusTender($row)
                 ]);
+            })
+            ->editColumn('created_at', function (Tender $tender) {
+                return TableHelper::tanggal($tender->created_at);
             })
             ->editColumn('hps', function (Tender $tender) {
                 return TableHelper::nominal_simple($tender->hps);
@@ -52,7 +59,7 @@ class TenderDataTable extends DataTable
                     $tender->slug
                 ]), $anchor);
             })
-            ->rawColumns(['nama_paket','action','tahap_tender'])
+            ->rawColumns(['nama_paket','action','tahap_tender', 'checkbox'])
             ->setRowId('id');
     }
 
@@ -80,7 +87,41 @@ class TenderDataTable extends DataTable
                     ->orderBy(1)
                     ->selectStyleSingle()
                     ->parameters($this->getBuilderParameters())
-                    ->buttons([])
+                    ->buttons([
+                        'bulk-delete' => [
+                            'text' => '<i class="fa fa-trash"></i> Bulk Delete', // Button text with optional icon
+                            'className' => 'btn btn-danger', // CSS class for styling
+                            'action' => 'function(e, dt, node, config) {
+                                var selectedIds = [];
+                                $(".row-checkbox:checked").each(function() {
+                                    selectedIds.push($(this).val());
+                                });
+
+                                if (selectedIds.length === 0) {
+                                    alert("Please select at least one row to delete.");
+                                    return;
+                                }
+
+                                if (confirm("Are you sure you want to delete the selected rows?")) {
+                                    $.ajax({
+                                        url: "' . route('admin.tender-lpse.bulk-delete') . '",
+                                        type: "POST",
+                                        data: {
+                                            ids: selectedIds,
+                                            _token: "' . csrf_token() . '"
+                                        },
+                                        success: function(response) {
+                                            dt.ajax.reload(); // Reload the DataTable
+                                            alert(response.message);
+                                        },
+                                        error: function(xhr) {
+                                            alert("An error occurred while deleting the rows.");
+                                        }
+                                    });
+                                }
+                            }',
+                        ],
+                    ])
                     ->initComplete('function() {
                         var api = this.api();
                         // Target the "tahap_tender" column (adjust index if needed)
@@ -122,6 +163,10 @@ class TenderDataTable extends DataTable
                                 select.append("<option value=\"" + text + "\">" + text + "</option>");
                             }
                         });
+
+                        $("#select-all").on("click", function() {
+                            $(".row-checkbox").prop("checked", this.checked);
+                        });
                     }');
     }
 
@@ -133,6 +178,15 @@ class TenderDataTable extends DataTable
         return [
             Column::make('id')
                 ->hidden(),
+            Column::computed('checkbox')
+                ->title('<div class="form-check"><input class="form-check-input checkbox-primary" id="select-all" type="checkbox"></div>')
+                ->exportable(false)
+                ->printable(false)
+                ->width(10)
+                ->addClass('text-center'),
+            Column::make('created_at')
+                  ->title('Tanggal Dibuat')
+                  ->orderable(true),
             Column::make('tender_id')
                   ->title('Kode')
                   ->searchable(true)

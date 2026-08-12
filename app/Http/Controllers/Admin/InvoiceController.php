@@ -198,9 +198,9 @@ class InvoiceController extends Controller
                 ]);
 
                 // Tambah Komisi User
-                $user = User::findOrFail($invoice->user_id);
-                $komisi = $user->komisi;
-                $user->update(['komisi' => $komisi + ($invoice->total * AppHelper::getPersenKomisi() / 100)])
+                // $user = User::findOrFail($invoice->user_id);
+                // $komisi = $user->komisi;
+                // $user->update(['komisi' => $komisi + ($invoice->total * AppHelper::getPersenKomisi() / 100)]);
 
                 // Kirim notifikasi jika diperlukan
                 // $userhelper->user->notify(new InvoiceNotification($invoice));

@@ -6,6 +6,8 @@ use App\DataTables\Admin\KomisiDataTable;
 use App\Http\Controllers\Controller;
 
 use App\Models\Komisi;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class KomisiController extends Controller
@@ -38,11 +40,19 @@ class KomisiController extends Controller
         return response()->json(['message' => 'Tidak ada data yang dipilih.'], 400);
     }
 
-    public function status(Int $id, Request $request)
+    public function status(Komisi $komisi, Request $request)
     {
-        $model = Komisi::findOrFail($id);
-        $model->update(['state' => $request->state]);
- 
-        // return redirect()->route('admin.laporan.komisi.index')->with('success', 'Komisi update state successfully.');
+        if($komisi->system_reserve == 0){
+            $komisi->state = $request->status;
+            $komisi->pay_date = Carbon::now();
+            $komisi->system_reserve = 1;
+            $komisi->save();
+
+            // Tambahkan komisi ke upline di tabel user
+            $user = User::findOrFail($komisi->id_upline);
+            $user->komisi += $komisi->nominal;
+            $user->save();
+        }
+        
     }
 }

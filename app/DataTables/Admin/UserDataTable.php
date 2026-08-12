@@ -3,6 +3,7 @@
 namespace App\DataTables\Admin;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -22,7 +23,21 @@ class UserDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->editColumn('masa_berlaku', function ($row) {
-                return $row->masa_berlaku->diffForHumans();
+                // return $row->masa_berlaku->diffForHumans();
+                $now = Carbon::now();
+                $datenow = Carbon::parse($now);
+                $daterow = Carbon::parse($row->masa_berlaku);
+                if($now > $row->masa_berlaku){
+                    Carbon::getHumanDiffOptions();
+                    return '<span class="badge bg-danger p-2">' . $row->masa_berlaku->diffForHumans() .'</span>';
+                } else {
+                    if($datenow->diffInDays($daterow) < 30){
+                        return '<span class="badge bg-warning p-2">' . $row->masa_berlaku->diffForHumans() . '</span>';
+                    }else{
+                        return '<span class="badge bg-success p-2">' . $row->masa_berlaku->diffForHumans() . '</span>';
+                    }
+                    
+                }
             })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
@@ -31,12 +46,12 @@ class UserDataTable extends DataTable
                     'data'   => $row,
                 ]);
             })
-            ->editColumn('state', function ($row) {
+            ->editColumn('status', function ($row) {
                 return view('admin.inc.action', [
                     'toggle' => $row,
-                    'name' => 'state',
-                    'route' => 'admin.user.state',
-                    'value' => $row->state,
+                    'name' => 'status',
+                    'route' => 'admin.user.status',
+                    'value' => $row->status,
                 ]);
             })
             ->editColumn('komisi', function($row){
@@ -142,7 +157,7 @@ class UserDataTable extends DataTable
                 ->title(__('Komisi'))
                 ->orderable(true)
                 ->addClass('text-end'),
-            Column::make('state')
+            Column::make('status')
                 ->title(__('Status')),  
         ];
     }

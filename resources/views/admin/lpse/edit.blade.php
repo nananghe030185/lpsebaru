@@ -8,7 +8,7 @@
 
 @section('main_content')
     <!-- Bradcrumb -->
-    <x-breadcrumb>LPSE</x-breadcrumb>
+    <x-breadcrumb parent="LPSE" route="{{ route('admin.lpse.index') }}">Edit</x-breadcrumb>
 
     {{-- @dd($lpse) --}}
     {{-- Form --}}

@@ -10,7 +10,7 @@
 
 @section('main_content')
     <!-- Bradcrumb -->
-    <x-breadcrumb>KLPDI</x-breadcrumb>
+    <x-breadcrumb parent="KLPDI" route="{{ route('admin.klpdi.index') }}">Edit</x-breadcrumb>
 
     {{-- Form --}}
     <div class="container-fluid">

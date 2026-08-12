@@ -1,3 +1,3 @@
 @include('admintable',[
-    'title' => 'Lelang Sirup',
+    'title' => 'User Group',
 ])

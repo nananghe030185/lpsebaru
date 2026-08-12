@@ -34,8 +34,7 @@ class UserController extends Controller
      */
     public function create(User $user)
     {
-        $countries = Country::all()->pluck('name','id');
-        return view('admin.user.create', ['user' => $user,'roles' => $this->role->get()], compact('countries'));
+        return view('admin.user.create', ['user' => $user]);
     }
 
     public function store(CreateUserRequest $request)
@@ -74,16 +73,18 @@ class UserController extends Controller
     public function update (User $user, Request $request)
     {
         // validate $request
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'group_id' => 'required',
         ]);
         // update user
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->save();
+        $user->group_id = $request->group_id;
+        $user->update($validated);
         // redirect back with success message
-        return redirect()->route('admin.user.edit', $user->id)->with('success', __('User updated successfully'))
+        return redirect()->route('admin.user.edit', $user->username)->with('success', __('User updated successfully'))
             ->withInput($request->except('password')); // Exclude password
         
 
@@ -98,7 +99,8 @@ class UserController extends Controller
     public function status($id, Request $request)
     {
         $model = User::findOrFail($id);
-        $model->update(['state' => $request->state]);
+        $model->update(['status' => $request->status]);
+        return false;
     }
 
     /**
@@ -108,7 +110,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        return $this->repository->destroy($user->id);
+        // return $this->repository->destroy($user->id);
     }
     
     /**

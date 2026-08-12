@@ -7,7 +7,7 @@
 
 @section('main_content')
     <!-- Bradcrumb -->
-    <x-breadcrumb>Satuan Kerja</x-breadcrumb>
+    <x-breadcrumb parent="Satuan Kerja" route="{{ route('admin.satuan-kerja.index') }}">Edit</x-breadcrumb>
 
     {{-- Form --}}
     <div class="container-fluid">

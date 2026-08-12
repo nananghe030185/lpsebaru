@@ -8,7 +8,7 @@
 @endsection
 
 @section('main_content')
-    <x-breadcrumb>Blog</x-breadcrumb>
+    <x-breadcrumb :admin="true">Blog</x-breadcrumb>
     <!-- Container-fluid starts-->
     <div class="container-fluid">
         <div class="row">

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->date('email_verified_at')->nullable();
             $table->integer('group_id')->default(3);
-            $table->boolean('state')->default(false);
+            $table->boolean('status')->default(false);
             $table->integer('system_reserve')->default(0);
             $table->string('perusahaan')->nullable();
             $table->string('kbli', 1000)->nullable();

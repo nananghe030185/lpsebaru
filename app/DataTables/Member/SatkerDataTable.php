@@ -2,6 +2,7 @@
 
 namespace App\DataTables\Member;
 
+use App\Models\Klpdi;
 use App\Models\Satker;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -23,7 +24,14 @@ class SatkerDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            
+            ->editColumn('kode_klpd', function ($row){
+                $klpdi = Klpdi::where('kode_klpdi', $row->kode_klpd)->first();
+                return $klpdi->nama_klpdi;
+            })
+            ->addColumn('jenis_klpdi', function ($row){
+                $klpdi = Klpdi::where('kode_klpdi', $row->kode_klpd)->first();
+                return $klpdi->jenis_klpdi;
+            })
             ->rawColumns(['action','lelang'])
             ->setRowId('id');
     }
@@ -53,9 +61,9 @@ class SatkerDataTable extends DataTable
                     ->selectStyleSingle()
                     ->parameters($this->getBuilderParameters())
                     ->buttons([
-                        Button::make('excel')
-                            ->text('<i class="fas fa-file-excel"></i> Export to Excel') // Add icon and custom text
-                            ->className('btn btn-success btn-sm'), // Apply specific Bootstrap classes
+                        // Button::make('excel')
+                        //     ->text('<i class="fas fa-file-excel"></i> Export to Excel') // Add icon and custom text
+                        //     ->className('btn btn-success btn-sm'), // Apply specific Bootstrap classes
                     ]);
     }
 
@@ -70,15 +78,25 @@ class SatkerDataTable extends DataTable
             Column::make('kode_satker')
                   ->title('Kode Satker')
                   ->searchable(true)
-                  ->orderable(true),
+                  ->orderable(true)
+                  ->hidden(),
             Column::make('nama_satker')
                   ->title('Nama Satker')
                   ->searchable(true)
                   ->orderable(true),
             Column::make('kode_klpd')
                   ->title('KLPDI')
+                  ->exportable(false)
                   ->searchable(true)
+                  ->printable(false) 
                   ->orderable(true),
+            Column::computed('jenis_klpdi')
+                ->name('jenis_klpdi')
+                ->exportable(false)
+                ->searchable(true)
+                ->orderable(true)
+                ->printable(false)  
+                ->title('Jenis KLPDI'),
         ];
     }
 

@@ -11,18 +11,31 @@
             <div class="col-12 p-0">
                 <div class="login-card login-dark">
                     <div>
-                        <div><a class="logo text-start" href="{{ route('admin.dashboard') }}"><img class="img-fluid for-light"
-                                    src="{{ asset('assets/images/logo/logo.png') }}" alt="looginpage"><img
-                                    class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_dark.png') }}"
-                                    alt="looginpage"></a></div>
+                        <div>
+                            <a class="logo text-start" href="{{ route('admin.dashboard') }}">
+                                <img class="img-fluid for-light" src="{{ asset('assets/images/logo/logo.png') }}" alt="looginpage">
+                                <img class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_dark.png') }}" alt="looginpage">
+                            </a>
+                        </div>
+                        
                         <div class="login-main">
+                            {{-- Alert --}}
+                            @if (Session::has('error'))
+                                <div class="alert txt-danger border-danger alert-dismissible fade show" role="alert">
+                                    <i data-feather="alert"></i>
+                                        {{ Session::get('error') }}
+                                        <button class="btn-close" type="button" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
+                            {{-- End Alert --}}
                             <form class="theme-form" method="POST" action="{{ route('login') }}">
                                 @csrf
                                 <h4>Sign in to account</h4>
                                 <p>Enter your email & password to login</p>
                                 <div class="form-group">
-                                    <label class="col-form-label">Email Address</label>
-                                    <input name="email" class="form-control" type="email" required="" placeholder="masukan email anda">
+                                <label class="col-form-label">Email Address</label>
+                                    <input name="email" class="form-control @error('email') is-invalid @enderror" type="email" required="" placeholder="masukan email anda" value="{{ old('email')}}" autofocus>
                                     @error('email')
                                         <div class="small-text text-danger">
                                             {{ $message }}
@@ -32,7 +45,7 @@
                                 <div class="form-group">
                                     <label class="col-form-label">Password</label>
                                     <div class="form-input position-relative">
-                                        <input class="form-control" type="password" name="password" required=""
+                                        <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" required=""
                                             placeholder="*********">
                                         <div class="show-hide"><span class="show"> </span></div>
                                         @error('password')

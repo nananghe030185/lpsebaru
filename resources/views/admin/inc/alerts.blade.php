@@ -1,51 +1,87 @@
 @if (Session::has('success'))
-{{-- <div class="toastr-message" data-type="success">{{ session('success') }}</div> --}}
-{{ session('success') }}
-<script>
-    toastr.progress('okeeeee');
-</script>
+    <script>
+        toastr.success("{{ Session::get('success') }}", "Berhasil", {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+        });
+    </script>
 @endif
 
 @if (Session::has('error'))
-<div class="toastr-message" data-type="error">{{ session('error') }}</div>
+    <script>
+        toastr.error("{{ Session::get('error') }}", "Error", {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+        });
+    </script>
 @endif
 
 @if (Session::has('info'))
-<div class="toastr-message" data-type="info">{{ session('info') }}</div>
+    <script>
+        toastr.info("{{ Session::get('info') }}", "Info", {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+        });
+    </script>
 @endif
 
 @if (Session::has('warning'))
-<div class="toastr-message" data-type="warning">{{ session('warning') }}</div>
-@endif
-
-<script>
-    $(document).ready(function() {
-        $('.toastr-message').each(function() {
-            var messageType = $(this).data('type');
-            var messageText = $(this).text();
-            toastr.options = {
-                "closeButton": false,
-                "progressBar": true,
-                "extendedTimeOut": 0,
-                "timeOut": 0,
-            };
-
-            switch (messageType) {
-                case 'success':
-                    toastr.success(messageText);
-                    break;
-                case 'error':
-                    toastr.error(messageText);
-                    break;
-                case 'info':
-                    toastr.info(messageText);
-                    break;
-                case 'warning':
-                    toastr.warning(messageText);
-                    break;
-                default:
-                    toastr.info(messageText);
-            }
+    <script>
+        toastr.warning("{{ Session::get('warning') }}", "Peringatan", {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
         });
-    });
-</script>
+    </script>
+@endif

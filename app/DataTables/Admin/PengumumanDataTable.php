@@ -132,7 +132,7 @@ class PengumumanDataTable extends DataTable
                         select.append("<option value=\"true\">Aktif</option>");
                         select.append("<option value=\"false\">Tidak Aktif</option>");
 
-                        $("#pengumuman-table").on("change", "#select-all", function() {
+                        $("#select-all").on("change", function() {
                             $(".row-checkbox").prop("checked", this.checked);
                         });
                        

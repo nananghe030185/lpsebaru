@@ -46,4 +46,19 @@ class LelangController extends Controller
             'target' => 'https://sirup.lkpp.go.id/sirup/rup/detailPaketPenyedia2020?idPaket=' . $lelang->kode_rup,
         ]);
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids', []);
+
+        if (empty($ids)) {
+            return response()->json(['message' => 'No IDs provided.'], 400);
+        }
+
+        Lelang::whereIn('id', $ids)->delete();
+        // delete related FokusLelang records
+        FokusLelang::whereIn('lelang_id', $ids)->delete();
+        
+        return response()->json(['message' => 'Selected rows deleted successfully.']);
+    }
 }

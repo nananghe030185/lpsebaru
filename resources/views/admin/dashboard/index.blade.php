@@ -41,59 +41,16 @@
                 <x-widget.visitor></x-widget.visitor>
             </div>
             <div class="col-xxl-4 col-sm-6 ord-xl-1 ord-md-1 box-ord-1 box-col-6">
-                {{-- <x-widget.topuser></x-widget.topuser> --}}
+                <x-widget.invoice  totalcancel="{{ $totalcancel }}" totalpending="{{ $totalpending }}" totalunpaid="{{ $totalunpaid }}" totalpaid="{{ $totalpaid }}"  totalinvoice="{{ $totalinvoice }}"  ></x-widget.invoice>
             </div>
             <div class="col-xxl-5 col-lg-6 box-col-6 ord-xl-2 ord-md-3 box-ord-2">
-                {{-- <div class="card">
-                    <div class="card-header card-no-border">
-                        <div class="header-top">
-                            <h5>Sales Statistical Overview</h5>
-                            <div class="card-header-right-icon">
-                                <div class="dropdown custom-dropdown"><button class="btn dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">Year</button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#!">Day</a></li>
-                                        <li><a class="dropdown-item" href="#!">Month</a></li>
-                                        <li><a class="dropdown-item" href="#!">Year</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body pt-0">
-                        <div class="row m-0 overall-card">
-                            <div class="col-12 p-0">
-                                <div class="chart-right">
-                                    <div class="row">
-                                        <div class="col-xl-12">
-                                            <div class="card-body p-0 statistical-card">
-                                                <ul class="d-flex m-b-15">
-                                                    <li>
-                                                        <h5 class="counter" data-target="19897">0</h5><span
-                                                            class="f-light">Total Cost</span>
-                                                    </li>
-                                                    <li>
-                                                        <h5> $<span class="counter" data-target="849058">0</span></h5>
-                                                        <span class="f-light">Total Revenue</span>
-                                                    </li>
-                                                </ul>
-                                                <div class="current-sale-container">
-                                                    <div id="chart-currently"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
+                <x-widget.komisi :users="$users" :totalkomisi="$totalkomisi"></x-widget.komisi>
             </div>
             <div class="col-xl-3 col-md-6 ord-xl-3 ord-md-4 box-ord-3">
                 <x-widget.target></x-widget.target>
             </div>
             <div class="col-xl-5 col-md-6 ord-xl-4 ord-md-5 box-ord-4">
-                <div class="card activity-log notification main-timeline">
+                {{-- <div class="card activity-log notification main-timeline">
                     <div class="card-header card-no-border">
                         <div class="header-top">
                             <h5>Activity Log </h5>
@@ -125,7 +82,7 @@
                             @endforeach
                         </ul>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="col-xxl-7 col-lg-8 ord-xl-6 ord-md-6 box-ord-6 box-col-8e">
                 {{-- <x-widget.toplpse></x-widget.toplpse> --}}

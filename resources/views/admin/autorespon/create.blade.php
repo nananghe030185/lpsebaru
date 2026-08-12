@@ -10,7 +10,7 @@
 
 @section('main_content')
     <!-- Bradcrumb -->
-    <x-breadcrumb>{{__('Auto Respon')}}</x-breadcrumb>
+    <x-breadcrumb :admin="true" parent="Auto Respon" route="{{ route('admin.auto-respon.index') }}">Create</x-breadcrumb>
 
     <div class="container-fluid">
         <div class="row">
@@ -41,6 +41,7 @@
     <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
     <script src="{{ asset('assets/js/editors/quill.js') }}"></script>
+    <script src="{{ asset('assets/js/editors/custom-quill.js')}}"></script>
     <script src="{{ asset('assets/js/custom-add-product5.js') }}"></script>
     <script src="{{ asset('assets/js/bookmark/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/custom-validation/validation.js') }}"></script>

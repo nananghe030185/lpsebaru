@@ -31,7 +31,7 @@ class TenderKataKunciDataTable extends DataTable
             })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
-                    'fokus'  => 'app.tender-kata-kunci.fokus',
+                    'fokusKataKunci'  => 'app.tender-kata-kunci.fokus',
                     'delete' => 'app.tender-kata-kunci.destroy',
                     'data'   => $row
                 ]);
@@ -151,7 +151,7 @@ class TenderKataKunciDataTable extends DataTable
                             }
                         });
 
-                       $("#tenderkatakunci-table").on("change", "#select-all", function() {
+                       $("#select-all").on("click", function() {
                             $(".row-checkbox").prop("checked", this.checked);
                         });
                     }');

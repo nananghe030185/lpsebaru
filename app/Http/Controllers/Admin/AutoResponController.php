@@ -51,28 +51,28 @@ class AutoResponController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function status($id, Request $request)
+    public function status(AutoRespon $autorespon, Request $request)
     {
-        $model = AutoRespon::findOrFail($id);
-        $model->update(['status' => $request->status]);
+        $autorespon->status = $request->status;
+        $autorespon->save();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function whatsapp($id, Request $request)
+    public function whatsapp(AutoRespon $autorespon, Request $request)
     {
-        $model = AutoRespon::findOrFail($id);
-        $model->update(['whatsapp' => $request->whatsapp]);
+        $autorespon->whatsapp = $request->status;
+        $autorespon->save();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function telegram($id, Request $request)
+    public function telegram(AutoRespon $autorespon, Request $request)
     {
-        $model = AutoRespon::findOrFail($id);
-        $model->update(['telegram' => $request->telegram]);
+        $autorespon->telegram = $request->status;
+        $autorespon->save();
     }
 
     /**
@@ -129,5 +129,8 @@ class AutoResponController extends Controller
     public function destroy(AutoRespon $autoRespon)
     {
         //
+        $autoRespon->delete();
+
+        return redirect()->to(route('admin.auto-respon.index'))->with('success', 'Data Berhasil di hapus');
     }
 }

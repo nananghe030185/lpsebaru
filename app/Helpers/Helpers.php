@@ -5,6 +5,9 @@ namespace App\Helpers;
 use App\Models\User;
 use App\Models\Country;
 use App\Models\Attachment;
+use App\Models\Fokus;
+use App\Models\FokusLelang;
+use App\Models\Lelang;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 class Helpers
@@ -54,5 +57,24 @@ class Helpers
             'message' => Str::limit($message, 250),
             'trace' => '',
         ]);
+    }
+
+    public static function isUserFokusLelang(Object $row)
+    {
+      $lelang = FokusLelang::where('user_id', Auth::user()->id)->where('lelang_id', $row->id)->count();
+      if($lelang){
+        return true;
+      }
+
+      return false;
+    }
+
+    public static function isUserFokusTender(Object $row)
+    {
+      	$fokustender = Fokus::where('user_id', Auth::user()->id)->where('tender_id', $row->id)->where('fokus', true)->count();
+		if($fokustender){
+			return true;
+		}
+      	return false;
     }
 }

@@ -9,24 +9,8 @@
 @endsection
 
 @section('main_content')
-    <div class="container-fluid">
-        <div class="page-title">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h3>Telegram</h3>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"> <svg class="stroke-icon">
-                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-home') }}"></use>
-                                </svg></a></li>
-                        <li class="breadcrumb-item">Broadcast</li>
-                        <li class="breadcrumb-item active"> Telegram</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div><!-- Container-fluid starts-->
+    <x-breadcrumb :admin="true" parent="Broadcast Telegram" route="{{ route('admin.broadcast.telegram') }}">Index</x-breadcrumb>
+
     <div class="container-fluid">
         <div class="email-wrap email-main-wrapper">
             <div class="row">

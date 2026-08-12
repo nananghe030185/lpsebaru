@@ -59,12 +59,8 @@
         </div>
     </div>
     @include('layouts.dashboard.scripts')
-    {{-- @include('admin.inc.alerts') --}}
-    @if (Session::has('success'))
-        <script>
-            toastr.success('Data berhasil diupdate');
-        </script>
-    @endif
+    @include('admin.inc.alerts')
+    
 </body>
 
 </html>

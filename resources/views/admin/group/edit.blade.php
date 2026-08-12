@@ -7,8 +7,8 @@
 
 @section('main_content')
     <!-- Bradcrumb -->
-    <x-breadcrumb>Group User</x-breadcrumb>
-    
+    <x-breadcrumb parent="Group User" route="{{ route('admin.user.group.index') }}">Edit</x-breadcrumb>
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">

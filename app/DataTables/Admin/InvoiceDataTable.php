@@ -168,10 +168,9 @@ class InvoiceDataTable extends DataTable
                             }
                         });
 
-                        $("#invoice-table").on("change", "#select-all", function() {
+                        $("#select-all").on("change", function() {
                             $(".row-checkbox").prop("checked", this.checked);
                         });
-                       
                     }')
                     ->addAction(['width' => 60, 'className' => 'text-center']);
     }

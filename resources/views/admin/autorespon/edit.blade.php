@@ -10,7 +10,7 @@
 
 @section('main_content')
     <!-- Bradcrumb -->
-    <x-breadcrumb>Auto Respon</x-breadcrumb>
+    <x-breadcrumb :admin="true" parent="Auto Respon" route="{{ route('admin.auto-respon.index') }}">Edit</x-breadcrumb>
 
     {{-- Form --}}
     <div class="container-fluid">

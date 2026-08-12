@@ -1,6 +1,6 @@
 @extends('layouts.authentication.master')
 
-@section('title', 'Register Simple')
+@section('title', 'Register')
 
 @section('css')
 @endsection
@@ -11,10 +11,14 @@
             <div class="col-12 p-0">
                 <div class="login-card login-dark">
                     <div>
-                        <div><a class="logo" href="{{ route('admin.dashboard') }}"><img class="img-fluid for-light"
+                        <div>
+                            <a class="logo" href="{{ route('admin.dashboard') }}">
+                                <img class="img-fluid for-light"
                                     src="{{ asset('assets/images/logo/logo.png') }}" alt="looginpage"><img
                                     class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_dark.png') }}"
-                                    alt="looginpage"></a></div>
+                                    alt="looginpage">
+                            </a>
+                        </div>
                         <div class="login-main create-account">
                             <form class="theme-form" method="POST" action="{{ route('register') }}">
                                 @csrf
@@ -22,11 +26,30 @@
                                 <p>Enter your personal details to create account</p>
                                 <div class="form-group">
                                     <label class="col-form-label pt-0">Your Name</label>
-                                    <input class="form-control" type="text" required="" placeholder="Name" name="name" id="name">
+                                    <input class="form-control @error('name') is-invalid @enderror" type="text"  placeholder="Name" name="name" id="name" value="{{ old('name')}}" autofocus>
+                                    @error('name')
+                                        <div class="small-text text-danger" role="alert"> 
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label pt-0">Username</label>
+                                    <input class="form-control @error('username') is-invalid @enderror" type="text" required="" placeholder="Username" name="username" id="username" value="{{ old('username')}}">
+                                    @error('username')
+                                        <div class="small-text text-danger" role="alert"> 
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label">Email Address</label>
-                                    <input class="form-control" type="email" required="" placeholder="test@gmail.com" name="email" id="email">
+                                    <input class="form-control @error('email') is-invalid @enderror" type="email" required="" placeholder="test@gmail.com" name="email" id="email" value="{{ old('email')}}">
+                                    @error('email')
+                                        <div class="small-text text-danger" role="alert"> 
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label">Password</label>
@@ -34,6 +57,11 @@
                                         <input class="form-control" type="password" name="password" id="password" required=""
                                             placeholder="*********">
                                         <div class="show-hide"><span class="show"></span></div>
+                                        @error('password')
+                                            <div class="small-text text-danger"> 
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group">

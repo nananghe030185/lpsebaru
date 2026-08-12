@@ -70,6 +70,7 @@ Route::middleware(['auth','admin'])->group(function () {
     
     // Lelang Sirup
     Route::get('/admin/lelang-sirup/fokus/{lelang}', [LelangController::class, 'fokus'])->name('admin.lelang-sirup.fokus');
+    Route::post('/admin/lelang-sirup/bulk-delete', [LelangController::class, 'bulkDelete'])->name('admin.lelang-sirup.bulk-delete');
     Route::resource('/admin/lelang-sirup', LelangController::class)->names('admin.lelang-sirup')->except(['create','store','show','edit','update','destroy']);;
     
     // LPSE
@@ -77,6 +78,7 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::put('/admin/lpse/scrape/{id}', [LpseController::class, 'scrape'])->name('admin.lpse.scrape');
     Route::get('/admin/lpse/unscrapeall', [LpseController::class, 'unscrapeall'])->name('admin.lpse.unscrape-all');
     Route::get('/admin/lpse/reload', [LpseController::class, 'reload'])->name('admin.lpse.reload');
+    Route::get('/admin/lpse/map', [LpseController::class, 'map'])->name('admin.lpse.map');
     Route::resource('/admin/lpse', LpseController::class)->names('admin.lpse')->except(['store','show','destroy']);;
     
     // Pengaturan
@@ -87,9 +89,9 @@ Route::middleware(['auth','admin'])->group(function () {
     })->name('admin.pengaturan.hapus-data');
 
     // Auto Respon
-    Route::put('/admin/auto-respon/status/{id}', [AutoResponController::class, 'status'])->name('admin.auto-respon.status');
-    Route::put('/admin/auto-respon/whatsapp/{id}', [AutoResponController::class, 'whatsapp'])->name('admin.auto-respon.whatsapp');
-    Route::put('/admin/auto-respon/telegram/{id}', [AutoResponController::class, 'telegram'])->name('admin.auto-respon.telegram');
+    Route::put('/admin/auto-respon/status/{autorespon}', [AutoResponController::class, 'status'])->name('admin.auto-respon.status');
+    Route::put('/admin/auto-respon/whatsapp/{autorespon}', [AutoResponController::class, 'whatsapp'])->name('admin.auto-respon.whatsapp');
+    Route::put('/admin/auto-respon/telegram/{autorespon}', [AutoResponController::class, 'telegram'])->name('admin.auto-respon.telegram');
     Route::post('/admin/auto-respon/bulk-delete', [AutoResponController::class, 'bulkDelete'])->name('admin.auto-respon.bulk-delete');
     Route::resource('/admin/auto-respon', AutoResponController::class)->names('admin.auto-respon');
 
@@ -102,6 +104,7 @@ Route::middleware(['auth','admin'])->group(function () {
     
     // Tender LPSE
     Route::get('/admin/tender-lpse/fokus/{tender}', [TenderController::class, 'fokus'])->name('admin.tender-lpse.fokus');
+    Route::post('/admin/tender-lpse/bulk-delete', [TenderController::class, 'bulkDelete'])->name('admin.tender-lpse.bulk-delete');
     Route::resource('/admin/tender-lpse', TenderController::class)->names('admin.tender-lpse')->except(['create','store','show','edit','update','destroy']);;
 
     // Blog, Category, Role, Tag
@@ -116,14 +119,14 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::resource('/admin/user/group', UserGroupController::class)->names('admin.user.group');
 
     // User
-    Route::put('/admin/user/status/{id}', [UserController::class,'status'])->name('admin.user.state');
+    Route::put('/admin/user/status/{id}', [UserController::class,'status'])->name('admin.user.status');
     Route::put('/admin/user/update-image/{user}', [UserController::class,'updateImage'])->name('admin.user.update-image');
     Route::get('/admin/user/remove-image/{id}', [UserController::class,'removeImage'])->name('admin.user.removeImage');
     Route::put('/admin/user/update-profile/{user}', [UserController::class,'updateProfile'])->name('admin.user.update-profile');
     Route::resource('/admin/user', UserController::class)->names('admin.user');
 
     // Komisi
-    Route::post('/admin/komisi/status/{id}', [KomisiController::class, 'status'])->name('admin.komisi.status');
+    Route::put('/admin/komisi/status/{komisi}', [KomisiController::class, 'status'])->name('admin.komisi.status');
     Route::post('/admin/komisi/bulk-delete', [KomisiController::class, 'bulkDelete'])->name('admin.komisi.bulk-delete');
     Route::resource('/admin/laporan/komisi', KomisiController::class)->names('admin.laporan.komisi')->except(['create','store','show','edit','update']);
 

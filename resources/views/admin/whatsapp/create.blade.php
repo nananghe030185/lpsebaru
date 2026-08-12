@@ -7,7 +7,7 @@
 
 @section('main_content')
     <!-- Bradcrumb -->
-    <x-breadcrumb>Whatsapp</x-breadcrumb>
+    <x-breadcrumb parent="Whatsapp" route="{{ route('admin.whatsapp.index') }}">Create</x-breadcrumb>
 
     <div class="container-fluid">
         <div class="row">

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('nominal');
             $table->timestamp('pay_date');
             $table->string('keterangan')->nullable(false);
+            $table->integer('system_reserve')->default(0);
             $table->timestamps();
         });
     }

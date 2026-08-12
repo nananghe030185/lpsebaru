@@ -38,14 +38,14 @@
                                 </svg>
                             </span>
                         </li>
-                        <li> 
+                        {{-- <li> 
                             <span class="header-search">
                                 <svg>
                                     <use href="{{ asset('assets/svg/icon-sprite.svg#search') }}"></use>
                                 </svg>
                             </span>
-                        </li>
-                        <li class="onhover-dropdown">
+                        </li> --}}
+                        {{-- <li class="onhover-dropdown">
                             <svg>
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#star') }}"></use>
                             </svg>
@@ -104,7 +104,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </li>
+                        </li> --}}
                         <li>
                             <div class="mode">
                                 <svg>
@@ -112,7 +112,7 @@
                                 </svg>
                             </div>
                         </li>
-                        <li class="cart-nav onhover-dropdown">
+                        {{-- <li class="cart-nav onhover-dropdown">
                             <div class="cart-box">
                                 <svg>
                                     <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
@@ -181,7 +181,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li>
+                        </li> --}}
                         <li class="onhover-dropdown">
                             <div class="notification-box">
                                 <svg>
@@ -241,12 +241,6 @@
                                 </div>
                             </div>
                             <ul class="profile-dropdown onhover-show-div">
-                                {{-- <li><a href="{{ route('admin.user.edit-profile',auth()->user()->role->name) }}"><i data-feather="user"></i><span>My Profile </span></a></li>
-                                <li><a href="{{ route('admin.mail_box') }}"><i data-feather="mail"></i><span>Inbox</span></a></li>
-                                <li><a href="{{ route('admin.task') }}"><i data-feather="file-text"></i><span>Taskboard</span></a>
-                                </li>
-                                <li><a href="{{ route('admin.add_user') }}"><i data-feather="settings"></i><span>Settings</span></a>
-                                </li> --}}
                                 @can('admin')
                                     <li>
                                         <a href="{{ route('admin.dashboard')}}">

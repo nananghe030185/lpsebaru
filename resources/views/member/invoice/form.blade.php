@@ -24,7 +24,7 @@
             </div>
             <div class="col-lg-8">
                 <div class="row mt-3">
-                    <div class="col">
+                    <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="card">
                             <div class="card-header">
                                 <a data-bs-toggle="collapse" data-bs-target="#personal">Personal</a>
@@ -38,7 +38,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="card">
                             <div class="card-header">
                                 <a data-bs-toggle="collapse" data-bs-target="#premium">Premium</a>
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="card">
                             <div class="card-header">
                                 <a data-bs-toggle="collapse" data-bs-target="#corporate">Corporate</a>

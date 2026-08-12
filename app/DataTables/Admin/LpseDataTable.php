@@ -119,7 +119,33 @@ class LpseDataTable extends DataTable
                                 window.location = "' . route('admin.lpse.unscrape-all') . '";
                             }',
                         ],
+                        'map' => [
+                            'text' => '<i class="fas fa-map"></i> Map',
+                            'className' => 'btn btn-warning btn-sm',
+                            'action' => 'function(e, dt, node, config){
+                                window.location = "' . route('admin.lpse.map') . '";
+                            }'
+                        ],
                     ])
+                    ->initComplete('function() {
+                        var api = this.api();
+                        var columnIdx = api.column("instansi:name").index();
+                        var select1 = $("<select name=\"filter\" id=\"filter\" class=\"form-control jenis_pengadaan\"><option value=\"\">Semua Jenis</option></select>")
+                            // .appendTo($(api.column(columnIdx).header()).empty())
+                            .appendTo(".filter2")
+                            .on("change", function() {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                api.column(columnIdx)
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+                        // Get unique values and append as options
+                        select1.append("<option value=\"kementerian\">Kementerian</option>");
+                        select1.append("<option value=\"lembaga\">Lembaga</option>");
+                        select1.append("<option value=\"kabupaten\">Kabupaten</option>");
+                        select1.append("<option value=\"kota\">Kota</option>");
+                        select1.append("<option value=\"instansi\">Instansi</option>");
+                    }')
                     ->addAction(['width' => 60, 'className' => 'text-center'])
                     ->addIndex();
     }
@@ -158,6 +184,10 @@ class LpseDataTable extends DataTable
                 ->title('Jumlah Pagu')
                 ->width(150)
                 ->className('text-end'),
+            Column::make('instansi')
+                ->name('instansi')
+                ->title('Instansi')
+                ->width(150),
             ];
     }
 

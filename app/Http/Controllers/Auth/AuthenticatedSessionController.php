@@ -28,6 +28,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if(!Auth::user()->status){
+            Auth::logout();
+            return redirect('/login')->with('error', 'Anda tidak diijinkan untuk mengakses dashboard, silahkan hubungi admin untuk informasi lebih lanjut');
+        }
+
         return redirect()->intended(route('app.home', absolute: false));
     }
 
