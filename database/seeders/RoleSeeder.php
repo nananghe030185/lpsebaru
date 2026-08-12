@@ -184,7 +184,9 @@ class RoleSeeder extends Seeder
         $admin->givePermissionTo(Permission::all());
         $user = User::factory()->create([
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('admin123')
+            'password' => Hash::make('admin123'),
+            'status' => true,
+            'group_id' => 1
         ]);
         $user->assignRole($admin);
     }

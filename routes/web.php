@@ -4,7 +4,19 @@ use App\Http\Controllers\Admin\LelangController;
 use App\Http\Controllers\Admin\TenderController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Process;
 
+Route::get('/update', function(){
+    // Run a simple terminal command
+    $result = Process::run('composer update');
+
+    // Grab the results
+    if ($result->successful()) {
+        return $result->output();
+    }
+
+    return $result->errorOutput();
+});
 
 Route::get('/install', function(){
     Artisan::call('migrate:fresh --seed');
