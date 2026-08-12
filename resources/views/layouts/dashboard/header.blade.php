@@ -255,9 +255,9 @@
                                 @endcan
                                 @can('member')
                                     <li>
-                                        {{-- <a href="{{ route('app.user.edit', Auth::user()) }}">
+                                        <a href="{{ route('app.user.edit', Illuminate\Support\Facades\Auth::user()) }}">
                                             <i data-feather="user"> </i><span>My Profile</span>
-                                        </a> --}}
+                                        </a>
                                     </li>
                                 @endcan
                                 <li>
