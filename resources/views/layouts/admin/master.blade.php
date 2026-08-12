@@ -60,7 +60,6 @@
     </div>
     @include('layouts.dashboard.scripts')
     @include('admin.inc.alerts')
-    
 </body>
 
 </html>
