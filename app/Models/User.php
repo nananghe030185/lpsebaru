@@ -40,9 +40,6 @@ class User extends Authenticatable implements HasMedia
         'id',
     ];
 
-    protected $attributes = [
-        'haloooo' => 'nanang kokokokoko'
-    ];
     /**
      * The attributes that should be hidden for serialization.
      *
