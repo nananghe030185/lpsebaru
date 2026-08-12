@@ -3,6 +3,13 @@
 use App\Http\Controllers\Admin\LelangController;
 use App\Http\Controllers\Admin\TenderController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+
+
+Route::get('/install', function(){
+    Artisan::call('migrate:fresh --seed');
+    Artisan::call('optimize:clear');
+});
 
 Route::get('/', function () {
     return view('welcome');
