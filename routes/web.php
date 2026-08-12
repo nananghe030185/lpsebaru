@@ -9,13 +9,12 @@ use Illuminate\Support\Facades\Process;
 Route::get('/update', function(){
     // Run a simple terminal command
     $result = Process::run('composer update');
+    return 'Done';
+});
 
-    // // Grab the results
-    // if ($result->successful()) {
-    //     return $result->output();
-    // }
-
-    // return $result->errorOutput();
+Route::get('/scrape-lpse', function(){
+    Artisan::call('scrape:lpse');
+    return 'Done ...<a href="' . route('dashboard') . '">Go to Dashboard</a> <p>'. Artisan::output() .'</p>';
 });
 
 Route::get('/install', function(){
