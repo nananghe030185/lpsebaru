@@ -44,7 +44,7 @@ return [
     |
     */
 
-    'assets_enabled' => env('MINIFY_ASSETS_ENABLED', true),
+    'assets_enabled' => env('MINIFY_ASSETS_ENABLED', false),
 
     /*
     |--------------------------------------------------------------------------
