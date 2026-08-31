@@ -3,8 +3,8 @@
     <div>
         <div class="logo-wrapper">
             <a href="{{ route('admin.dashboard') }}">
-                <img class="img-fluid for-light" src="{{ asset('assets/images/logo/logo.png') }}" alt="">
-                <img class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_dark.png') }}" alt="">
+                <img class="img-fluid for-light" src="{{ asset('assets/images/logo/logo_LPSE.png') }}" alt="">
+                <img class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_LPSE.png') }}" alt="">
             </a>
             <div class="back-btn">
                 <i class="fa-solid fa-angle-left"></i>
@@ -219,6 +219,7 @@
                             <li><a href="{{ route('admin.whatsapp.index')}}">{{ __('Whatsapp') }}</a></li>
                             <li><a href="{{ route('admin.pengaturan.hapus-data')}}">{{ __('Hapus Data') }}</a></li>
                             <li><a href="{{ route('admin.auto-respon.index')}}">{{ __('Auto Respon') }}</a></li>
+                            <li><a href="{{ route('admin.pengaturan.artisan')}}">{{ __('Artisan') }}</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-list">

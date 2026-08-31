@@ -12,9 +12,9 @@
                 <div class="login-card login-dark">
                     <div>
                         <div>
-                            <a class="logo text-start" href="{{ route('admin.dashboard') }}">
-                                <img class="img-fluid for-light" src="{{ asset('assets/images/logo/logo.png') }}" alt="looginpage">
-                                <img class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_dark.png') }}" alt="looginpage">
+                            <a class="logo text-center" href="{{ route('admin.dashboard') }}">
+                                <img class="img-fluid for-light w-10 h-5" src="{{ asset('assets/images/logo/logo_LPSE.png') }}" alt="looginpage" width="200px">
+                                <img class="img-fluid for-dark w-10 h-5" src="{{ asset('assets/images/logo/logo_LPSE.png') }}" alt="looginpage"  width="200px">
                             </a>
                         </div>
                         
@@ -31,10 +31,10 @@
                             {{-- End Alert --}}
                             <form class="theme-form" method="POST" action="{{ route('login') }}">
                                 @csrf
-                                <h4>Sign in to account</h4>
-                                <p>Enter your email & password to login</p>
+                                <h4>Sign in</h4>
+                                <p>Masukkan email dan password Anda</p>
                                 <div class="form-group">
-                                <label class="col-form-label">Email Address</label>
+                                <label class="col-form-label">Alamat Email</label>
                                     <input name="email" class="form-control @error('email') is-invalid @enderror" type="email" required="" placeholder="masukan email anda" value="{{ old('email')}}" autofocus>
                                     @error('email')
                                         <div class="small-text text-danger">
@@ -58,14 +58,14 @@
                                 <div class="form-group mb-0">
                                     <div class="form-check">
                                         <input class="checkbox-primary form-check-input" id="checkbox1" type="checkbox" name="remember">
-                                        <label class="text-muted form-check-label" for="checkbox1">Remember password</label>
-                                    </div><a class="link" href="{{ route('password.store') }}">Forgot password?</a>
+                                        <label class="text-muted form-check-label" for="checkbox1">Ingat password</label>
+                                    </div><a class="link" href="{{ route('password.store') }}">Lupa password?</a>
                                     <div class="text-end">
                                         <button class="btn btn-primary btn-block w-100 mt-3" type="submit">Sign in</button>
                                     </div>
                                 </div>
-                                <p class="mt-4 mb-0 text-center">Don't have account?<a class="ms-2"
-                                        href="{{ route('register') }}">Create Account</a></p>
+                                <p class="mt-4 mb-0 text-center">Tidka punya akun ?<a class="ms-2"
+                                        href="{{ route('register') }}">Buat Akun</a></p>
                             </form>
                         </div>
                     </div>

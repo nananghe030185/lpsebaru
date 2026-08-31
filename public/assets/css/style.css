@@ -11747,6 +11747,7 @@ tr.shown td.details-control {
 
 .dataTables_scroll ~ .dataTables_paginate {
   margin-top: 20px !important;
+  margin-bottom: 10px;
 }
 
 .product-table th:last-child {
@@ -17060,8 +17061,8 @@ fieldset .input-group-lg .touchspin {
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 52px;
+  height: 25px;
 }
 .switch input {
   display: none;
@@ -17090,8 +17091,8 @@ fieldset .input-group-lg .touchspin {
 .switch-state:before {
   position: absolute;
   content: "";
-  width: 26px;
-  height: 26px;
+  width: 18px;
+  height: 18px;
   left: 4px;
   bottom: 4px;
   background-color: #fff;

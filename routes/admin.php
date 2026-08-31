@@ -87,6 +87,10 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::get('/admin/pengaturan/hapus-data', function () {
         return view('admin.pengaturan.hapus');
     })->name('admin.pengaturan.hapus-data');
+    Route::get('/admin/pengaturan/artisan', function () {
+        return view('admin.pengaturan.artisan');
+    })->name('admin.pengaturan.artisan');
+    Route::post('/admin/pengaturan/artisan/run', [PengaturanController::class, 'artisanRun'])->name('admin.pengaturan.artisan.run');
 
     // Auto Respon
     Route::put('/admin/auto-respon/status/{autorespon}', [AutoResponController::class, 'status'])->name('admin.auto-respon.status');

@@ -98,6 +98,13 @@
 @endsection
 
 @section('scripts')
+    <script>
+        window.appConfig = {
+            users: {{ \Illuminate\Support\Js::from($dataUsers) }},
+            invoices: {{ \Illuminate\Support\Js::from($dataInvoices) }},
+            paidInvoices: {{ \Illuminate\Support\Js::from($dataPaidInvoices) }},
+        };
+    </script>
     <script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
     <script src="{{ asset('assets/js/clock.js') }}"></script>
     <script src="{{ asset('assets/js/chart/apex-chart/apex-chart.js') }}"></script>

@@ -1,4 +1,14 @@
 (function () {
+  function renderApexChart(selector, options) {
+    var chartEl = document.querySelector(selector);
+    if (!chartEl) {
+      return;
+    }
+
+    var chart = new ApexCharts(chartEl, options);
+    chart.render();
+  }
+
   // visitor chart
   var visitorUser = {
     series: [
@@ -151,8 +161,7 @@
     ],
   };
 
-  var visitorChart = new ApexCharts(document.querySelector("#visitor_chart"), visitorUser);
-  visitorChart.render();
+  renderApexChart("#visitor_chart", visitorUser);
 
   // currently sale
   var chartCurrent = {
@@ -318,8 +327,7 @@
     ],
   };
 
-  var currentChart = new ApexCharts(document.querySelector("#chart-currently"), chartCurrent);
-  currentChart.render();
+  renderApexChart("#chart-currently", chartCurrent);
 
   // Monthly targets
   var monthlyTarget = {
@@ -458,26 +466,25 @@
     ],
   };
 
-  var monthlyChart = new ApexCharts(document.querySelector("#monthly_target"), monthlyTarget);
-  monthlyChart.render();
+  renderApexChart("#monthly_target", monthlyTarget);
 
   // Sales Report
   var saleReport = {
     series: [
       {
-        name: "Refunds",
+        name: "Users",
         type: "column",
-        data: [25, 18, 15, 32, 16, 22, 18, 24, 15, 22, 19, 24],
+        data: window.appConfig.users,
       },
       {
         name: "Earnings",
         type: "line",
-        data: [50, 66, 22, 40, 50, 79, 53, 66, 42, 19, 42, 63],
+        data: window.appConfig.invoices,
       },
       {
-        name: "Orders",
+        name: "Paid Invoices",
         type: "line",
-        data: [48, 33, 38, 32, 42, 33, 50, 22, 33, 48, 24, 35],
+        data: window.appConfig.paidInvoices,
       },
     ],
     chart: {
@@ -576,9 +583,10 @@
     ],
   };
 
-  var saleReportChart = new ApexCharts(document.querySelector("#sale_report"), saleReport);
-  saleReportChart.render();
+  renderApexChart("#sale_report", saleReport);
 })();
+
+
 
 // time
 function startTime() {

@@ -79,7 +79,7 @@
     <div class="col-sm-12">
         <div class="card widget-hover overflow-hidden">
             <div class="card-header card-no-border pb-2">
-                <h5>Students</h5>
+                <h5>Total Invoice</h5>
             </div>
             <div class="card-body pt-0 count-student">
                 <div class="school-wrapper">

@@ -3,8 +3,8 @@
     <div>
         <div class="logo-wrapper">
             <a href="{{ route('app.dashboard.index') }}">
-                <img class="img-fluid for-light" src="{{ asset('assets/images/logo/logo.png') }}" alt="">
-                <img class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_dark.png') }}" alt="">
+                <img class="img-fluid for-light" src="{{ asset('assets/images/logo/logo_LPSE.png') }}" alt="">
+                <img class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_LPSE.png') }}" alt="">
             </a>
             <div class="back-btn">
                 <i class="fa-solid fa-angle-left"></i>
