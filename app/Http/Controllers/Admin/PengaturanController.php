@@ -62,7 +62,7 @@ class PengaturanController extends Controller
             // Get the output of the command
             $output = Artisan::output();
 
-            return redirect()->back()->with('success', "Command executed successfully. Output: </br>" . $output);
+            return redirect()->back()->with('success', "Command executed successfully. Output: " . $output);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', "Error executing command: " . $e->getMessage());
         }

@@ -9,6 +9,7 @@
     <!-- Feather icon-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/feather-icon.css') }}">
     <!-- Plugins css start-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     @yield('css')
     <!-- Plugins css Ends-->
     <!-- Bootstrap css-->
