@@ -41,7 +41,7 @@ class UserDataTable extends DataTable
             })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
-                    'edit'   => 'admin.user.edit',
+                    // 'edit'   => 'admin.user.edit',
                     'delete' => 'admin.user.destroy',
                     'data'   => $row,
                 ]);
