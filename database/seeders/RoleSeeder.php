@@ -186,7 +186,8 @@ class RoleSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('admin123'),
             'status' => true,
-            'group_id' => 1
+            'group_id' => 1,
+            'system_reserve' => 1
         ]);
         $user->assignRole($admin);
     }
