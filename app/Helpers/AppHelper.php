@@ -104,12 +104,12 @@ class AppHelper
 
     public static function getScrapeItemTender()
     {
-        return self::getValue('scape_item_tender');
+        return self::getValue('scrape_item_tender');
     }
 
     public static function getScrapeItemLelang()
     {
-        return self::getValue('scape_item_lelang');
+        return self::getValue('scrape_item_lelang');
     }
 
     public static function getTahunPaketTender()

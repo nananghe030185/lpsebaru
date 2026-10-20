@@ -41,7 +41,7 @@ class TenderLpse extends Command
     public function handle()
     {
         // Scrape hanya Bappenas
-        $lpses = Lpse::where(['state' => true, 'id' => 690])->get(['id', 'link', 'state', 'scrape', 'jumlah_paket', 'jumlah_pagu', 'kode_lpse']);
+        $lpses = Lpse::where(['state' => true])->get(['id', 'link', 'state', 'scrape', 'jumlah_paket', 'jumlah_pagu', 'kode_lpse']);
 
         foreach ($lpses as $lpse) {
             try {
@@ -61,9 +61,23 @@ class TenderLpse extends Command
                             ->withoutRedirecting()
                             ->throw();
                     $getcookies = $client->withHeaders([
-                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+                       'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.3',
+                        'Accept' => 'application/json, text/javascript, */*; q=0.01',
+                        'Accept-encoding' => 'gzip, deflate, br, zstd',
+                        'Accept-language' => 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
+                        'Cache-Control' => 'no-cache',
+                        'Content-length' => '1424',
+                        'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+                        'Dnt' => '1',
+                        'Origin' => 'https://spse.inaproc.id',
+                        'Pragma' => 'no-cache',
+                        'Priority' => 'u=1, i',
                         'X-Requested-With'=> 'XMLHttpRequest',
                         'Referer'=> $lpse->link,
+                        'Sec-Fetch-Dest' => 'empty',
+                        'Sec-Ch-Ua' => '"Chromium";v="152", "Google Chrome";v="152"',
+                        'Sec-Ch-Ua-Mobile' => '?0',
+                        'Sec-Ch-Ua-Platform' => '"Windows"',
                         'Sec-Fetch-Mode' => 'cors',
                         'Sec-Fetch-Site'=> 'same-origin',
                     ])->asForm()->withoutVerifying()
@@ -72,21 +86,34 @@ class TenderLpse extends Command
 
                     $stringcookie = $getcookies->getCookieByName('SPSE_SESSION')->getValue();
                     $arrcookie = Str::of($stringcookie)->explode('=')->get(1);
-
                     $token = Str::replace('&___TS','',$arrcookie);
+
 
                     foreach ($getcookies as $ck) {
                         $cookiejar->setCookie($ck);
                     }
 
                     $respon = $client->withHeaders([
-                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.3',
+                        'Accept' => 'application/json, text/javascript, */*; q=0.01',
+                        'Accept-encoding' => 'gzip, deflate, br, zstd',
+                        'Accept-language' => 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
+                        'Cache-Control' => 'no-cache',
+                        'Content-length' => '1424',
+                        'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+                        'Dnt' => '1',
+                        'Origin' => 'https://spse.inaproc.id',
+                        'Pragma' => 'no-cache',
+                        'Priority' => 'u=1, i',
                         'X-Requested-With'=> 'XMLHttpRequest',
                         'Referer'=> $lpse->link . '/lelang',
+                        'Sec-Fetch-Dest' => 'empty',
+                        'Sec-Ch-Ua' => '"Chromium";v="152", "Google Chrome";v="152"',
+                        'Sec-Ch-Ua-Mobile' => '?0',
+                        'Sec-Ch-Ua-Platform' => '"Windows"',
                         'Sec-Fetch-Mode' => 'cors',
                         'Sec-Fetch-Site'=> 'same-origin',
-                    ])->asForm()->withoutVerifying()->post('/dt/lelang', $this->setparams($token));
-
+                    ])->asForm()->withoutVerifying()->post('/dt/lelang?tahun=2026', $this->setparams($token));
                     $a = 0;
                     $ulang = true;
                     $jumlah_paket = $lpse->jumlah_paket;
@@ -96,12 +123,12 @@ class TenderLpse extends Command
                         $params['draw'] = $a + 1;
                         $params['start'] = $a * (1000 + 1);
                         $respon = $client->withHeaders([
-                            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+                            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.3',
                             'X-Requested-With'=> 'XMLHttpRequest',
                             'Referer'=> $lpse->link . '/lelang',
                             'Sec-Fetch-Mode' => 'cors',
                             'Sec-Fetch-Site'=> 'same-origin',
-                        ])->asForm()->withoutVerifying()->post('/dt/lelang', $params);
+                        ])->asForm()->withoutVerifying()->post('/dt/lelang?tahun=2026', $params);
 
                         $a++;
                         
