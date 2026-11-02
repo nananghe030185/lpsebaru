@@ -18,7 +18,7 @@ Route::get('/scrape-lpse', function(){
 });
 
 Route::get('/install', function(){
-
+    Artisan::call('migrate:fresh --seed');
     Artisan::call('optimize:clear');
     return 'Done ...<a href="' . route('dashboard') . '">Go to Dashboard</a> <p>'. Artisan::output() .'</p>';
 });
