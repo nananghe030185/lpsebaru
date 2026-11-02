@@ -89,31 +89,6 @@ class ScrapeTenderV1
 
                     // dd($respon->json(), 'asdadasdsadasd');
                     $this->save($respon->json(), $lpse->id);
-                    // $a = 0;
-                    // $ulang = true;
-                    // $jumlah_paket = $lpse->jumlah_paket;
-                    // $jumlah_pagu = $lpse->jumlah_pagu;
-                    // while ($ulang) {
-                    //     $params = $this->setparams($token);
-                    //     $params['draw'] = $a + 1;
-                    //     $params['start'] = $a * (1000 + 1);
-                    //     $respon = $client->withHeaders($headers)->asForm()->withoutVerifying()->post('/dt/lelang?tahun=' . Carbon::now()->format('Y'), $params);
-
-                    //     $a++;
-                        
-                    //     if (count($respon->json()['data']) == 0) {
-                    //         $ulang = false;
-                    //     }else{
-                    //         $jumlah_paket += count($respon->json()['data']);
-                    //         $jumlah_pagu += $this->save($respon->json()['data'], $lpse->id);
-                    //     }
-                    // }
-
-                    // // set the scrape state to true after saving
-                    // $lpse->scrape = true;
-                    // $lpse->jumlah_paket = $jumlah_paket;
-                    // $lpse->jumlah_pagu = $jumlah_pagu;
-                    // $lpse->save();
 
                 }
             }catch (\Exception $e) {
