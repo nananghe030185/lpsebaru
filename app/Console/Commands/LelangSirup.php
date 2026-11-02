@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Lelang;
+use App\Models\Sirup;
 use Carbon\Carbon;
 use GuzzleHttp\Cookie\CookieJar;
 use Illuminate\Console\Command;
@@ -32,9 +33,9 @@ class LelangSirup extends Command
      */
     public function handle()
     {
-        $kldi = '903';
+        $sirups = Sirup::all();
 
-        $url = 'https://sirup.lkpp.go.id';
+        $url = 'https://sirup.inaproc.id';
         $headers = [
             'Accept' => 'application/json, text/javascript, */*; q=0.01',
             'Accept-Encoding' => 'gzip, deflate, br, zstd',
@@ -45,7 +46,7 @@ class LelangSirup extends Command
             'Pragma' => 'no-cache',
             'Priority' => 'u=1, i',
             'Referer' => $url . '/sirup/caripaketctr/index',
-            'Sec-Ch-Ua' => '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"',
+            'Sec-Ch-Ua' => '"Not:A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"',
             'Sec-Ch-Ua-Mobile' => '?0',
             'Sec-Ch-Ua-Platform' => '"Windows"',
             'Sec-Fetch-Dest' => 'empty',
@@ -55,21 +56,14 @@ class LelangSirup extends Command
             'X-Requested-With'=> 'XMLHttpRequest',
             ];
 
-            $respon = Http::withHeaders($headers)->get($url . '/sirup/caripaketctr/search', $this->setparams($kldi));
-            $totalRecord = $respon->json()['recordsTotal'];
+            foreach ($sirups as $sirup) {
+                $respon = Http::withHeaders($headers)->get($url . '/sirup/caripaketctr/search', $this->setparams($sirup->id_sirup));
 
-            $jumlahScrape = 1000;
-            for ($i = 0; $i < ceil($totalRecord/$jumlahScrape); $i++) {
-                if($i == 0){
-                    $respon = Http::withHeaders($headers)->get($url . '/sirup/caripaketctr/search', $this->setparams($kldi, $i));
-                }else{
-                    $respon = Http::withHeaders($headers)->get($url . '/sirup/caripaketctr/search', $this->setparams($kldi, $i * $jumlahScrape));
-                }
                 $this->save($respon->json()['data']);
             }
     }
 
-    public function setparams($kldi, $start = 0)
+    public function setparams(int $kldi, int $length= 100, int $start = 0)
     {
         $tanggal = Carbon::now();
         $params = [];
@@ -81,7 +75,7 @@ class LelangSirup extends Command
         $params['bulan']= $tanggal->format('n');
         // $params['bulan']= '';
         $params['lokasi']= '';
-        $params['kldi'] = '';
+        $params['kldi'] = $kldi;
         $params['pdn'] = '';
         $params['ukm'] = '';
         $params['draw'] = 1;
@@ -126,7 +120,7 @@ class LelangSirup extends Command
             $params['order[0][column]']= 5;
             $params['order[0][dir]']= 'desc';
             $params['start']= $start;
-            $params['length']= 1000;
+            $params['length']= $length;
             $params['search[value]']= '';
             $params['search[regex]']= false;
             // $params['authenticityToken']= $token;
@@ -135,7 +129,7 @@ class LelangSirup extends Command
             return $params;
     }
 
-    public function save($datas){
+    public function save(array $datas){
         foreach ($datas as $data) {
             DB::beginTransaction();
             try {
