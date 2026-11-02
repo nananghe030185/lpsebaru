@@ -75,6 +75,7 @@ Route::middleware(['auth','admin'])->group(function () {
     
     // LPSE
     Route::put('/admin/lpse/status/{id}', [LpseController::class, 'status'])->name('admin.lpse.state');
+    Route::get('/admin/lpse/status/toggle', [LpseController::class, 'toggle_status'])->name('admin.lpse.status.toggle');
     Route::put('/admin/lpse/scrape/{id}', [LpseController::class, 'scrape'])->name('admin.lpse.scrape');
     Route::get('/admin/lpse/unscrapeall', [LpseController::class, 'unscrapeall'])->name('admin.lpse.unscrape-all');
     Route::get('/admin/lpse/reload', [LpseController::class, 'reload'])->name('admin.lpse.reload');

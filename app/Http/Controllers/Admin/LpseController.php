@@ -58,7 +58,18 @@ class LpseController extends Controller
         $model->update(['state' => $request->status]);
     }
 
-    public function scrape($id, Request $request)
+    public function toggle_status()
+    {
+        $models = Lpse::all();
+        foreach($models as $model){
+            $state = !$model->state; // Toggle the state 
+            $model->update(['state' => $state]);
+        }
+
+        return redirect()->route('admin.lpse.index')->with('success', __('Status semua LPSE berhasil diubah'));
+    }
+
+    public function scrape(int $id, Request $request)
     {
         $model = Lpse::findOrFail($id);
         $model->update(['scrape' => $request->status]);

@@ -13,14 +13,16 @@ use App\Models\User;
 use App\Models\Fokus;
 use App\Models\Notification;
 use App\Models\Lpse;
+use Illuminate\Database\Eloquent\Collection;
+
 
 class ScrapeTenderV1
 {
-    protected array $lpses = [];
+    protected Collection $lpses;
     /**
      * Create a new class instance.
      */
-    public function __construct(array $lpses)
+    public function __construct(Collection $lpses)
     {
         $this->lpses = $lpses;
     }
@@ -34,11 +36,14 @@ class ScrapeTenderV1
             try {
                 if($lpse->link != null and $lpse->state == true and $lpse->scrape == false){
                     $key = 'Lembaga Kebijakan Pengadaan Barang/Jasa Pemerintah';
+                    
                     if(Str::contains(Http::get($lpse->link)->body(), $key) == false){
+                        
                         // skip if the lpse link is not valid
                         Helpers::createErrorLog('Link : ' . $lpse->link . ' : ' . 'Link LPSE tidak valid', null);
                         $lpse->state = false;
                         $lpse->save();
+                        
                         continue;
                     }
 
@@ -47,27 +52,28 @@ class ScrapeTenderV1
                             ->withOptions(['cookies' => $cookiejar])
                             ->withoutRedirecting()
                             ->throw();
-                    $getcookies = $client->withHeaders([
-                       'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.3',
+                    
+                    // get cookies from the initial request to /lelang
+                    $headers = [
                         'Accept' => 'application/json, text/javascript, */*; q=0.01',
-                        'Accept-encoding' => 'gzip, deflate, br, zstd',
-                        'Accept-language' => 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
+                        'Accept-Encoding' => 'gzip, deflate, br, zstd',
+                        'Accept-Language' => 'id,id-ID;q=0.9,en-US;q=0.8,en;q=0.7,ms;q=0.6',
                         'Cache-Control' => 'no-cache',
-                        'Content-length' => '1424',
-                        'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+                        // Cookie
                         'Dnt' => '1',
-                        'Origin' => 'https://spse.inaproc.id',
                         'Pragma' => 'no-cache',
                         'Priority' => 'u=1, i',
-                        'X-Requested-With'=> 'XMLHttpRequest',
-                        'Referer'=> $lpse->link,
-                        'Sec-Fetch-Dest' => 'empty',
-                        'Sec-Ch-Ua' => '"Chromium";v="152", "Google Chrome";v="152"',
+                        'Referer' => $lpse->link,
+                        'Sec-Ch-Ua' => '"Not:A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"',
                         'Sec-Ch-Ua-Mobile' => '?0',
                         'Sec-Ch-Ua-Platform' => '"Windows"',
+                        'Sec-Fetch-Dest' => 'empty',
                         'Sec-Fetch-Mode' => 'cors',
                         'Sec-Fetch-Site'=> 'same-origin',
-                    ])->asForm()->withoutVerifying()
+                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+                        'X-Requested-With'=> 'XMLHttpRequest',
+                    ];
+                    $getcookies = $client->withHeaders($headers)->asForm()->withoutVerifying()
                     ->get('/lelang')
                     ->cookies();
 
@@ -75,66 +81,43 @@ class ScrapeTenderV1
                     $arrcookie = Str::of($stringcookie)->explode('=')->get(1);
                     $token = Str::replace('&___TS','',$arrcookie);
 
-
                     foreach ($getcookies as $ck) {
                         $cookiejar->setCookie($ck);
                     }
 
-                    $respon = $client->withHeaders([
-                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.3',
-                        'Accept' => 'application/json, text/javascript, */*; q=0.01',
-                        'Accept-encoding' => 'gzip, deflate, br, zstd',
-                        'Accept-language' => 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
-                        'Cache-Control' => 'no-cache',
-                        'Content-length' => '1424',
-                        'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
-                        'Dnt' => '1',
-                        'Origin' => 'https://spse.inaproc.id',
-                        'Pragma' => 'no-cache',
-                        'Priority' => 'u=1, i',
-                        'X-Requested-With'=> 'XMLHttpRequest',
-                        'Referer'=> $lpse->link . '/lelang',
-                        'Sec-Fetch-Dest' => 'empty',
-                        'Sec-Ch-Ua' => '"Chromium";v="152", "Google Chrome";v="152"',
-                        'Sec-Ch-Ua-Mobile' => '?0',
-                        'Sec-Ch-Ua-Platform' => '"Windows"',
-                        'Sec-Fetch-Mode' => 'cors',
-                        'Sec-Fetch-Site'=> 'same-origin',
-                    ])->asForm()->withoutVerifying()->post('/dt/lelang?tahun=2026', $this->setparams($token));
-                    $a = 0;
-                    $ulang = true;
-                    $jumlah_paket = $lpse->jumlah_paket;
-                    $jumlah_pagu = $lpse->jumlah_pagu;
-                    while ($ulang) {
-                        $params = $this->setparams($token);
-                        $params['draw'] = $a + 1;
-                        $params['start'] = $a * (1000 + 1);
-                        $respon = $client->withHeaders([
-                            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.3',
-                            'X-Requested-With'=> 'XMLHttpRequest',
-                            'Referer'=> $lpse->link . '/lelang',
-                            'Sec-Fetch-Mode' => 'cors',
-                            'Sec-Fetch-Site'=> 'same-origin',
-                        ])->asForm()->withoutVerifying()->post('/dt/lelang?tahun=2026', $params);
+                    $respon = $client->withHeaders($headers)->asForm()->withoutVerifying()->post('/dt/lelang?tahun=' . Carbon::now()->format('Y'), $this->setparams($token));
 
-                        $a++;
+                    // dd($respon->json(), 'asdadasdsadasd');
+                    $this->save($respon->json(), $lpse->id);
+                    // $a = 0;
+                    // $ulang = true;
+                    // $jumlah_paket = $lpse->jumlah_paket;
+                    // $jumlah_pagu = $lpse->jumlah_pagu;
+                    // while ($ulang) {
+                    //     $params = $this->setparams($token);
+                    //     $params['draw'] = $a + 1;
+                    //     $params['start'] = $a * (1000 + 1);
+                    //     $respon = $client->withHeaders($headers)->asForm()->withoutVerifying()->post('/dt/lelang?tahun=' . Carbon::now()->format('Y'), $params);
+
+                    //     $a++;
                         
-                        if (count($respon->json()['data']) == 0) {
-                            $ulang = false;
-                        }else{
-                            $jumlah_paket += count($respon->json()['data']);
-                            $jumlah_pagu += $this->save($respon->json()['data'], $lpse->id);
-                        }
-                    }
+                    //     if (count($respon->json()['data']) == 0) {
+                    //         $ulang = false;
+                    //     }else{
+                    //         $jumlah_paket += count($respon->json()['data']);
+                    //         $jumlah_pagu += $this->save($respon->json()['data'], $lpse->id);
+                    //     }
+                    // }
 
-                    // set the scrape state to true after saving
-                    $lpse->scrape = true;
-                    $lpse->jumlah_paket = $jumlah_paket;
-                    $lpse->jumlah_pagu = $jumlah_pagu;
-                    $lpse->save();
+                    // // set the scrape state to true after saving
+                    // $lpse->scrape = true;
+                    // $lpse->jumlah_paket = $jumlah_paket;
+                    // $lpse->jumlah_pagu = $jumlah_pagu;
+                    // $lpse->save();
 
                 }
             }catch (\Exception $e) {
+                dd($e->getMessage());
                 // Log the error
                 Helpers::createErrorLog('Link : ' . $lpse->link . ' : ' . $e->getMessage(), $e->getTraceAsString());
                 continue;
@@ -176,15 +159,16 @@ class ScrapeTenderV1
             $params['search[value]']= '';
             $params['search[regex]']= false;
             $params['authenticityToken']= $token;
-            $params['_']= time();
-            $params['tahun']= Carbon::now()->format('Y');
+            // $params['_']= time();
+            // $params['tahun']= Carbon::now()->format('Y');
 
+            // dd($params);
             return $params;
     }
 
-    public function save( mixed $datas, int $lpse_id){
+    public function save( array $datas, int $lpse_id){
         $jumlah_pagu = 0;
-        foreach ($datas as $data) {
+        foreach ($datas['data'] as $data) {
             try {
                 $tender = Tender::updateOrCreate(
                     [
@@ -192,12 +176,13 @@ class ScrapeTenderV1
                     ],
                     [
                         'lpse_id' => $lpse_id,
+                        'nama_lpse' => $data[2],
                         'nama_paket' => Str::limit($data[1], 500),
                         'slug' => Str::limit(
                             Str::slug($data[0] . ' ' . $data[1]),
                             250
                         ),
-                        'nama_lpse' => $data[2],
+                        
                         'tahap_tender' => Str::replace(' [...]','',$data[3]),
                         'hps' => static::nominal($data[4]),
                         'metode_pengadaan' => $data[5],

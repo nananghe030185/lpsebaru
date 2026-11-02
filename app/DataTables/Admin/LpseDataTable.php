@@ -112,6 +112,13 @@ class LpseDataTable extends DataTable
                         //         window.location = "' . route('admin.lpse.create') . '";
                         //     }',
                         // ],
+                        'togglestate' => [
+                            'text' => '<i class="fas fa-sync"></i> Toggle State', // Button text with icon
+                            'className' => 'btn btn-info btn-sm', // CSS class for styling
+                            'action' => 'function (e, dt, node, config) {
+                                window.location = "' . route('admin.lpse.status.toggle') . '";
+                            }',
+                        ],
                         'scrape' => [
                             'text' => '<i class="fas fa-sync"></i> Unscrape LPSE', // Button text with icon
                             'className' => 'btn btn-info btn-sm', // CSS class for styling
