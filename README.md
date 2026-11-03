@@ -1,2 +1,2 @@
-# lpsebaru
+# app baru
 Aplikasi baru
