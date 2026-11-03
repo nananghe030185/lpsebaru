@@ -1,1 +1,1 @@
-<button type="submit" name="submit" class="btn btn-primary">{{ __('Simpan') }}</button>
+<button type="submit" name="submit" class="btn btn-primary"><span class="icofont icofont-save pe-1"></span>{{ __('Simpan') }}</button>

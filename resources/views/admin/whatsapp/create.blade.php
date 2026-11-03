@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer text-end">
+                        <div class="card-footer text-end d-inline-flex gap-1 justify-content-end">
                             <x-form.buttonsimpan></x-form.buttonsimpan>
                             <x-form.buttonbatal href="{{ route('admin.whatsapp.index')}}"></x-form.buttonbatal>
                         </div>

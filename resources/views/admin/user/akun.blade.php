@@ -22,6 +22,22 @@
             </div>
             <div class="col-12">
                 <div class="mb-3">
+                    <label>Username<span>*</span></label>
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <i class="icon-user"></i>
+                        </div>
+                        <input class="form-control" type="text" id="username" value="{{ isset($user->username) ? $user->username : old('username') }}" name="username" placeholder="Enter Username">
+                        @error('username')
+                            <span class="text-danger">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
                     <label>Email<span>*</span></label>
                     <div class="input-group">
                         <div class="input-group-text">
@@ -58,8 +74,8 @@
         </div>
     </div>
 
-    <div class="col-12">
-        <button class="btn btn-primary" type="submit">{{__('Simpan')}}</button>
-        <a href="{{ route('admin.user.index') }}" class="btn btn-secondary">{{__('Kembali')}}</a>
+    <div class="col-12 text-end d-inline-flex gap-1 justify-content-end">
+        <x-form.buttonsimpan></x-form.buttonsimpan>
+        <x-form.buttonbatal href="{{ route('admin.user.index')}}"></x-form.buttonbatal>
     </div>
 </form>

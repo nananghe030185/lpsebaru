@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('admin.user.update-profile', $user) }}" enctype="multipart/form-data" class="theme-form">
+<form method="POST" action="{{ route('admin.user.update-profile', $user) }}" enctype="multipart/form-data" class="row theme-form">
     @csrf
     @method('PUT')
 
@@ -57,99 +57,120 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-xxl-6 box-col-12">
-                <div class="mb-3">
-                    <label class="form-label">Whatsapp</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-text">
-                            <label class="form-check-label" for="whatsapp" style="padding-top: 5px;padding-left:5px;"><i class="flag-icon flag-icon-id"></i></label>
-                        </div>
-                        <input class="form-control" id="whatsapp" name="whatsapp" type="text" placeholder="Nomer Whatsapp" value="{{ old('whatsapp', $user->whatsapp ?? '') }}">
-                        <div class="input-group-text">
-                            <div class="form-check checkbox checkbox-solid-info">
-                                <input class="form-check-input checkbox-shadow" id="notif_whatsapp_tender" type="checkbox" name="notif_whatsapp_tender" {{ $user->notif_whatsapp_tender ? 'checked' : '' }}>
-                                <label class="form-check-label m-1" for="notif_whatsapp_tender" data-bs-toggle="tooltip" title="Notifikasi Whatsapp untuk Tender">
-                                    <span>Tender</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="input-group-text" >
-                            <div class="form-check checkbox checkbox-solid-info">
-                                <input class="form-check-input checkbox-shadow" id="notif_whatsapp_lelang" type="checkbox" name="notif_whatsapp_lelang" value="1" {{ $user->notif_whatsapp_lelang ? 'checked' : '' }}>
-                                <label class="form-check-label m-1" for="notif_whatsapp_lelang" data-bs-toggle="tooltip" title="Notifikasi Whatsapp untuk Lelang">
-                                    <span>Lelang</span>
-                                </label>
-                            </div>
-                        </div>
-                        @error('whatsapp')
-                            <span class="text-danger">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-            <div class="col-xxl-6 box-col-12">
-                <div class="mb-3">
-                    <label class="form-label">Telegram</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group">
-                        <!-- link to show modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelTelegram">
-                                <i class="icofont icofont-question-circle"></i>
-                            </button>
+        </div>
 
-                            <input class="form-control" id="telegram" name="telegram" type="text" placeholder="Nomer telegram" value="{{ old('telegram', $user->telegram ?? '') }}">
-                            <div class="input-group-text">
-                                <div class="form-check checkbox checkbox-solid-info">
-                                    <input class="form-check-input checkbox-shadow" id="notif_telegram_tender" type="checkbox" name="notif_telegram_tender" {{ $user->notif_telegram_tender ? 'checked' : '' }}>
-                                    <label class="form-check-label m-1" for="notif_telegram_tender" data-bs-toggle="tooltip" title="Notifikasi Telegram untuk Tender">
-                                        <span>Tender</span>
-                                    </label>
+    <div class="col-12">
+        <div class="mb-3">
+            <div class="card-wrapper border rounded-3 h-100 checkbox-checked">
+                <h6 class="sub-title">Notifikasi</h6>
+                <div class="row">
+                    <div class="col-xxl-6 box-col-12">
+                        <div class="mb-3">
+                            <label class="form-label">Whatsapp</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-text">
+                                    <label class="form-check-label" for="whatsapp" style="padding-top: 5px;padding-left:5px;"><i class="flag-icon flag-icon-id"></i></label>
+                                </div>
+                                <input class="form-control" id="whatsapp" name="whatsapp" type="text" placeholder="Nomer Whatsapp" value="{{ old('whatsapp', $user->whatsapp ?? '') }}">
+                                <div class="input-group-text">
+                                    <div class="form-check checkbox checkbox-solid-info">
+                                        <input class="form-check-input checkbox-shadow" id="notif_whatsapp_tender" type="checkbox" name="notif_whatsapp_tender" {{ $user->notif_whatsapp_tender ? 'checked' : '' }}>
+                                        <label class="form-check-label m-1" for="notif_whatsapp_tender" data-bs-toggle="tooltip" title="Notifikasi Whatsapp untuk Tender">
+                                            <span>Tender</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="input-group-text" >
+                                    <div class="form-check checkbox checkbox-solid-info">
+                                        <input class="form-check-input checkbox-shadow" id="notif_whatsapp_lelang" type="checkbox" name="notif_whatsapp_lelang" value="1" {{ $user->notif_whatsapp_lelang ? 'checked' : '' }}>
+                                        <label class="form-check-label m-1" for="notif_whatsapp_lelang" data-bs-toggle="tooltip" title="Notifikasi Whatsapp untuk Lelang">
+                                            <span>Lelang</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                @error('whatsapp')
+                                    <span class="text-danger">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 box-col-12">
+                        <div class="mb-3">
+                            <label class="form-label">Telegram</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group">
+                                <!-- link to show modal -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelTelegram">
+                                        <i class="icofont icofont-question-circle"></i>
+                                    </button>
+
+                                    <input class="form-control" id="telegram" name="telegram" type="text" placeholder="Nomer telegram" value="{{ old('telegram', $user->telegram ?? '') }}">
+                                    <div class="input-group-text">
+                                        <div class="form-check checkbox checkbox-solid-info">
+                                            <input class="form-check-input checkbox-shadow" id="notif_telegram_tender" type="checkbox" name="notif_telegram_tender" {{ $user->notif_telegram_tender ? 'checked' : '' }}>
+                                            <label class="form-check-label m-1" for="notif_telegram_tender" data-bs-toggle="tooltip" title="Notifikasi Telegram untuk Tender">
+                                                <span>Tender</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="input-group-text" >
+                                        <div class="form-check checkbox checkbox-solid-info">
+                                            <input class="form-check-input checkbox-shadow" id="notif_telegram_lelang" type="checkbox" name="notif_telegram_lelang" value="1" {{ $user->notif_telegram_lelang ? 'checked' : '' }}>
+                                            <label class="form-check-label m-1" for="notif_telegram_lelang" data-bs-toggle="tooltip" title="Notifikasi Telegram untuk Lelang">
+                                                <span>Lelang</span>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="input-group-text" >
-                                <div class="form-check checkbox checkbox-solid-info">
-                                    <input class="form-check-input checkbox-shadow" id="notif_telegram_lelang" type="checkbox" name="notif_telegram_lelang" value="1" {{ $user->notif_telegram_lelang ? 'checked' : '' }}>
-                                    <label class="form-check-label m-1" for="notif_telegram_lelang" data-bs-toggle="tooltip" title="Notifikasi Telegram untuk Lelang">
-                                        <span>Lelang</span>
-                                    </label>
+                            @error('telegram')
+                                <span class="text-danger">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 box-col-12">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group">
+                                <!-- link to show modal -->
+                                    <div class="input-group-text">
+                                        <label class="form-check-label" for="email" style="padding-top: 5px;padding-left:5px;"><i class="icofont icofont-email"></i></label>
+                                    </div>
+
+                                    <input class="form-control" id="email" name="email" type="email" placeholder="Enter Email" value="{{ old('email', $user->email ?? '') }}" readonly>
+                                    <div class="input-group-text">
+                                        <div class="form-check checkbox checkbox-solid-info">
+                                            <input class="form-check-input checkbox-shadow" id="notif_email_tender" type="checkbox" name="notif_email_tender" {{ $user->notif_email_tender ? 'checked' : '' }}>
+                                            <label class="form-check-label m-1" for="notif_email_tender" data-bs-toggle="tooltip" title="Notifikasi Email untuk Tender">
+                                                <span>Tender</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="input-group-text" >
+                                        <div class="form-check checkbox checkbox-solid-info">
+                                            <input class="form-check-input checkbox-shadow" id="notif_email_lelang" type="checkbox" name="notif_email_lelang" value="1" {{ $user->notif_email_lelang ? 'checked' : '' }}>
+                                            <label class="form-check-label m-1" for="notif_email_lelang" data-bs-toggle="tooltip" title="Notifikasi Email untuk Lelang">
+                                                <span>Lelang</span>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @error('telegram')
-                        <span class="text-danger">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-xxl-12 box-col-12">
-                <div class="mb-3">
-                    <ul class="checkbox-wrapper">
-                        <li> 
-                            <input class="form-check-input checkbox-shadow" id="checkbox-icon" type="checkbox" name="notif_email_tender" value="1" {{ $user->notif_email_tender ? 'checked' : '' }}>
-                            <label class="form-check-label" for="checkbox-icon">
-                                <i class="icofont icofont-email"></i><span>Notifikasi Email Tender</span>
-                            </label>
-                        </li>
-                        <li> 
-                            <input class="form-check-input checkbox-shadow" id="checkbox-icon" type="checkbox" name="notif_email_lelang" value="1" {{ $user->notif_email_lelang ? 'checked' : '' }}>
-                            <label class="form-check-label" for="checkbox-icon">
-                                <i class="icofont icofont-email"></i><span>Notifikasi Email Lelang</span>
-                            </label>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
+    </div>
 
-    <div class="text-start">
-        <button class="btn btn-primary" type="submit">
-            {{__('Update Profile')}}
-        </button>
-        <a href="{{ route('admin.user.index') }}" class="btn btn-secondary">{{__('Kembali')}}</a>
+     <div class="col-12 text-end d-inline-flex gap-1 justify-content-end">
+        <x-form.buttonsimpan></x-form.buttonsimpan>
+        <x-form.buttonbatal :href="route('admin.user.index')"></x-form.buttonbatal>
     </div>
 </form>
 
