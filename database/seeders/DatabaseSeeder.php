@@ -14,14 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Groups::create(['name' => 'Super Admin']);
-        Groups::create(['name' => 'Member']);
-        Groups::create(['name' => 'Non Member']);
+        // Groups::create(['name' => 'Super Admin']);
+        // Groups::create(['name' => 'Member']);
+        // Groups::create(['name' => 'Non Member']);
         
         $this->call(RoleSeeder::class);
         $this->call(KlpdSeeder::class);
         $this->call(LpseSeeder::class);
-        $this->call(SatkerSeeder::class);
+        // $this->call(SatkerSeeder::class);
         $this->call(PengaturanSeeder::class);
         $this->call(SirupSeeder::class);
     }

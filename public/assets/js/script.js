@@ -65,6 +65,26 @@
     $(".show-hide").parent().find('input[name="password"]').attr("type", "password");
   });
 
+  /*----------------------------------------
+     password show hide Konfirmasi
+     ----------------------------------------*/
+  $(".show-hide-konfirm").show();
+  $(".show-hide-konfirm span").addClass("show");
+
+  $(".show-hide-konfirm span").click(function () {
+    if ($(this).hasClass("show")) {
+      $('input[name="password_confirmation"]').attr("type", "text");
+      $(this).removeClass("show");
+    } else {
+      $('input[name="password_confirmation"]').attr("type", "password");
+      $(this).addClass("show");
+    }
+  });
+  $('form button[type="submit"]').on("click", function () {
+    $(".show-hide-konfirm span").addClass("show");
+    $(".show-hide-konfirm").parent().find('input[name="password_confirmation"]').attr("type", "password");
+  });
+
   /*=====================
       02. Background Image js
       ==========================*/

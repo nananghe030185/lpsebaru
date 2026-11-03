@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\LelangController;
 use App\Http\Controllers\Admin\TenderController;
+use App\Http\Controllers\InstallController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Process;
@@ -17,11 +18,9 @@ Route::get('/scrape-lpse', function(){
     return 'Done ...<a href="' . route('dashboard') . '">Go to Dashboard</a> <p>'. Artisan::output() .'</p>';
 });
 
-Route::get('/install', function(){
-    Artisan::call('migrate:fresh --seed');
-    Artisan::call('optimize:clear');
-    return 'Done ...<a href="' . route('dashboard') . '">Go to Dashboard</a> <p>'. Artisan::output() .'</p>';
-});
+Route::get('/install/{pwd}', [InstallController::class, 'app'])->name('install.app');
+
+Route::get('/install/dbseed/{pwd}', [InstallController::class, 'dbseed'])->name('install.app.seed');
 
 Route::get('/', function () {
     return redirect()->to(route('login'));

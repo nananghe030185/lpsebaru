@@ -22,6 +22,9 @@ class UserDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->editColumn('name', function ($row) {
+                return $row->name . '<br/><small>Username :' . $row->username . '</small>';
+            })
             ->editColumn('masa_berlaku', function ($row) {
                 // return $row->masa_berlaku->diffForHumans();
                 $now = Carbon::now();
@@ -68,7 +71,7 @@ class UserDataTable extends DataTable
                 }
             })
 
-            ->rawColumns(['masa_berlaku', 'action','status','grup.name']);
+            ->rawColumns(['masa_berlaku', 'action','status','grup.name','name']);
     }
 
     /**
@@ -109,14 +112,17 @@ class UserDataTable extends DataTable
                                     .search(val ? "^" + val + "$" : "", true, false)
                                     .draw();
                             });
+                        select.append("<option value=\"Super Admin\">Super Admin</option>");
+                        select.append("<option value=\"Member\">Member</option>");
+                        select.append("<option value=\"Non Member\">Non Member</option>");
                         // Get unique values and append as options
-                        api.column(columnIdx).data().unique().sort().each(function(d, j) {
-                            // Remove HTML tags if present
-                            var text = d.replace(/(<([^>]+)>)/gi, "");
-                            if (select.find("option[value=\'" + text + "\']").length === 0) {
-                                select.append("<option value=\"" + text + "\">" + text + "</option>");
-                            }
-                        });
+                        // api.column(columnIdx).data().unique().sort().each(function(d, j) {
+                        //     // Remove HTML tags if present
+                        //     var text = d.replace(/(<([^>]+)>)/gi, "");
+                        //     if (select.find("option[value=\'" + text + "\']").length === 0) {
+                        //         select.append("<option value=\"" + text + "\">" + text + "</option>");
+                        //     }
+                        // });
                     }')
                     ->addAction([
                         'title' => __('Action'),

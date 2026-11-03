@@ -11,6 +11,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Support\Str;
 
 class KlpdiDataTable extends DataTable
 {
@@ -29,7 +30,10 @@ class KlpdiDataTable extends DataTable
                     'data'   => $row
                 ]);
             })
-            ->rawColumns(['action'])
+            ->editColumn('jenis_klpdi', function ($row) {
+                return Str::ucfirst($row->jenis_klpdi);
+            })
+            ->rawColumns(['action','jenis_klpdi'])
             ->setRowId('id');
     }
 
@@ -65,7 +69,7 @@ class KlpdiDataTable extends DataTable
                     ->initComplete('function() {
                         var api = this.api();
                         var columnIdx = api.column("jenis_klpdi:name").index();
-                        var select = $("<select name=\"filter\" id=\"filter\" class=\"form-control jenis_klpd\"><option value=\"\" class=\"fs-6 text-uppercase\">Semua Jenis KLPDI</option></select>")
+                        var select = $("<select name=\"filter\" id=\"filter\" class=\"form-control jenis_klpd\"><option value=\"\" class=\"fs-6\">Semua Jenis KLPDI</option></select>")
                             // .appendTo($(api.column(columnIdx).header()).empty())
                             .appendTo(".filter2")
                             .on("change", function() {
@@ -74,14 +78,20 @@ class KlpdiDataTable extends DataTable
                                     .search(val ? "^" + val + "$" : "", true, false)
                                     .draw();
                             });
+                        select.append("<option value=\"KEMENTERIAN\">Kementerian</option>");
+                        select.append("<option value=\"PROVINSI\">Provinsi</option>");
+                        select.append("<option value=\"KABUPATEN\">Kabupaten</option>");
+                        select.append("<option value=\"KOTA\">Kota</option>");
+                        select.append("<option value=\"LEMBAGA\">Lembaga</option>");
+
                         // Get unique values and append as options
-                        api.column(columnIdx).data().unique().sort().each(function(d, j) {
-                            // Remove HTML tags if present
-                            var text = d.replace(/(<([^>]+)>)/gi, "");
-                            if (select.find("option[value=\'" + text + "\']").length === 0) {
-                                select.append("<option value=\"" + text + "\">" + text + "</option>");
-                            }
-                        });
+                        // api.column(columnIdx).data().unique().sort().each(function(d, j) {
+                        //     // Remove HTML tags if present
+                        //     var text = d.replace(/(<([^>]+)>)/gi, "");
+                        //     if (select.find("option[value=\'" + text + "\']").length === 0) {
+                        //         select.append("<option value=\"" + text + "\">" + text + "</option>");
+                        //     }
+                        // });
                     }');
     }
 

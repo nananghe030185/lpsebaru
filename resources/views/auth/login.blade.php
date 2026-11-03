@@ -31,6 +31,7 @@
                             {{-- End Alert --}}
                             <form class="theme-form" method="POST" action="{{ route('login') }}">
                                 @csrf
+                                @method('POST')
                                 <h4>Sign in</h4>
                                 <p>Masukkan email dan password Anda</p>
                                 <div class="form-group">
@@ -64,7 +65,7 @@
                                         <button class="btn btn-primary btn-block w-100 mt-3" type="submit">Sign in</button>
                                     </div>
                                 </div>
-                                <p class="mt-4 mb-0 text-center">Tidka punya akun ?<a class="ms-2"
+                                <p class="mt-4 mb-0 text-center">Tidak punya akun ?<a class="ms-2"
                                         href="{{ route('register') }}">Buat Akun</a></p>
                             </form>
                         </div>

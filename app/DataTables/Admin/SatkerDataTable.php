@@ -78,7 +78,35 @@ class SatkerDataTable extends DataTable
                         Button::make('excel')
                             ->text('<i class="fas fa-file-excel"></i> Export to Excel') // Add icon and custom text
                             ->className('btn btn-success btn-sm'), // Apply specific Bootstrap classes
-                    ]);
+                    ])
+                    ->initComplete('function() {
+                        var api = this.api();
+                        var columnIdx = api.column("klpdi.jenis_klpdi:name").index();
+                        var select = $("<select name=\"filter\" id=\"filter\" class=\"form-control jenis_klpd\"><option value=\"\" class=\"fs-6\">Semua Jenis KLPDI</option></select>")
+                            // .appendTo($(api.column(columnIdx).header()).empty())
+                            .appendTo(".filter2")
+                            .on("change", function() {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                api.column(columnIdx)
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+                            select.append("<option value=\"KEMENTERIAN\">Kementerian</option>");
+                            select.append("<option value=\"PROVINSI\">Provinsi</option>");
+                            select.append("<option value=\"KABUPATEN\">Kabupaten</option>");
+                            select.append("<option value=\"KOTA\">Kota</option>");
+                            select.append("<option value=\"LEMBAGA\">Lembaga</option>");
+
+                        // Get unique values and append as options
+                        // api.column(columnIdx).data().unique().sort().each(function(d, j) {
+                            // Remove HTML tags if present
+                            // var text = d.replace(/(<([^>]+)>)/gi, "");
+                            // if (select.find("option[value=\'" + text + "\']").length === 0) {
+                            //     select.append("<option value=\"" + text + "\">" + text + "</option>");
+                            // }
+
+                        // });
+                    }');
     }
 
     /**
@@ -105,6 +133,13 @@ class SatkerDataTable extends DataTable
                   ->title('KLPDI')
                   ->searchable(true)
                   ->orderable(true),
+            Column::computed('klpdi.jenis_klpdi')
+                ->name('klpdi.jenis_klpdi')
+                ->exportable(false)
+                ->searchable(true)
+                ->orderable(true)
+                ->printable(false)  
+                ->title('Jenis KLPDI'),
         ];
     }
 

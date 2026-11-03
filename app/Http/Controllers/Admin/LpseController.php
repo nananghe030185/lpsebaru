@@ -34,7 +34,10 @@ class LpseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
+        // dd($request);
+        $request->validate([
+            'logo' => 'required|mimes:jpg,jpeg,png,webp|max:2048' // Max 2MB
+        ]);
         $lpse = Lpse::findOrFail($id);
         $lpse->update([
             'kode_lpse' => $request->kode_lpse,
@@ -48,6 +51,13 @@ class LpseController extends Controller
             'scrape' => $request->scrape ?? false,
         ]);
 
+        // Handle file upload
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $filename = $file->getClientOriginalName();
+            $file->move(public_path('assets/images/logo'), $filename);
+            $lpse->update(['logo' => $filename]);
+        }
         return redirect()->route('admin.lpse.index')->with('success', __('LPSE berhasil diupdate'));
     }
 

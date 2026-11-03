@@ -6,7 +6,7 @@ use App\Models\Satker;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SatkerSeeder extends Seeder
+class SatkerSeederBackup extends Seeder
 {
     /**
      * Run the database seeds.

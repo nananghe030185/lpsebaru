@@ -22,10 +22,11 @@
                         <div class="login-main create-account">
                             <form class="theme-form" method="POST" action="{{ route('register') }}">
                                 @csrf
-                                <h4>Create your account</h4>
-                                <p>Enter your personal details to create account</p>
+                                @method('POST')
+                                <h4>Buat Akun</h4>
+                                <p>Masukan data anda untuk membuat akun</p>
                                 <div class="form-group">
-                                    <label class="col-form-label pt-0">Your Name</label>
+                                    <label class="col-form-label pt-0">Nama</label>
                                     <input class="form-control @error('name') is-invalid @enderror" type="text"  placeholder="Name" name="name" id="name" value="{{ old('name')}}" autofocus>
                                     @error('name')
                                         <div class="small-text text-danger" role="alert"> 
@@ -43,7 +44,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label">Email Address</label>
+                                    <label class="col-form-label">Email</label>
                                     <input class="form-control @error('email') is-invalid @enderror" type="email" required="" placeholder="test@gmail.com" name="email" id="email" value="{{ old('email')}}">
                                     @error('email')
                                         <div class="small-text text-danger" role="alert"> 
@@ -69,12 +70,11 @@
                                     <div class="form-input position-relative">
                                         <input class="form-control" type="password" name="password_confirmation" id="password_confirmation" required=""
                                             placeholder="*********">
-                                        <div class="show-hide"><span class="show"></span></div>
+                                        <div class="show-hide-konfirm"><span class="show"></span></div>
                                     </div>
                                 </div>
                                 <div class="form-group mb-0">
-                                    <button class="btn btn-primary btn-block w-100 mt-3" type="submit">Create
-                                        Account</button>
+                                    <button class="btn btn-primary btn-block w-100 mt-3" type="submit">Buat Akun</button>
                                 </div>
                                 {{-- <h6 class="text-muted mt-4 or">Or create your account with</h6>
                                 <div class="social mt-4">
@@ -87,7 +87,7 @@
                                             href="https://www.google.com/" target="_blank"><i
                                                 class="fa-brands fa-google"></i></a></div>
                                 </div> --}}
-                                <p class="mt-4 mb-0">Already have an account?<a class="ms-2" href="{{ route('login') }}">Sign in</a>
+                                <p class="mt-4 mb-0">Sudah punya akun ?<a class="ms-2" href="{{ route('login') }}">Sign in</a>
                                 </p>
                             </form>
                         </div>

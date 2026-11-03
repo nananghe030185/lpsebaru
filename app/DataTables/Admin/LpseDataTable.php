@@ -26,7 +26,7 @@ class LpseDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->editColumn('nama_lpse', function($row){
-                return '<div class="text-ellipsis w-96 text-nowrap">'. $row->nama_lpse . '<br>' . '<span class="text-muted small">Slug :' . $row->slug . '</span></div>';
+                return '<div class="d-inline-flex gap-1"><img src="' . asset('assets/images/logo/' . $row->logo) . '"  class="bg-info img-fluid rounded" width="40px"><div class="text-ellipsis w-96 text-nowrap">'. $row->nama_lpse . '<br>' . '<span class="text-muted small">Slug :' . $row->slug . '</span></div></div>';
             })
             ->editColumn('link', function($row){
                 return Helpers::link($row->link, $row->link);
@@ -134,25 +134,25 @@ class LpseDataTable extends DataTable
                             }'
                         ],
                     ])
-                    ->initComplete('function() {
-                        var api = this.api();
-                        var columnIdx = api.column("instansi:name").index();
-                        var select1 = $("<select name=\"filter\" id=\"filter\" class=\"form-control jenis_pengadaan\"><option value=\"\">Semua Jenis</option></select>")
-                            // .appendTo($(api.column(columnIdx).header()).empty())
-                            .appendTo(".filter2")
-                            .on("change", function() {
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                api.column(columnIdx)
-                                    .search(val ? "^" + val + "$" : "", true, false)
-                                    .draw();
-                            });
-                        // Get unique values and append as options
-                        select1.append("<option value=\"kementerian\">Kementerian</option>");
-                        select1.append("<option value=\"lembaga\">Lembaga</option>");
-                        select1.append("<option value=\"kabupaten\">Kabupaten</option>");
-                        select1.append("<option value=\"kota\">Kota</option>");
-                        select1.append("<option value=\"instansi\">Instansi</option>");
-                    }')
+                    // ->initComplete('function() {
+                    //     var api = this.api();
+                    //     var columnIdx = api.column("instansi:name").index();
+                    //     var select1 = $("<select name=\"filter\" id=\"filter\" class=\"form-control jenis_pengadaan\"><option value=\"\">Semua Jenis</option></select>")
+                    //         // .appendTo($(api.column(columnIdx).header()).empty())
+                    //         .appendTo(".filter2")
+                    //         .on("change", function() {
+                    //             var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                    //             api.column(columnIdx)
+                    //                 .search(val ? "^" + val + "$" : "", true, false)
+                    //                 .draw();
+                    //         });
+                    //     // Get unique values and append as options
+                    //     select1.append("<option value=\"kementerian\">Kementerian</option>");
+                    //     select1.append("<option value=\"lembaga\">Lembaga</option>");
+                    //     select1.append("<option value=\"kabupaten\">Kabupaten</option>");
+                    //     select1.append("<option value=\"kota\">Kota</option>");
+                    //     select1.append("<option value=\"instansi\">Instansi</option>");
+                    // }')
                     ->addAction(['width' => 60, 'className' => 'text-center'])
                     ->addIndex();
     }
@@ -182,6 +182,7 @@ class LpseDataTable extends DataTable
                 ->width(200),
             Column::make('link')
                 ->title('Link')
+                ->className('text-start')
                 ->width(200),
             Column::make('jumlah_paket')
                 ->title('Jumlah Paket')
@@ -191,10 +192,10 @@ class LpseDataTable extends DataTable
                 ->title('Jumlah Pagu')
                 ->width(150)
                 ->className('text-end'),
-            Column::make('instansi')
-                ->name('instansi')
-                ->title('Instansi')
-                ->width(150),
+            // Column::make('instansi')
+            //     ->name('instansi')
+            //     ->title('Instansi')
+            //     ->width(150),
             ];
     }
 
