@@ -28,10 +28,10 @@ class Helpers
       }
     }
 
-    public static function getMedia($id)
-    {
-      return Attachment::find($id);
-    }
+    // public static function getMedia($id)
+    // {
+    //   return Attachment::find($id);
+    // }
 
     public static function getCountryCode(){
       return Country::get(["calling_code", "id", "iso_3166_2", 'flag'])->unique('calling_code');
@@ -43,17 +43,18 @@ class Helpers
         return $user;
     }
 
-    public static function link($link, $anchor, $target = true)
+    public static function link(string $link, string $anchor, $target = true)
     {
       $trgt = $target === true ? ' target="_blank"' : '';
       
         return '<a href="' . $link . '" ' . $trgt .'>'. $anchor .'</a>';
     }
 
-    public static function createErrorLog($message, $trace = null)
+    public static function createErrorLog(string $message, $trace = null, string $kategori = 'error')
     {
         // Create a new error log entry
         \App\Models\ErrorLog::create([
+            'kategori' => $kategori,
             'message' => Str::limit($message, 250),
             'trace' => '',
         ]);

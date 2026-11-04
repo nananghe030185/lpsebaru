@@ -73,7 +73,6 @@ class TenderNotification extends Notification implements ShouldQueue
      */
     public function toTelegram($notifiable)
     {
-
         $telegrams = ModelsNotification::where('user_id', $notifiable->id)->where('channel', 'telegram')->where('status', 'unread')->limit(5)->get();
         $messages = 'Berikut paket tender LPSE yang tayang hari ini '. "\n" . Carbon::now()->format('d-m-Y') . ":\n\n";
 
@@ -101,6 +100,7 @@ class TenderNotification extends Notification implements ShouldQueue
             ->parseMode('HTML')
             ->onError(function ($data){
                 ErrorLog::create([
+                    'kategori' => 'error',
                     'message' => 'Failed to send Telegram notification Chat ID : ' . $data['to'] .' ' . $data['exception']->getMessage()
                 ]);
             });

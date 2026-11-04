@@ -76,7 +76,12 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'username' => 'required|string|max:255|unique:users,username',
             'group_id' => 'required',
+        ],[
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.required' => 'alamat email tidak boleh kosong',
+            'username.required' => 'Username tidak boleh kosong',
         ]);
         // update user
         $user->name = $request->name;
@@ -139,10 +144,20 @@ class UserController extends Controller
             'masa_berlaku' => 'required|date',
             'whatsapp' => 'starts_with:62|digits_between:10,14',
             'kata_kunci' => 'required|string',
+        ],[
+            'whatsapp.starts_with' => 'Nomor WhatsApp harus diawali dengan kode negara 62 (Indonesia).',
+            'whatsapp.digits_between' => 'Nomor WhatsApp harus terdiri dari 10 hingga 14 digit.',
+            'kata_kunci.required' => 'Kata Kunci tidak boleh kosong.',
+            'perusahaan.required' => 'Nama Perusahaan tidak boleh kosong.',
+            'masa_berlaku.required' => 'Masa berlaku keanggotaan tidak boleh kosong.',
         ]);
 
         // Update user profile
         $user->perusahaan = $request->perusahaan;
+        $user->alamat = $request->alamat;
+        $user->kota = $request->kota;
+        $user->whatsapp = $request->whatsapp;
+        $user->telegram = $request->telegram;
         $user->masa_berlaku = $request->masa_berlaku;
         $user->notif_email_tender = $request->has('notif_email_tender');
         $user->notif_email_lelang = $request->has('notif_email_lelang');

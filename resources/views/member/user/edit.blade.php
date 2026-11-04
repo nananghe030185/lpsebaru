@@ -1,4 +1,4 @@
-@extends('layouts.admin.master')
+@extends('layouts.member.master')
 
 @section('title', 'Edit User')
 

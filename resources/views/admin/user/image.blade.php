@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="fallback">
-            <input name="image" type="file" multiple />     
+            <input name="image" type="file"  />     
         </div>
         <button class="btn btn-primary" type="submit">Upload</button>
     </form>

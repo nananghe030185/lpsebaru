@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use illuminate\Support\Str;
 
@@ -62,17 +63,23 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'username' => 'required|string|max:255|unique:users,username',
+        ],[
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.required' => 'alamat email tidak boleh kosong',
+            'username.required' => 'Username tidak boleh kosong',
         ]);
         // update user
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->username = $request->username;
         $user->save();
         // redirect back with success message
-        return redirect()->route('app.user.edit', $user->id)->with('success', __('User updated successfully'))
-            ->withInput($request->except('password')); // Exclude password
+        return redirect()->back()->with('success', __('Profile updated successfully'));
     }
 
     public function updateProfile(User $user, Request $request){
+
         // Validate input
         $request->validate([
             'perusahaan' => 'required|string|max:255',
@@ -89,6 +96,10 @@ class UserController extends Controller
 
         // Update user profile
         $user->perusahaan = $request->perusahaan;
+        $user->alamat = $request->alamat;
+        $user->kota = $request->kota;
+        $user->whatsapp = $request->whatsapp;
+        $user->telegram = $request->telegram;
         $user->notif_email_tender = $request->has('notif_email_tender');
         $user->notif_email_lelang = $request->has('notif_email_lelang');
         $user->notif_whatsapp_tender = $request->has('notif_whatsapp_tender');
@@ -112,7 +123,7 @@ class UserController extends Controller
         
         $user->save();
 
-        return redirect()->back()->with('success', __('Profile updated successfully'));        
+        return redirect()->back()->with('success', __('Profile updated successfully'));
     }
 
     /**

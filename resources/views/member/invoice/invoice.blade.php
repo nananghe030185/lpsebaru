@@ -8,7 +8,6 @@
 @section('main_content')
     <!-- Bradcrumb -->
     <x-breadcrumb>{{__('Invoice')}}</x-breadcrumb>
-    
     <!-- Container-fluid starts-->
     <div class="container">
         <div class="row">
@@ -29,7 +28,6 @@
                                                 </div>
                                                 <div class="flex-grow-1 m-l-20 text-right">
                                                     <h4 class="media-heading">LPSE Indonesia</h4>
-                                                    {{-- <p>hello@cuba.in<br><span>289-335-6503</span></p> --}}
                                                 </div>
                                             </div><!-- End Info-->
                                         </div>
@@ -80,7 +78,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <p class="itemtext">{{$invoice->keterangan}}</p>
+                                                        <p class="itemtext">{{$invoice->item}}</p>
                                                     </td>
                                                     <td>
                                                         <p class="m-0">
@@ -125,7 +123,6 @@
                                                     {{ Illuminate\Support\Str::replace('{nominal}', number_format($invoice->total) ,App\Helpers\AppHelper::getMessageNotifikasiTiket()) }}  </p>
                                                 @else
                                                     <p class="legal text-warning"><strong>Pending</strong></p>
-                                                    
                                                 @endif
                                             </div>
                                         </div>

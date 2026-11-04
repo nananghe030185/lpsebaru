@@ -1,4 +1,5 @@
 (function () {
+  const date = new Date();
   function renderApexChart(selector, options) {
     var chartEl = document.querySelector(selector);
     if (!chartEl) {
@@ -8,13 +9,12 @@
     var chart = new ApexCharts(chartEl, options);
     chart.render();
   }
-
   // visitor chart
   var visitorUser = {
     series: [
       {
         name: "Growth",
-        data: [9, 25, 18, 30, 9, 14, 26, 22, 28, 16, 9, 8, 16],
+        data: window.appConfig.dataVisitor,
       },
     ],
     chart: {
@@ -36,7 +36,7 @@
         show: true,
       },
       type: "category",
-      categories: ["0", "", "10k", "", "20k", "", "30k", "", "40k", "", "50k", "", "60k"],
+      categories: ["H-12","", "H-10", "","H-8", "","H-6", "","H-4", "","H-2", "", "Today"],
       labels: {
         style: {
           fontFamily: "Rubik, sans-serif",
@@ -164,38 +164,55 @@
   renderApexChart("#visitor_chart", visitorUser);
 
   // currently sale
-  var chartCurrent = {
+  var chartLPSE = {
     series: [
       {
-        name: "Earning",
-        data: [300, 150, 250, 270, 400, 420, 600, 420, 400, 700, 600, 200],
+        name: "Sirup LKPP",
+        type: "line",
+        data: window.appConfig.dataScrapeSirup,
       },
       {
-        name: "Expense",
-        data: [300, 750, 700, 840, 850, 999, 900, 999, 850, 470, 400, 500],
+        name: "Tender LPSE",
+        type: "line",
+        data: window.appConfig.dataScrapeLPSE,
       },
     ],
     chart: {
-      type: "bar",
-      height: 312,
-      stacked: true,
+      height: 315,
+      type: "line",
+      stacked: false,
       toolbar: {
         show: false,
       },
       dropShadow: {
         enabled: true,
-        top: 8,
+        enabledOnSeries: [2],
+        top: 10,
         left: 0,
-        blur: 8,
-        color: "#7064F5",
-        opacity: 0.1,
+        blur: 4,
+        color: "#7366FF",
+        opacity: 0.2,
       },
+    },
+    stroke: {
+      width: [2, 3],
+      curve: "smooth",
+      dashArray: [8, 0],
     },
     plotOptions: {
       bar: {
-        horizontal: false,
-        columnWidth: "20%",
-        borderRadius: 0,
+        columnWidth: "30%",
+      },
+    },
+    colors: ["#ffb829", "#7366FF"],
+    fill: {
+      type: "solid",
+      gradient: {
+        shade: "dark",
+        type: "vertical",
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 100],
       },
     },
     grid: {
@@ -206,50 +223,18 @@
         },
       },
     },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      width: 2,
-      dashArray: 0,
-      lineCap: "butt",
-      colors: "#fff",
-    },
-    fill: {
-      opacity: 1,
-    },
     legend: {
       show: false,
     },
-    states: {
-      hover: {
-        filter: {
-          type: "darken",
-          value: 1,
-        },
-      },
-    },
-    colors: [CubaAdminConfig.primary, "#AAAFCB"],
-    yaxis: {
-      tickAmount: 3,
-      labels: {
-        show: true,
-        style: {
-          fontFamily: "Rubik, sans-serif",
-        },
-      },
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
+    markers: {
+      size: 0,
     },
     xaxis: {
-      categories: ["Jan", "Feb", "Mar", " Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      categories: window.appConfig.tanggalAxis,
       labels: {
         style: {
           fontFamily: "Rubik, sans-serif",
+          colors: ["#52526c"],
         },
       },
       axisBorder: {
@@ -260,74 +245,35 @@
       },
     },
     yaxis: {
-      labels: {
-        formatter: function (value) {
-          return value + "k";
-        },
-        style: {
-          fontFamily: "Rubik, sans-serif",
-          fontWeight: 400,
-          colors: "#52526C",
-          fontSize: 12,
-        },
+      title: {
+        text: "Points",
+      },
+      min: 0,
+      title: {
+        text: undefined,
       },
     },
     responsive: [
       {
-        breakpoint: 1400,
+        breakpoint: 1870,
         options: {
           chart: {
-            height: 310,
+            height: 320,
           },
         },
       },
       {
-        breakpoint: 1200,
+        breakpoint: 486,
         options: {
-          chart: {
-            height: 280,
-          },
-        },
-      },
-      {
-        breakpoint: 767,
-        options: {
-          plotOptions: {
-            bar: {
-              columnWidth: "15px",
-            },
-          },
-          yaxis: {
-            labels: {
-              show: false,
-            },
-          },
-        },
-      },
-      {
-        breakpoint: 576,
-        options: {
-          plotOptions: {
-            bar: {
-              columnWidth: "8px",
-            },
-          },
-        },
-      },
-      {
-        breakpoint: 400,
-        options: {
-          plotOptions: {
-            bar: {
-              columnWidth: "6px",
-            },
+          xaxis: {
+            tickAmount: 4,
           },
         },
       },
     ],
   };
 
-  renderApexChart("#chart-currently", chartCurrent);
+  renderApexChart("#grafik-lpse", chartLPSE);
 
   // Monthly targets
   var monthlyTarget = {
@@ -477,7 +423,7 @@
         data: window.appConfig.users,
       },
       {
-        name: "Earnings",
+        name: "Invoice",
         type: "line",
         data: window.appConfig.invoices,
       },

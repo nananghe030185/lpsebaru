@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\Helpers;
+use App\Models\ErrorLog;
 use App\Models\Lpse;
 use App\ScrapeTenderv1;
 use Illuminate\Console\Command;
@@ -29,6 +31,9 @@ class TenderLpse extends Command
      */
     public function handle()
     {
+        // Buat laporan di aktifitas
+        Helpers::createErrorLog('Scrape data tender LPSE', '', 'scrape');
+
         // Scrape hanya Bappenas
         $lpses = Lpse::where(['state' => true])->get(['id', 'link', 'state', 'scrape', 'jumlah_paket', 'jumlah_pagu', 'kode_lpse']);
 

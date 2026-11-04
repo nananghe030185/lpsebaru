@@ -255,7 +255,7 @@
                                 @endcan
                                 @can('member')
                                     <li>
-                                        <a href="{{ route('app.user.edit', Illuminate\Support\Facades\Auth::user()->id) }}">
+                                        <a href="{{ route('app.user.edit', Illuminate\Support\Facades\Auth::user()->username) }}">
                                             <i data-feather="user"> </i><span>My Profile</span>
                                         </a>
                                     </li>

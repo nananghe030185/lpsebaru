@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\Helpers;
 use App\Models\ErrorLog;
 use App\Models\Notification;
 use Illuminate\Console\Command;
@@ -49,9 +50,7 @@ class KirimMailTender extends Command
             //     return;
             // }
         } catch (\Exception $e) {
-            ErrorLog::create([
-                'message' => Str::limit('Gagal mengirim email tender: ' . $e->getMessage(), 490),
-            ]);
+            Helpers::createErrorLog(Str::limit('Gagal mengirim email tender: ' . $e->getMessage(), 490), '');
 
             $tenders->each(function ($tender) {
                 $tender->update(['status' => 'error']);

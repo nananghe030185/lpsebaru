@@ -43,21 +43,32 @@ class FokusDataTable extends DataTable
                 $anchor = $fokus->tender->nama_paket;
                 return Helpers::link(route('redirect.tender',[$fokus->tender->slug]), $anchor);
             })
+            ->editColumn('lpse.nama_lpse', function ($row) {
+                return '<a href="' . $row->lpse->link .'" target="_blank">'. $row->lpse->nama_lpse .'</a>';
+            })
             ->editColumn('tender.tahap_tender', function ($fokus) {
                 $anchor = $fokus->tender->tahap_tender;
-                return Helpers::link(route('redirect.tender.tahapan',[$fokus->tender->slug]), $anchor);
+
+                if($fokus->tender->tahap_tender == 'Tender Sudah Selesai'){
+                    $anchor = '<span class="badge badge-light-danger p-2">' . $fokus->tender->tahap_tender . '</span>';
+                }else{
+                    $anchor = '<span class="badge badge-light-success p-2">' . $fokus->tender->tahap_tender . '</span>';
+                }
+                return Helpers::link(route('redirect.tender.tahapan', [
+                    $fokus->tender->slug
+                ]), $anchor);
             })
             ->editColumn('tender.hps', function ($fokus) {
                 return TableHelper::nominal_simple($fokus->tender->hps);
             })
-            ->rawColumns(['checkbox','tender.nama_paket','tender.tahap_tender'])
+            ->rawColumns(['checkbox','tender.nama_paket','tender.tahap_tender','lpse.nama_lpse'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      *
-     * @return QueryBuilder<Foku>
+     * @return QueryBuilder<Fokus>
      */
     public function query(Fokus $model): QueryBuilder
     {

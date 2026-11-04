@@ -1,25 +1,34 @@
-<div class="card sales-report">
+<div class="card">
     <div class="card-header card-no-border">
         <div class="header-top">
-            <h5>Laporan Penjualan</h5>
-            <div class="card-header-right-icon">
-                <div class="dropdown icon-dropdown"><button class="btn dropdown-toggle" id="salesButton"
-                        type="button" data-bs-toggle="dropdown" aria-expanded="false"><i
-                            class="icon-more-alt"></i></button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="salesButton"><a
-                            class="dropdown-item" href="#!">Today</a><a class="dropdown-item"
-                            href="#!">Tomorrow</a><a class="dropdown-item"
-                            href="#!">Yesterday</a></div>
-                </div>
-            </div>
+            <h5>Grafik LPSE</h5>
         </div>
     </div>
     <div class="card-body pt-0">
-        <ul class="balance-data">
-            <li><span class="circle bg-primary"></span><span class="c-light ms-1">Paid Invoices</span></li>
-            <li><span class="circle bg-warning"> </span><span class="c-light ms-1">Invoices</span></li>
-            <li><span class="circle bg-secondary"> </span><span class="c-light ms-1">Users</span></li>
-        </ul>
-        <div id="sale_report"></div>
+        <div class="row m-0 overall-card">
+            <div class="col-12 p-0">
+                <div class="chart-right">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card-body p-0 statistical-card">
+                                <ul class="d-flex m-b-15">
+                                    <li>
+                                        <h5 >{{ number_format($totalTender) }}</h5>
+                                        <span class="f-light">Total Tender</span>
+                                    </li>
+                                    <li>
+                                        <h5>{{ number_format($totalLelang) }}</h5>
+                                        <span class="f-light">Total Lelang</span>
+                                    </li>
+                                </ul>
+                                <div class="current-sale-container">
+                                    <div id="grafik-lpse"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

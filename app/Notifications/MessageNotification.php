@@ -69,6 +69,7 @@ class MessageNotification extends Notification implements ShouldQueue
             ->parseMode('HTML')
             ->onError(function ($data){
                 ErrorLog::create([
+                    'kategori' => 'error',
                     'message' => 'Failed to send Telegram notification Chat ID : ' . $data['to'] .' ' . $data['exception']->getMessage()
                 ]);
             });

@@ -29,6 +29,9 @@ class TenderDataTable extends DataTable
             ->addColumn('checkbox', function ($row) {
                 return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
             })
+            ->editColumn('lpse.nama_lpse', function ($row) {
+                return '<a href="' . $row->lpse->link .'" target="_blank">'. $row->lpse->nama_lpse .'</a>';
+            })
             ->editColumn('created_at', function (Tender $tender) {
                 return TableHelper::tanggal($tender->created_at);
             })
@@ -59,7 +62,7 @@ class TenderDataTable extends DataTable
                     $tender->slug
                 ]), $anchor);
             })
-            ->rawColumns(['checkbox','nama_paket','action','tahap_tender'])
+            ->rawColumns(['checkbox','nama_paket','action','tahap_tender','lpse.nama_lpse'])
             ->setRowId('id');
     }
 
@@ -119,14 +122,33 @@ class TenderDataTable extends DataTable
                                     .draw();
                             });
                         // Get unique values and append as options
-                        api.column(columnIdx).data().unique().sort().each(function(d, j) {
-                            // Remove HTML tags if present
-                            var text = d.replace(/(<([^>]+)>)/gi, "");
-                            if (select.find("option[value=\'" + text + "\']").length === 0) {
-                                select.append("<option value=\"" + text + "\">" + text + "</option>");
-                            }
-                        });
+                        select.append("<option value=\"Download Dokumen Pemilihan\">Download Dokumen Pemilihan</option>");
+                        select.append("<option value=\"Evaluasi Administrasi, Kualifikasi, Teknis, dan Harga\">Evaluasi Administrasi, Kualifikasi, Teknis, dan Harga</option>");
+                        select.append("<option value=\"Evaluasi Dokumen Kualifikasi\">Evaluasi Dokumen Kualifikasi</option>");
+                        select.append("<option value=\"Klarifikasi dan Negosiasi Teknis dan Biaya\">Klarifikasi dan Negosiasi Teknis dan Biaya</option>");
+                        select.append("<option value=\"Masa Sanggah\">Masa Sanggah</option>");
+                        select.append("<option value=\"Masa Sanggah Prakualifikasi\">Masa Sanggah Prakualifikasi</option>");
+                        select.append("<option value=\"Pembukaan dan Evaluasi Penawaran File I: Administrasi dan Teknis\">Pembukaan dan Evaluasi Penawaran File I: Administrasi dan Teknis </option>");
+                        select.append("<option value=\"Pembukaan dan Evaluasi Penawaran File I: Administrasi, Dokumen Kualifikasi, dan Teknis\">Pembukaan dan Evaluasi Penawaran File I: Administrasi, Dokumen Kualifikasi, dan Teknis</option>");
+                        select.append("<option value=\"Pembukaan dan Evaluasi Penawaran File II: Harga\">Pembukaan dan Evaluasi Penawaran File II: Harga</option>");
+                        select.append("<option value=\"Pembukaan Dokumen Penawaran\">Pembukaan Dokumen Penawaran</option>");
+                        select.append("<option value=\"Pembuktian Kualifikasi\">Pembuktian Kualifikasi</option>");
+                        select.append("<option value=\"Penandatanganan Kontrak\">Penandatanganan Kontrak</option>");
+                        select.append("<option value=\"Penetapan Pemenang\">Penetapan Pemenang</option>");
+                        select.append("<option value=\"Pengumuman Hasil Evaluasi Administrasi dan Teknis\">Pengumuman Hasil Evaluasi Administrasi dan Teknis</option>");
+                        select.append("<option value=\"Pengumuman Pascakualifikasi\">Pengumuman Pascakualifikasi</option>");
+                        select.append("<option value=\"Pengumuman Pemenang\">Pengumuman Pemenang</option>");
+                        select.append("<option value=\"Pengumuman Prakualifikasi\">Pengumuman Prakualifikasi</option>");
+                        select.append("<option value=\"Seleksi Batal\">Seleksi Batal</option>");
+                        select.append("<option value=\"Seleksi Gagal\">Seleksi Gagal</option>");
+                        select.append("<option value=\"Surat Penunjukan Penyedia Barang/Jasa\">Surat Penunjukan Penyedia Barang/Jasa</option>");
+                        select.append("<option value=\"Tender Batal\">Tender Batal</option>");
+                        select.append("<option value=\"Tender Gagal\">Tender Gagal</option>");
+                        select.append("<option value=\"Tender Sudah Selesai\">Tender Sudah Selesai</option>");
+                        select.append("<option value=\"Tidak Ada Jadwal\">Tidak Ada Jadwal</option>");
+                        select.append("<option value=\"Upload Dokumen Penawaran\">Upload Dokumen Penawaran</option>");
 
+                        // Filter by LPSE
                         var lpse = api.column("lpse.nama_lpse:name").index();
 
                         var select = $("<select name=\"filter\" id=\"filter\" class=\"select2 klpdi form-control \"><option value=\"\">Semua KLPDI</option></select>")

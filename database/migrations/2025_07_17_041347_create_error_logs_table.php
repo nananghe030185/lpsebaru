@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('message', 500);
             $table->string('trace')->nullable();
+            $table->string('kategori')->nullable();
             $table->timestamps();
         });
     }

@@ -21,6 +21,38 @@
             </div>
             <div class="col-xxl-6 box-col-12">
                 <div class="mb-3">
+                    <label class="form-label" for="alamat">{{__('Alamat')}}</label>
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <i class="icofont icofont-pin" for="alamat"></i>
+                        </div>
+                        <input class="form-control" id="alamat" name="alamat" type="text" placeholder="masukan alamat perusahaan anda" value="{{ isset($user->alamat) ? $user->alamat : old('alamat') }}">
+                    </div>
+                    @error('alamat')
+                        <span class="text-danger">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-xxl-6 box-col-12">
+                <div class="mb-3">
+                    <label class="form-label" for="kota">{{__('Kota')}}</label>
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <i class="icofont icofont-pin" for="kota"></i>
+                        </div>
+                        <input class="form-control" id="kota" name="kota" type="text" placeholder="masukan kota / kabupaten perusahaan anda" value="{{ isset($user->kota) ? $user->kota : old('kota') }}">
+                    </div>
+                    @error('kota')
+                        <span class="text-danger">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-xxl-6 box-col-12">
+                <div class="mb-3">
                     <label class="form-label" for="human-friendly">{{__('Masa Berlaku')}}</label>
                     <div class="input-group flatpicker-calender">
                         <div class="input-group-text">

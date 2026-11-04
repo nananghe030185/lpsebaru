@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\Helpers;
+use App\Models\ErrorLog;
 use App\Models\Lelang;
 use App\Models\Sirup;
 use Carbon\Carbon;
@@ -19,7 +21,7 @@ class LelangSirup extends Command
      *
      * @var string
      */
-    protected $signature = 'app:lelang-sirup';
+    protected $signature = 'scrape:lelang-sirup';
 
     /**
      * The console command description.
@@ -33,6 +35,9 @@ class LelangSirup extends Command
      */
     public function handle()
     {
+        // Buat laporan di aktifitas
+        Helpers::createErrorLog('Scrape data Sirup (Sistem Informasi Rencana Umum Pengadaan)', '', 'scrape');
+
         $sirups = Sirup::all();
 
         $url = 'https://sirup.inaproc.id';

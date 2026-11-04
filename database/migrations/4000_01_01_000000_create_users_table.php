@@ -25,6 +25,8 @@ return new class extends Migration
             $table->boolean('status')->default(false);
             $table->integer('system_reserve')->default(0);
             $table->string('perusahaan')->nullable();
+            $table->string('alamat')->nullable();
+            $table->string('kota')->nullable();
             $table->string('kbli', 1000)->nullable();
             $table->double('komisi')->default(0);
             $table->string('kata_kunci', 1000)->nullable();

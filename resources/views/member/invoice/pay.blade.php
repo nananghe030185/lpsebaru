@@ -70,9 +70,11 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="card-footer text-end">
-                        <button id="pay" name="submit" class="btn btn-primary">{{ __('Bayar') }}</button>
-                        <a href="{{ route('app.invoice.index')}}" class="btn btn-danger">{{ __('Batal')}}</a>
+                    <div class="card-footer text-end d-inline-flex gap-1 justify-content-end">
+                        <x-form.buttonsimpan>{{ __('Bayar') }}</x-form.buttonsimpan>
+                        <x-form.buttonbatal :href="route('app.invoice.index')"></x-form.buttonbatal>
+                        {{-- <button id="pay" name="submit" class="btn btn-primary">{{ __('Bayar') }}</button>
+                        <a href="{{ route('app.invoice.index')}}" class="btn btn-danger">{{ __('Batal')}}</a> --}}
                     </div>
                 </div>
             </div>
