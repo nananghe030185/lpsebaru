@@ -25,6 +25,7 @@ class InstallController extends Controller
 
         User::create([
             'name' => 'Admin',
+            'username' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('admin123'),
             'status' => true,
