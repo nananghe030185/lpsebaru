@@ -4,90 +4,22 @@
 
         <div class="row custom-input">
             <div class="col-xxl-6 box-col-12">
-                <div class="mb-3">
-                    <label class="form-label" for="perusahaan">{{__('Perusahaan')}}</label>
-                    <div class="input-group">
-                        <div class="input-group-text">
-                            <i class="icofont icofont-building" for="perusahaan"></i>
-                        </div>
-                        <input class="form-control" id="perusahaan" name="perusahaan" type="text" placeholder="Perusahaan" value="{{ isset($user->perusahaan) ? $user->perusahaan : old('perusahaan') }}">
-                    </div>
-                    @error('perusahaan')
-                        <span class="text-danger">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                <x-form.textgroup name="perusahaan" icon="icofont icofont-building" :value="isset($user->perusahaan) ? $user->perusahaan : old('perusahaan')" :required="true">{{__('Perusahaan')}}</x-form.textgroup>
             </div>
             <div class="col-xxl-6 box-col-12">
-                <div class="mb-3">
-                    <label class="form-label" for="alamat">{{__('Alamat')}}</label>
-                    <div class="input-group">
-                        <div class="input-group-text">
-                            <i class="icofont icofont-pin" for="alamat"></i>
-                        </div>
-                        <input class="form-control" id="alamat" name="alamat" type="text" placeholder="masukan alamat perusahaan anda" value="{{ isset($user->alamat) ? $user->alamat : old('alamat') }}">
-                    </div>
-                    @error('alamat')
-                        <span class="text-danger">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                <x-form.textgroup name="alamat" icon="icofont icofont-pin" :value="isset($user->alamat) ? $user->alamat : old('alamat')">{{__('Alamat')}}</x-form.textgroup>
             </div>
             <div class="col-xxl-6 box-col-12">
-                <div class="mb-3">
-                    <label class="form-label" for="kota">{{__('Kota')}}</label>
-                    <div class="input-group">
-                        <div class="input-group-text">
-                            <i class="icofont icofont-pin" for="kota"></i>
-                        </div>
-                        <input class="form-control" id="kota" name="kota" type="text" placeholder="masukan kota / kabupaten perusahaan anda" value="{{ isset($user->kota) ? $user->kota : old('kota') }}">
-                    </div>
-                    @error('kota')
-                        <span class="text-danger">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                <x-form.textgroup name="kota" icon="icofont icofont-pin" :value="isset($user->kota) ? $user->kota : old('kota')">{{__('Kota')}}</x-form.textgroup>
             </div>
             <div class="col-xxl-6 box-col-12">
-                <div class="mb-3">
-                    <label class="form-label" for="human-friendly">{{__('Masa Berlaku')}}</label>
-                    <div class="input-group flatpicker-calender">
-                        <div class="input-group-text">
-                            <i class="icofont icofont-calendar" for="masa_berlaku"></i>
-                        </div>
-                        <input class="form-control" id="human-friendly" name="masa_berlaku" type="date" value="{{ isset($user->masa_berlaku) ? $user->masa_berlaku : old('masa_berlaku') }}" placeholder="Masa Berlaku">
-                        @error('masa_berlaku')
-                            <span class="text-danger">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
+                <x-form.calendar name="masa_berlaku" :value="isset($user->masa_berlaku) ? $user->masa_berlaku : old('masa_berlaku')" :required="true">{{__('Masa Berlaku')}}</x-form.calendar>
             </div>
             <div class="col-xxl-6 box-col-12">
-                <div class="mb-3">
-                    <label class="form-label" for="kbli">{{__('KBLI')}}</label>
-                    <input class="form-control" id="kbli" name="kbli" type="text" placeholder="pisahkan dengan koma" value="{{ old('kbli', $user->kbli ?? '') }}">
-                    @error('kbli')
-                        <span class="text-danger">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                <x-form.text name="kbli" :value="isset($user->kbli) ? $user->kbli : old('kbli')">{{__('KBLI')}}</x-form.text>
             </div>
             <div class="col-xxl-6 box-col-12">
-                <div class="mb-3">
-                    <label class="form-label" for="kata_kunci">{{__('Kata Kunci Paket')}}</label>
-                    <input class="form-control" id="kata_kunci" name="kata_kunci" type="text" placeholder="pisahkan dengan koma" value="{{ old('kata_kunci', $user->kata_kunci ?? '') }}" required>
-                    @error('kata_kunci')
-                        <span class="text-danger">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                <x-form.text name="kata_kunci" :value="isset($user->kata_kunci) ? $user->kata_kunci : old('kata_kunci')" :required="true">{{__('Kata Kunci Paket')}}</x-form.text>
             </div>
         </div>
 

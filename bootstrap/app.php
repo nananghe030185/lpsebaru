@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
             \Fahlisaputra\Minify\Middleware\MinifyCss::class,
             \Fahlisaputra\Minify\Middleware\MinifyJavascript::class,
             App\Http\Middleware\VisitorTracking::class,
+            App\Http\Middleware\ReferalSystem::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

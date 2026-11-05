@@ -254,7 +254,18 @@
                             <li><a href="{{ route('admin.inout.outbox.index')}}">{{ __('Outbox') }}</a></li>
                         </ul>
                     </li>
-
+                    <li class="sidebar-list">
+                        <i class="fa-solid fa-thumbtack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('admin.kupon.index') }}">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-board') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-board') }}"></use>
+                            </svg>
+                            <span>{{ __('Kupon') }} </span>
+                        </a>
+                    </li>
                     <li class="sidebar-list">
                         <i class="fa-solid fa-thumbtack"></i>
                         <a class="sidebar-link sidebar-title link-nav" href="{{ route('admin.pengumuman.index') }}">

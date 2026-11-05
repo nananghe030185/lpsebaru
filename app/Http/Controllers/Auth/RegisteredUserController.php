@@ -37,13 +37,14 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'username' => ['required', 'string', 'lowercase', 'unique:'.User::class]
         ]);
-
+        $uplineId = session('upline_id');
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'username' => Str::slug($request->username),
-            'masa_berlaku' => Carbon::now()
+            'masa_berlaku' => Carbon::now(),
+            'upline' => $uplineId
         ]);
 
         event(new Registered($user));

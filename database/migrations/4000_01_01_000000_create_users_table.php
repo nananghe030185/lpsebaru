@@ -40,7 +40,7 @@ return new class extends Migration
             $table->boolean('notif_email_lelang')->default(false);
             $table->string('image')->nullable();
             $table->dateTime('masa_berlaku')->default(now());
-            $table->bigInteger('upline')->unsigned()->nullable();
+            $table->integer('upline')->unsigned()->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

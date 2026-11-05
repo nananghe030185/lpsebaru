@@ -54,7 +54,7 @@
             <div class="card-body pt-0 count-student">
                 <div class="school-wrapper">
                     <div class="school-header">
-                        <h4 class="txt-primary">{{ number_format($totalkomisi)}}</h4>
+                        <h4 class="txt-primary">Rp. {{ number_format($totalkomisi)}}</h4>
                         <div class="d-flex gap-1 align-items-center flex-wrap pt-xxl-0 pt-2">
                             <i class="icon-arrow-up f-light"></i><span
                                 class="f-w-500 f-light">+6.7%</span>

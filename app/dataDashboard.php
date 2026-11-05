@@ -12,6 +12,7 @@ use App\Models\Tender;
 use App\Models\TenderKeyword;
 use App\Models\User;
 use App\Models\Visitor;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class dataDashboard
@@ -112,6 +113,17 @@ class dataDashboard
             return User::find($this->user_id)->komisi;
         }
         return User::sum('komisi');
+    }
+
+    /***
+     * Masa aktif akun
+     */
+    public function masaberlaku()
+    {
+        $now = Carbon::now();
+        $masaaktif = Carbon::parse(User::find($this->user_id)->masa_berlaku);
+
+        return [$masaaktif->format('d M Y'), round($now->diffInDays($masaaktif))];
     }
 
     /***
@@ -275,4 +287,5 @@ class dataDashboard
 
         return $tgl;
     }
+
 }

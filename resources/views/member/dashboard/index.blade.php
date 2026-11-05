@@ -24,7 +24,6 @@
                                     <h2 class="f-w-600">{{__('Selamat Datang')}} {{ \Illuminate\Support\Str::title(auth()->user()->name ?? '') }}!</h2>
                                     <p>{{__('Berikut data terbaru dari akun anda')}}</p>
                                     <div class="whatsnew-btn">
-                                        {{-- <a class="btn btn-outline-white" href="{{ route('admin.user_profile') }}" target="_blank">View Profile</a> --}}
                                         <a class="btn btn-outline-white" href="{{ route('app.dashboard.index') }}" target="_blank">{{__('View Profile')}}</a>
                                     </div>
                                 </div>
@@ -133,6 +132,8 @@
                 <x-widget.grafiklpse :totalTender="$totalTender" :totalLelang="$totalLelang"></x-widget.grafiklpse>
             </div>
             <div class="col-xxl-3 col-xl-3 col-lg-6 box-col-6 ord-xl-2 ord-md-3 box-ord-2">
+                <x-widget.masaaktif :list="false" :masaberlaku="$masaberlaku"></x-widget.masaakt>
+                <x-widget.referal :list="false" :username="$username"></x-widget.referal>
                 <x-widget.komisi :list="false" :totalkomisi="$totalkomisi"></x-widget.komisi>
             </div>
             <div class="col-xxl-6 col-lg-6 ord-xl-10 ord-md-8 box-ord-7 box-col-6">

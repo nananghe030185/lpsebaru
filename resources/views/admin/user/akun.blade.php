@@ -5,52 +5,13 @@
     <div class="form theme-form">
         <div class="row">
             <div class="col-12">
-                <div class="mb-3">
-                    <label>Name<span>*</span></label>
-                    <div class="input-group">
-                        <div class="input-group-text">
-                            <i class="icon-user"></i>
-                        </div>
-                        <input class="form-control" type="text" id="name" value="{{ isset($user->name) ? $user->name : old('name') }}" name="name" placeholder="Enter Name">
-                        @error('name')
-                            <span class="text-danger">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
+                <x-form.textgroup name="name" icon="icon-user" :value="isset($user->name) ? $user->name : old('name')" :required="true">{{__('Name')}}</x-form.textgroup>
             </div>
             <div class="col-12">
-                <div class="mb-3">
-                    <label>Username<span>*</span></label>
-                    <div class="input-group">
-                        <div class="input-group-text">
-                            <i class="icon-user"></i>
-                        </div>
-                        <input class="form-control" type="text" id="username" value="{{ isset($user->username) ? $user->username : old('username') }}" name="username" placeholder="Enter Username">
-                        @error('username')
-                            <span class="text-danger">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
+                <x-form.textgroup name="username" icon="icon-user" :value="isset($user->username) ? $user->username : old('Username')" :required="true">{{__('username')}}</x-form.textgroup>
             </div>
             <div class="col-12">
-                <div class="mb-3">
-                    <label>Email<span>*</span></label>
-                    <div class="input-group">
-                        <div class="input-group-text">
-                            <i class="icon-email"></i>
-                        </div>
-                        <input class="form-control" type="email" id="email" value="{{ isset($user->email) ? $user->email : old('email') }}" name="email" placeholder="Enter Email">
-                        @error('email')
-                            <span class="text-danger">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
+                <x-form.textgroup name="email" icon="icon-email" :value="isset($user->email) ? $user->email : old('email')" :required="true">{{__('Email')}}</x-form.textgroup>
             </div>
             <div class="col-12">
                 <div class="mb-3">

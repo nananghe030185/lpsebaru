@@ -10,8 +10,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\Keuangan;
 use App\Models\Komisi;
+use App\Models\Kupon;
 use App\Models\User;
 use App\Notifications\InvoiceNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\In;
 use Midtrans\Config;
@@ -46,12 +48,31 @@ class InvoiceController extends Controller
             'total' => 'required|numeric',
             // 'status' => ['required', In::make(['paid', 'unpaid', 'pending'])],
         ]);
+
+        // Diskon Kupon
+        $kupon = Kupon::where('kode',$request->kupon)
+                        ->where('status',true)
+                        ->where('stok','>',0)
+                        ->where('masa_berlaku','>', Carbon::now())
+                        ->first();
+                        
+        $total = $request->total;
+        if($kupon !== null){
+            $total = $request->total - ($request->total * $kupon->diskon / 100);
+        }
+        $request['total'] = $total;
+
+        // Upload Payload
         $snap = $this->submitPayload($request);
         $request->merge([
             'snap_token' => $snap,
         ]);
 
         Invoice::create($request->all());
+
+        // kurangi stok kupon
+        $kupon->stok -= 1;
+        $kupon->save();
 
         return redirect()->route('admin.invoice.index')->with('success', 'Invoice created successfully.');
     }

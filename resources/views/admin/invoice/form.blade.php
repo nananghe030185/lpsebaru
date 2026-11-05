@@ -22,7 +22,7 @@
                 </x-form.select>
 
                 <x-form.text name='total' :readonly=true  :value="App\Helpers\AppHelper::getHargaPersonal()">Harga</x-form.text>
-
+                <x-form.text name='kupon'>Kupon</x-form.text>
                 
             </div>
             <div class="col-lg-6">

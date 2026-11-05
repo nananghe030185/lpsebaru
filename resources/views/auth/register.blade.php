@@ -73,6 +73,7 @@
                                         <div class="show-hide-konfirm"><span class="show"></span></div>
                                     </div>
                                 </div>
+                                
                                 <div class="form-group mb-0">
                                     <button class="btn btn-primary btn-block w-100 mt-3" type="submit">Buat Akun</button>
                                 </div>

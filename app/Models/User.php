@@ -74,6 +74,7 @@ class User extends Authenticatable implements HasMedia
             'email_verified_at' => 'datetime',
             'masa_berlaku' => 'datetime',
             'password' => 'hashed',
+            'upline' => 'integer',
             'notif_email_tender' => 'boolean',
             'notif_email_lelang' => 'boolean',
             'notif_whatsapp_tender' => 'boolean',

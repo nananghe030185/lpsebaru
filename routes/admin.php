@@ -4,8 +4,6 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BroadcastController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\FokusController;
-use App\Http\Controllers\Admin\FokusLelangController;
 use App\Http\Controllers\Admin\InboxController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\KeuanganController;
@@ -20,13 +18,12 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SatkerController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\TenderController;
-use App\Http\Controllers\Admin\TenderKataKunciController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WhatsappController;
 use App\Http\Controllers\Admin\AutoResponController;
 use App\Http\Controllers\Admin\UserGroupController;
+use App\Http\Controllers\Admin\KuponController;
 use App\Http\Controllers\ErrorLogController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth','admin'])->group(function () {
@@ -137,6 +134,11 @@ Route::middleware(['auth','admin'])->group(function () {
 
     // Keuangan
     Route::get('/admin/laporan/keuangan', [KeuanganController::class, 'index'])->name('admin.laporan.keuangan');
+
+    // Kupon Diskon
+    Route::put('/admin/kupon/status/{id}', [KuponController::class, 'status'])->name('admin.kupon.status');
+    Route::post('/admin/kupon/bulk-delete', [KuponController::class, 'bulkDelete'])->name('admin.kupon.bulk-delete');
+    Route::resource('/admin/kupon', KuponController::class)->names('admin.kupon');
 
     //  Pengumuman
     Route::put('/admin/pengumuman/status/{id}', [PengumumanController::class, 'status'])->name('admin.pengumuman.status');

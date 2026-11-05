@@ -7,7 +7,9 @@ use App\Helpers\Helpers;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
+use App\Models\Kupon;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Midtrans\Config;
@@ -56,14 +58,29 @@ class InvoiceController extends Controller
         $request->merge([
             'user_id' => Helpers::getCurrentUserId()
         ]);
+        // Kupon diskon
+        $kupon = Kupon::where('kode',$request->kupon)
+                        ->where('status',true)
+                        ->where('stok','>',0)
+                        ->where('masa_berlaku','>', Carbon::now())
+                        ->first();
+        $total = $request->total;
+        if($kupon !== null){
+            $total = $request->total - ($request->total * $kupon->diskon / 100);
+        }
+        $request['total'] = $total;
 
-
+        // upload payload
         $snap = $this->submitPayload($request);
         $request->merge([
             'snap_token' => $snap,
         ]);
 
         Invoice::create($request->all());
+
+        // kurangi stok kupon
+        $kupon->stok -= 1;
+        $kupon->save();
 
         return redirect()->route('app.invoice.index')->with('success', 'Invoice created successfully.');
     }
