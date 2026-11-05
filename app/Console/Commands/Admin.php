@@ -29,6 +29,7 @@ class Admin extends Command
     {
         User::create([
             'name' => 'Admin',
+            'usermame' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('admin123'),
             'status' => true,
