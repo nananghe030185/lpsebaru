@@ -24,10 +24,7 @@ class KuponController extends Controller
      */
     public function create()
     {
-        $users = User::query()->get();
-        return view('admin.kupon.create', [
-            'kupon' => $users,
-        ]);
+        return view('admin.kupon.create');
     }
 
     /**
