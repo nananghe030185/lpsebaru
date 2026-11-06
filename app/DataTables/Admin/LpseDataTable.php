@@ -26,9 +26,13 @@ class LpseDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->editColumn('nama_lpse', function($row){
-                return '<div class="d-inline-flex gap-1"><img src="' . asset('assets/images/logo/' . $row->logo) . '"  class="bg-info img-fluid rounded" width="40px"><div class="text-ellipsis w-96 text-nowrap">'. $row->nama_lpse . '<br>' . '<span class="text-muted small">Slug :' . $row->slug . '</span></div></div>';
+                return '<div class="d-inline-flex gap-1"><img src="' . asset('assets/images/logo/' . $row->logo) . '"  class="bg-info img-fluid rounded" width="40px"><div class="text-ellipsis w-96 text-nowrap">'. $row->nama_lpse . '</div></div>';
             })
             ->editColumn('link', function($row){
+                if($row->link === null)
+                {
+                    return '';
+                }
                 return Helpers::link($row->link, $row->link);
             })
             ->editColumn('jumlah_paket', function($row){
@@ -56,6 +60,7 @@ class LpseDataTable extends DataTable
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
                     'edit'   => 'admin.lpse.edit',
+                    'delete' => 'admin.lpse.destroy',
                     'data'   => $row
                 ]);
             })
@@ -98,6 +103,9 @@ class LpseDataTable extends DataTable
                         Button::make('excel')
                             ->text('<i class="fas fa-file-excel"></i> Export to Excel') // Add icon and custom text
                             ->className('btn btn-success btn-sm'), // Apply specific Bootstrap classes
+                        Button::make('create')
+                            ->text('<i class="fas fa-add"></i> Tambah LPSE') // Add icon and custom text
+                            ->className('btn btn-success btn-sm'), // Apply specific Bootstrap classes,
                         'reload' => [
                             'text' => '<i class="fas fa-sync"></i> Reload LPSE', // Button text with icon
                             'className' => 'btn btn-secondary btn-sm', // CSS class for styling
@@ -126,13 +134,6 @@ class LpseDataTable extends DataTable
                                 window.location = "' . route('admin.lpse.unscrape-all') . '";
                             }',
                         ],
-                        'map' => [
-                            'text' => '<i class="fas fa-map"></i> Map',
-                            'className' => 'btn btn-warning btn-sm',
-                            'action' => 'function(e, dt, node, config){
-                                window.location = "' . route('admin.lpse.map') . '";
-                            }'
-                        ],
                     ])
                     // ->initComplete('function() {
                     //     var api = this.api();
@@ -153,7 +154,7 @@ class LpseDataTable extends DataTable
                     //     select1.append("<option value=\"kota\">Kota</option>");
                     //     select1.append("<option value=\"instansi\">Instansi</option>");
                     // }')
-                    ->addAction(['width' => 60, 'className' => 'text-center'])
+                    ->addAction(['width' => 100, 'className' => 'text-center'])
                     ->addIndex();
     }
 
@@ -178,8 +179,7 @@ class LpseDataTable extends DataTable
                 ->width(100)
                 ->hidden(),
             Column::make('nama_lpse')
-                ->title('Nama LPSE')
-                ->width(200),
+                ->title('Nama LPSE'),
             Column::make('link')
                 ->title('Link')
                 ->className('text-start')

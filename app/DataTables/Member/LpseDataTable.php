@@ -26,9 +26,13 @@ class LpseDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->editColumn('nama_lpse', function($row){
-                return '<div class="d-inline-flex gap-1"><img src="' . asset('assets/images/logo/' . $row->logo) . '"  class="bg-info img-fluid rounded" width="40px"><div class="text-ellipsis w-96 text-nowrap">'. $row->nama_lpse . '<br>' . '<span class="text-muted small">Slug :' . $row->slug . '</span></div></div>';
+                return '<div class="d-inline-flex gap-1"><img src="' . asset('assets/images/logo/' . $row->logo) . '"  class="bg-info img-fluid rounded" width="40px"><div class="text-ellipsis w-96 text-nowrap">'. $row->nama_lpse . '</div></div>';
             })
             ->editColumn('link', function($row){
+                if($row->link === null)
+                {
+                    return '';
+                }
                 return Helpers::link($row->link, $row->link);
             })
             ->editColumn('jumlah_paket', function($row){

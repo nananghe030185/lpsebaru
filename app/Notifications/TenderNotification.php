@@ -71,7 +71,7 @@ class TenderNotification extends Notification implements ShouldQueue
     /**
      * Kirim notifikasi ke Telegram.
      */
-    public function toTelegram($notifiable)
+    public function toTelegram(object $notifiable)
     {
         $telegrams = ModelsNotification::where('user_id', $notifiable->id)->where('channel', 'telegram')->where('status', 'unread')->limit(5)->get();
         $messages = 'Berikut paket tender LPSE yang tayang hari ini '. "\n" . Carbon::now()->format('d-m-Y') . ":\n\n";

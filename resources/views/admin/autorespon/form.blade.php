@@ -16,8 +16,8 @@
                     @enderror
                 </div> --}}
 
-               <x-form.editor name="response" :value="$autorespon->response ?? old('response')">Response</x-form.editor>
-
+               {{-- <x-form.editor name="response" :value="$autorespon->response ?? old('response')">Response</x-form.editor> --}}
+                <x-form.textarea name="response" :value="$autorespon->response ?? old('response')">Response</x-form.textarea>
                 <x-form.selectstatus name="whatsapp" :value="$autorespon->whatsapp ?? old('whatsapp')">WhatsApp</x-form.selectstatus>
 
                 <x-form.selectstatus name="telegram" :value="$autorespon->telegram ?? old('telegram')">Telegram</x-form.selectstatus>

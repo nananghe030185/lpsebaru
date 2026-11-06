@@ -30,9 +30,9 @@ class InboxDataTable extends DataTable
             })
             ->editColumn('status', function($row){
                 if($row){
-                    return '<span class="text-success"><i class="fa-regular fa-circle-check"></i></span>';
+                    return '<span class="text-success"><i class="fa-regular fa-circle-check"></i>Sudah dibaca</span>';
                 }else{
-                    return '<span class="text-danger"><i class="far fa-times-circle"></i></span>';
+                    return '<span class="text-danger"><i class="far fa-times-circle"></i>Belum dibaca</span>';
                 }
             })
             ->editColumn('action', function ($row) {

@@ -52,9 +52,9 @@ class OutboxDataTable extends DataTable
 
             })
             ->editColumn('status', function($row){
-                if($row->status == true){
+                if($row->status == 1){
                     return '<span class="text-success"><i class="fa-regular fa-circle-check"></i></span><span class="text-success">Terkirim</span>';
-                }elseif($row->status == false){
+                }elseif($row->status == 2){
                     return '<span class="text-danger"><i class="far fa-times-circle"></i></span> <span class="text-danger">Gagal</span>';
                 }else{
                     return '<span class="badge bg-warning">Pending</span>';

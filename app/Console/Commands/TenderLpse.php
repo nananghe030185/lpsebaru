@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Helpers\Helpers;
 use App\Models\ErrorLog;
 use App\Models\Lpse;
-use App\ScrapeTenderv1;
+use App\ScrapeTenderV1;
 use Illuminate\Console\Command;
 
 

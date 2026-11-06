@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\AutoRespon as ModelsAutoRespon;
+use App\Models\Inbox;
+use App\Models\Outbox;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -31,29 +33,41 @@ class AutoRespon extends Command
     {
         //
         $inbox = \App\Models\Inbox::where('status', false)->first();
+        
         if($inbox){
-            if($response = $this->response($inbox)){
-                $outbox = new \App\Models\Outbox();
-                $outbox->recipient = $inbox->sender;
-                $outbox->message = $this->replaceparams($inbox->sender, $response);
-                $outbox->channel = $inbox->channel;
-                $outbox->status = false;
-                $outbox->save();
+            $user = User::where('whatsapp', $inbox->sender)->orWhere('telegram',$inbox->sender)->first();
 
-                $inbox->status = true;
-                $inbox->save();
+            // jika user ada
+            if($user)
+            {
+                if($response = $this->response($inbox)){
+                    Outbox::create([
+                        'status' => 0, // artinya pesan belum terkirim
+                        'recipient' => $inbox->sender,
+                        'message' => $this->replaceparams($user, $response),
+                        'channel' => $inbox->channel
+                    ]);
+
+                    $inbox->status = true;
+                    $inbox->save();
+                }else{
+                    //jika tidak ada keyword
+                    $inbox->status = true;
+                    $inbox->save();
+                }
             }else{
-                //jika tidak ada keyword
+                // ubah status inbox jadi dibaca
                 $inbox->status = true;
                 $inbox->save();
             }
+            
         }
     }
 
     /**
      * Get response based on keyword
      */
-    public function response($inbox)
+    public function response(Inbox $inbox)
     {
         $arrs = Str::of($inbox->message)->explode('#');
 
@@ -81,10 +95,9 @@ class AutoRespon extends Command
     /**
      * Replace parameters in the message
      */
-    public function replaceparams($sender, $message)
+    public function replaceparams(User $user,string $message)
     {
         // replace setiap parameter messege
-        $user = User::where('whatsapp', $sender)->orWhere('telegram',$sender)->first();
         $message = Str::replace('{{site_name}}', config('app.name'), $message);
         $message = Str::replace('{{masaberlaku}}', Carbon::parse($user->masa_berlaku)->format('d F Y'), $message);
 

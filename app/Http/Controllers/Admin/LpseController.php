@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class LpseController extends Controller
 {
@@ -29,6 +30,49 @@ class LpseController extends Controller
         return view('admin.lpse.edit', ['lpse' => $lpse]);
     }
 
+    public function create()
+    {
+        return view('admin.lpse.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'kode_lpse' => 'required|numeric|unique:lpses,kode_lpse',
+            'nama_lpse' => 'required',
+            'link' => 'required|unique:lpses,link',
+            'jumlah_paket' => 'required|numeric',
+            'jumlah_pagu' => 'required|numeric',
+            'logo' => 'required|mimes:jpg,jpeg,png,webp|max:2048' // Max 2MB
+        ]);
+
+        // buat slug
+        if($request->slug === ''){
+            $request->input('slug', Str::slug($request->nama_lpse)) ;
+        }
+
+        $lpse = Lpse::create([
+            'kode_lpse' => $request->kode_lpse,
+            'nama_lpse' => $request->nama_lpse,
+            'link' => $request->link,
+            'slug' => $request->slug,
+            'state' => $request->state ?? false,
+            'scrape' => $request->scrape ?? false,
+            'jumlah_paket' => $request->jumlah_paket,
+            'jumlah_pagu' => $request->jumlah_pagu,
+            'description' => $request->description,
+        ]);
+
+        // Handle file upload
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $filename = $file->getClientOriginalName();
+            $file->move(public_path('assets/images/logo'), $filename);
+            $lpse->update(['logo' => $filename]);
+        }
+
+        return redirect()->route('admin.lpse.index')->with('success','LPSE baru telah di tambahkan');
+    }
     /**
      * Update the specified resource in storage.
      */
@@ -36,8 +80,19 @@ class LpseController extends Controller
     {
         // dd($request);
         $request->validate([
+            'kode_lpse' => 'required',
+            'nama_lpse' => 'required',
+            'link' => 'required',
+            'jumlah_paket' => 'required|numeric',
+            'jumlah_pagu' => 'required|numeric',
             'logo' => 'required|mimes:jpg,jpeg,png,webp|max:2048' // Max 2MB
         ]);
+
+        // buat slug
+        if($request->slug === ''){
+            $request->input('slug', Str::slug($request->nama_lpse)) ;
+        }
+
         $lpse = Lpse::findOrFail($id);
         $lpse->update([
             'kode_lpse' => $request->kode_lpse,
@@ -62,7 +117,7 @@ class LpseController extends Controller
     }
 
 
-    public function status($id, Request $request)
+    public function status(int $id, Request $request)
     {
         $model = Lpse::findOrFail($id);
         $model->update(['state' => $request->status]);
@@ -70,10 +125,13 @@ class LpseController extends Controller
 
     public function toggle_status()
     {
-        $models = Lpse::all();
-        foreach($models as $model){
-            $state = !$model->state; // Toggle the state 
-            $model->update(['state' => $state]);
+        $lpses = Lpse::all();
+        foreach($lpses as $lpse){
+            if(Str::contains($lpse->link,'spse.inaproc.id'))
+            {
+                $state = !$lpse->state; // Toggle the state 
+                $lpse->update(['state' => $state]);
+            }
         }
 
         return redirect()->route('admin.lpse.index')->with('success', __('Status semua LPSE berhasil diubah'));
@@ -98,6 +156,13 @@ class LpseController extends Controller
         // This method can be used to reload the data or perform any necessary actions.
         // For example, you might want to clear cache or refresh data from an external source.
         return redirect()->route('admin.lpse.index')->with('success', __('Data LPSE telah diperbarui'));
+    }
+
+    public function destroy(Lpse $lpse)
+    {
+        $lpse->delete();
+
+        return redirect()->route('admin.lpse.index')->with('success', 'Data berhasil dihapus'); 
     }
 
     public function map(){

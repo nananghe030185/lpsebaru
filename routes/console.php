@@ -10,3 +10,5 @@ Artisan::command('inspire', function () {
 
 Schedule::command('scrape:tender-lpse')->everySixHours();
 Schedule::command('scrape:lelang-sirup')->everySixHours();
+Schedule::command('app:auto-respon')->everySecond();
+Schedule::command('app:notifikasi-tender')->everyTwoSeconds();

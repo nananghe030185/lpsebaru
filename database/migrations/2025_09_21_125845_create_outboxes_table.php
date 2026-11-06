@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('outboxes', function (Blueprint $table) {
             $table->id();
-            $table->boolean('status')->default(true);
+            $table->smallInteger('status')->default(0)->comment('0 belum dikirim, 1 sudah dikirim, 2 gagal dikirim');
             $table->string('recipient');
             $table->string('message');
             $table->string('channel');

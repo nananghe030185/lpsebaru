@@ -77,7 +77,7 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::get('/admin/lpse/unscrapeall', [LpseController::class, 'unscrapeall'])->name('admin.lpse.unscrape-all');
     Route::get('/admin/lpse/reload', [LpseController::class, 'reload'])->name('admin.lpse.reload');
     Route::get('/admin/lpse/map', [LpseController::class, 'map'])->name('admin.lpse.map');
-    Route::resource('/admin/lpse', LpseController::class)->names('admin.lpse')->except(['store','show','destroy']);;
+    Route::resource('/admin/lpse', LpseController::class)->names('admin.lpse')->except(['show']);;
     
     // Pengaturan
     Route::resource('/admin/pengaturan/applikasi', PengaturanController::class)->names('admin.applikasi')->except(['create','store','show','destroy']);;

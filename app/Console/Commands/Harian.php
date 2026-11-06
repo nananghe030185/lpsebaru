@@ -46,7 +46,7 @@ class Harian extends Command
         });
     }
 
-    public function pesanReminder($daybefore)
+    public function pesanReminder(string $daybefore)
     {
         return 'Masa Berlaku Keanggotaan anda akan berakhir dalam ' . $daybefore . ' hari, silahkan lakukan pembayaran untuk tetap menikmati fitur dari ' . config('app.name');
     }
