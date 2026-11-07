@@ -27,7 +27,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->to(route('app.dashboard.index'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/r/tender/{tender:slug}', [TenderController::class, 'redirect'])->name('redirect.tender');
