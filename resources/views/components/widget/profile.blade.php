@@ -6,8 +6,7 @@
                     <h2 class="f-w-600">{{__('Selamat Datang')}} {{ \Illuminate\Support\Str::title(auth()->user()->name ?? '') }}!</h2>
                     <p>{{__('Berikut data terbaru dari akun anda')}}</p>
                     <div class="whatsnew-btn">
-                        {{-- <a class="btn btn-outline-white" href="{{ route('admin.user_profile') }}" target="_blank">View Profile</a> --}}
-                        <a class="btn btn-outline-white" href="{{ route('admin.dashboard') }}" target="_blank">{{__('View Profile')}}</a>
+                        <a class="btn btn-outline-white" href="{{ route('app.user.edit', auth()->user()->username) }}" target="_blank">{{__('View Profile')}}</a>
                     </div>
                 </div>
             </div>

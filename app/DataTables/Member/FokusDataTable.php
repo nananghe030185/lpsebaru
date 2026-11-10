@@ -30,8 +30,8 @@ class FokusDataTable extends DataTable
             ->addColumn('checkbox', function ($row) {
                 return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
             })
-            ->editColumn('created_at', function (Fokus $fokus) {
-                return TableHelper::tanggal($fokus->created_at);
+            ->editColumn('updated_at', function (Fokus $fokus) {
+                return TableHelper::tanggal($fokus->updated_at);
             })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
@@ -41,7 +41,7 @@ class FokusDataTable extends DataTable
             })
             ->editColumn('tender.nama_paket', function ($fokus) {
                 $anchor = $fokus->tender->nama_paket;
-                return Helpers::link(route('redirect.tender',[$fokus->tender->slug]), $anchor);
+                return Helpers::link(route('redirect.tender',[$fokus->tender->slug]), $anchor).'<br><small class="text-muted">'. $fokus->tender->kategori .'-'. $fokus->tender->metode_pemilihan .'-' . $fokus->tender->metode_pengadaan . '-' . $fokus->tender->metode_evaluasi . '</small><br><small class="text-muted">Nilai Kontrak :' .$fokus->tender->nilai_kontrak. '</small>';
             })
             ->editColumn('lpse.nama_lpse', function ($row) {
                 return '<a href="' . $row->lpse->link .'" target="_blank">'. $row->lpse->nama_lpse .'</a>';
@@ -166,10 +166,14 @@ class FokusDataTable extends DataTable
                 ->width(10)
                 ->addClass('text-center')
                 ->title('<div class="form-check"><input class="form-check-input checkbox-primary" id="select-all" type="checkbox"></div>'),
-            Column::make('created_at')
-                ->title(__('Tanggal Dibuat'))
+            Column::make('updated_at')
+                ->title(__('Tanggal diupdate'))
                 ->searchable(true)
-                ->orderable(true),    
+                ->orderable(true),
+            Column::make('tender.tender_id')
+                ->title(__('Kode Tender'))
+                ->searchable(true)
+                ->orderable(true),
             Column::make('tender.nama_paket')
                 ->title(__('Nama Paket'))
                 // ->name('tender.nama_paket')

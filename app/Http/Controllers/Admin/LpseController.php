@@ -43,7 +43,7 @@ class LpseController extends Controller
             'link' => 'required|unique:lpses,link',
             'jumlah_paket' => 'required|numeric',
             'jumlah_pagu' => 'required|numeric',
-            'logo' => 'required|mimes:jpg,jpeg,png,webp|max:2048' // Max 2MB
+            // 'logo' => 'required|mimes:jpg,jpeg,png,webp|max:2048' // Max 2MB
         ]);
 
         // buat slug
@@ -85,7 +85,7 @@ class LpseController extends Controller
             'link' => 'required',
             'jumlah_paket' => 'required|numeric',
             'jumlah_pagu' => 'required|numeric',
-            'logo' => 'required|mimes:jpg,jpeg,png,webp|max:2048' // Max 2MB
+            // 'logo' => 'required|mimes:jpg,jpeg,png,webp|max:2048' // Max 2MB
         ]);
 
         // buat slug

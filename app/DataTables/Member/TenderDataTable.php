@@ -49,7 +49,7 @@ class TenderDataTable extends DataTable
             ->editColumn('nama_paket', function (Tender $tender) {
                 $link = $tender->lpse->link .'/lelang/' . $tender->tender_id . '/pengumumanlelang';
                 $anchor = $tender->nama_paket;
-                return Helpers::link(route('redirect.tender', [$tender->slug]), $anchor);
+                return Helpers::link(route('redirect.tender', [$tender->slug]), $anchor).'<br><small class="text-muted">'. $tender->kategori .'-'. $tender->metode_pemilihan .'-' . $tender->metode_pengadaan . '-' . $tender->metode_evaluasi . '</small><br><small class="text-muted">Nilai Kontrak :' .$tender->nilai_kontrak. '</small>';
             })
             ->editColumn('tahap_tender', function (Tender $tender) {
                  $anchor = '';

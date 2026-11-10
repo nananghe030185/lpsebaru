@@ -29,6 +29,9 @@ class TenderKataKunciDataTable extends DataTable
             ->addColumn('checkbox', function ($row) {
                 return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
             })
+            ->editColumn('updated_at', function (Fokus $fokus) {
+                return TableHelper::tanggal($fokus->updated_at);
+            })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
                     'fokusKataKunci'  => 'app.tender-kata-kunci.fokus',
@@ -38,17 +41,32 @@ class TenderKataKunciDataTable extends DataTable
             })
             ->editColumn('tender.nama_paket', function ($fokus) {
                 $anchor = $fokus->tender->nama_paket;
-                return Helpers::link(route('redirect.tender',[$fokus->tender->slug]), $anchor);
+                return Helpers::link(route('redirect.tender',[$fokus->tender->slug]), $anchor).'<br><small class="text-muted">'. $fokus->tender->kategori .'-'. $fokus->tender->metode_pemilihan .'-' . $fokus->tender->metode_pengadaan . '-' . $fokus->tender->metode_evaluasi . '</small><br><small class="text-muted">Nilai Kontrak :' .$fokus->tender->nilai_kontrak. '</small>';
             })
+            ->editColumn('lpse.nama_lpse', function ($row) {
+                return '<a href="' . $row->lpse->link .'" target="_blank">'. $row->lpse->nama_lpse .'</a>';
+            })
+            // ->editColumn('tender.tahap_tender', function ($fokus) {
+            //     $anchor = $fokus->tender->tahap_tender;
+            //     return Helpers::link(route('redirect.tender.tahapan',[$fokus->tender->slug]), $anchor);
+            // })
             ->editColumn('tender.tahap_tender', function ($fokus) {
                 $anchor = $fokus->tender->tahap_tender;
-                return Helpers::link(route('redirect.tender.tahapan',[$fokus->tender->slug]), $anchor);
+
+                if($fokus->tender->tahap_tender == 'Tender Sudah Selesai'){
+                    $anchor = '<span class="badge badge-light-danger p-2">' . $fokus->tender->tahap_tender . '</span>';
+                }else{
+                    $anchor = '<span class="badge badge-light-success p-2">' . $fokus->tender->tahap_tender . '</span>';
+                }
+                return Helpers::link(route('redirect.tender.tahapan', [
+                    $fokus->tender->slug
+                ]), $anchor);
             })
             ->editColumn('tender.hps', function ($fokus) {
                 $tender = Tender::find($fokus->tender_id);
                 return TableHelper::nominal_simple($fokus->tender->hps);
             })
-            ->rawColumns(['checkbox','tender.nama_paket','tender.tahap_tender'])
+            ->rawColumns(['checkbox','tender.nama_paket','tender.tahap_tender','lpse.nama_lpse'])
             ->setRowId('id');
     }
 
@@ -171,6 +189,14 @@ class TenderKataKunciDataTable extends DataTable
                 ->width(10)
                 ->addClass('text-center')
                 ->title('<div class="form-check"><input class="form-check-input checkbox-primary" id="select-all" type="checkbox"></div>'),
+            Column::make('updated_at')
+                ->title(__('Tanggal diupdate'))
+                ->searchable(true)
+                ->orderable(true),
+            Column::make('tender.tender_id')
+                ->title(__('Kode Tender'))
+                ->searchable(true)
+                ->orderable(true),
             Column::make('tender.nama_paket')
                 ->title(__('Nama Paket'))
                 ->name('tender.nama_paket')
