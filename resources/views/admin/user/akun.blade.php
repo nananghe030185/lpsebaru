@@ -17,6 +17,10 @@
                 <div class="mb-3">
                     <div class="card-wrapper border rounded-3 h-100 checkbox-checked">
                         <h6 class="sub-title">Group User</h6>
+                        <div class="form-check radio radio-warning">
+                            <input class="form-check-input" id="gmt" type="radio" name="group_id" value="4" @checked($user->group_id === 4)>
+                            <label for="gmt">GMT</label>
+                        </div>
                         <div class="form-check radio radio-danger">
                             <input class="form-check-input" id="nonmember" type="radio" name="group_id" value="3" @checked($user->group_id === 3)>
                             <label for="nonmember">Non Member</label>

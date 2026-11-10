@@ -42,9 +42,9 @@ class DashboardController extends Controller
 
         $errorsLog = $dataDashboard->currentErrorLog();
         $masaberlaku = $dataDashboard->masaberlaku();
-        $username = User::find(Auth::user()->id)->username;
-
-        return view('member.dashboard.index',compact('totalLelang', 'totalTender', 'tenderkeyword', 'totalFokus', 'toplpse','totalkomisi', 'topUsers', 'dataInvoices', 'dataPaidInvoices', 'dataVisitor','dataScrapeLPSE', 'dataScrapeSirup','tanggalAxis', 'totalTender','totalLelang', 'errorsLog','masaberlaku', 'username'));
+        $user = User::find(Auth::user()->id);
+        $username = $user->username;
+        return view('member.dashboard.index',compact('totalLelang', 'totalTender', 'tenderkeyword', 'totalFokus', 'toplpse','totalkomisi', 'topUsers', 'dataInvoices', 'dataPaidInvoices', 'dataVisitor','dataScrapeLPSE', 'dataScrapeSirup','tanggalAxis', 'totalTender','totalLelang', 'errorsLog','masaberlaku', 'username','user'));
     }
 
 }

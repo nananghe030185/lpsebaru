@@ -19,9 +19,22 @@ class InstallController extends Controller
         Artisan::call('optimize:clear');
 
         // Insert admin user
-        Groups::create(['name' => 'Super Admin']);
-        Groups::create(['name' => 'Member']);
-        Groups::create(['name' => 'Non Member']);
+        Groups::create([
+            'name' => 'Super Admin',
+            'description' => 'Kelompok Super Admin yang punya akses penuh',
+        ]);
+        Groups::create([
+            'name' => 'Member',
+            'description' => 'Kelompok User yang sudah membayar untuk berlangganan membership',
+        ]);
+        Groups::create([
+            'name' => 'Non Member',
+            'description' => 'Kelompok User yang belum membayar untuk berlangganan membership',
+        ]);
+        Groups::create([
+            'name' => 'GMT',
+            'description' => 'Kelompok User yang berada di GMT',
+        ]);
 
         User::create([
             'name' => 'Admin',

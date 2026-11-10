@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use PhpParser\Node\Expr\Cast\Double;
+
 class TableHelper
 {
     /**
@@ -12,7 +14,7 @@ class TableHelper
         //
     }
 
-    public static function nominal_simple($nominal)
+    public static function nominal_simple(int $nominal)
     {
         if($nominal / 1000000000000 >= 1){
             return 'Rp. ' . number_format($nominal / 1000000000000, 2, ',', '.') . ' Triliun';
