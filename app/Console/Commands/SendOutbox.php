@@ -20,26 +20,8 @@ class SendOutbox extends Command
      */
     public function handle()
     {
-        $this->kirim();
         $this->terima();
-    }
-
-    public function kirim()
-    {
-        // kirim pesan chanel telegram
-        $outboxTele = Outbox::where('channel','telegram')->where('status', 0)->where('recipient', '!=', null)->first();
-        $responTele = TelegramHelper::sendMessage($outboxTele->recipient, $outboxTele->message);
-        
-        // update status to 1 if message sent successfully
-        if (isset($responTele['message_id'])) {
-            $outboxTele->status = 1;
-            $outboxTele->save();
-        } else {
-            // update status 2 jika gagal
-            Helpers::createErrorLog($responTele['error'],'');
-            $outboxTele->status = 2;
-            $outboxTele->save();
-        }
+        $this->kirim();
     }
 
     public function terima()
@@ -67,8 +49,8 @@ class SendOutbox extends Command
                         'status' => 0, // artinya pesan belum terkirim
                         'recipient' => $sender,
                         'message' => 'Berikut adalah beberapa perintah yang dapat Anda gunakan:
-1. /start - Memulai percakapan dengan bot.
-2. /help - Menampilkan daftar perintah yang tersedia.',
+                        1. /start - Memulai percakapan dengan bot.
+                        2. /help - Menampilkan daftar perintah yang tersedia.',
                         'channel' => 'telegram'
                     ]);
                 }elseif($text == '/token'){
@@ -92,5 +74,23 @@ class SendOutbox extends Command
         }
 
         return $updates;
+    }
+
+    public function kirim()
+    {
+        // kirim pesan chanel telegram
+        $outboxTele = Outbox::where('channel','telegram')->where('status', 0)->where('recipient', '!=', null)->first();
+        $responTele = TelegramHelper::sendMessage($outboxTele->recipient, $outboxTele->message);
+        
+        // update status to 1 if message sent successfully
+        if (isset($responTele['message_id'])) {
+            $outboxTele->status = 1;
+            $outboxTele->save();
+        } else {
+            // update status 2 jika gagal
+            Helpers::createErrorLog($responTele['error'],'');
+            $outboxTele->status = 2;
+            $outboxTele->save();
+        }
     }
 }
