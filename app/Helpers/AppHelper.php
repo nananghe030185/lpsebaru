@@ -77,6 +77,11 @@ class AppHelper
         return self::getValue('durasi_personal');
     }
 
+    public static function getDefaultIdUserGroup()
+    {
+        return self::getValue('id_default_user_group');
+    }
+
     public static function getDurasiPremium()
     {
         return self::getValue('durasi_premium');

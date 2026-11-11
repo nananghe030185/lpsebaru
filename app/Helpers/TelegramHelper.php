@@ -48,7 +48,15 @@ class TelegramHelper
     public static function getUpdates()
     {
         $url = self::API_URL . static::getTokenTelegram() . '/getUpdates';
-        $response = Http::get($url)->throw()->json();   
+        $response = Http::get($url)->throw()->json();
+        // add update_id + 1 to avoid receiving the same updates again
+        if (isset($response['result']) && !empty($response['result'])) {
+            $lastUpdateId = end($response['result'])['update_id'];
+            $offset = $lastUpdateId + 1;
+            // set offset to avoid receiving the same updates again
+            $url = self::API_URL . static::getTokenTelegram() . '/getUpdates?offset=' . $offset;
+            Http::get($url)->throw()->json();
+        }
         return $response['result'] ?? [];
     }
 

@@ -80,18 +80,11 @@ class UserGroupDataTable extends DataTable
     {
         return [
             Column::make('id')
-                ->hidden(),
+                ->title('ID'),
             Column::make('name')
                 ->title('Group Name'),
             Column::make('description')
                 ->title('Description'),
-            // Column::make('users')
-            //     ->title('Number of Users')
-            //     ->searchable(false)
-            //     ->orderable(false)
-            //     ->render(function (Groups $group) {
-            //         return $group->users->count();
-            //     }),
             Column::make('users_count')
                 ->title('Jumlah User')
                 ->searchable(false)

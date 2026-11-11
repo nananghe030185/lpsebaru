@@ -149,7 +149,7 @@ class ScrapeTenderV1
                     [
                         'lpse_id' => $lpse_id,
                         'nama_lpse' => $data[2],
-                        'nama_paket' => Str::limit($data[1], 500),
+                        'nama_paket' => Str::limit($data[1], 490),
                         'slug' => Str::limit(
                             Str::slug($data[0] . ' ' . $data[1]),
                             250

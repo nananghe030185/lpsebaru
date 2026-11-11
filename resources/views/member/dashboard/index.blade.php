@@ -90,10 +90,10 @@
             </div>
             <div class="col-xxl-3 col-xl-3 col-lg-6 box-col-6 ord-xl-2 ord-md-3 box-ord-2">
                 <x-widget.masaaktif :list="false" :masaberlaku="$masaberlaku"></x-widget.masaakt>
-                @if($user->group_id !== 4)
+                @cannot('gmt')
                     <x-widget.referal :list="false" :username="$username"></x-widget.referal>
                     <x-widget.komisi :list="false" :totalkomisi="$totalkomisi"></x-widget.komisi>
-                @endif
+                @endcannot
             </div>
             <div class="col-xxl-6 col-lg-6 ord-xl-10 ord-md-8 box-ord-7 box-col-6">
                 <x-widget.history :items="$errorsLog"></x-widget.history>

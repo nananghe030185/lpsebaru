@@ -29,5 +29,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('admin', function(User $user){
             return $user->group_id === 1;
         });
+        Gate::define('gmt', function(User $user){
+            return $user->group_id === 4;
+        });
     }
+
 }

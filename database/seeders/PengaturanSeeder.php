@@ -40,5 +40,6 @@ class PengaturanSeeder extends Seeder
         Pengaturan::create(['key' => 'tahun_paket_tender', 'value' => '2025', 'description' => 'scrape paket tender pada tahun yang telah di tentukan','order' =>'25']);
         Pengaturan::create(['key' => 'tahun_paket_lelang', 'value' => '2025', 'description' => 'scrape paket lelang pada tahun yang telah di tentukan','order' =>'26']);
         Pengaturan::create(['key' => 'tahun_paket_swakelola', 'value' => '2025', 'description' => 'scrape paket swakelola pada tahun yang telah di tentukan','order' =>'27']);
+        Pengaturan::create(['key' => 'id_default_user_group', 'value' => '4', 'description' => 'Id Default saat seseorang pertama kali registrasi','order' =>'28']);
     }
 }

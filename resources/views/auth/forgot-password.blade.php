@@ -30,7 +30,7 @@
                     <div class="login-card login-dark">
                         <div>
                             <div><a class="logo" href="{{ route('admin.dashboard') }}"><img class="img-fluid for-light"
-                                        src="{{ asset('assets/images/logo/logo_LPSE.png') }}" alt="looginpage"><img
+                                        src="{{ asset('assets/images/other-images/logo-login.png') }}" alt="looginpage"><img
                                         class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_LPSE.png') }}"
                                         alt="looginpage"></a></div>
                             <div class="login-main">

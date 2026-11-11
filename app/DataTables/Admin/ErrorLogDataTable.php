@@ -121,10 +121,10 @@ class ErrorLogDataTable extends DataTable
                 ->orderable(false)
                 ->searchable(false),
             Column::make('created_at')
-                ->title('Waktu Error')
+                ->title('Waktu')
                 ->searchable(false),
             Column::make('message')
-                ->title('Pesan Error'),
+                ->title('Pesan'),
         ];
     }
 

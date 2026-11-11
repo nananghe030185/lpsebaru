@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\AppHelper;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Carbon\Carbon;
@@ -44,7 +45,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'username' => Str::slug($request->username),
             'masa_berlaku' => Carbon::now(),
-            'upline' => $uplineId
+            'upline' => $uplineId,
+            'group_id' => AppHelper::getDefaultIdUserGroup()
         ]);
 
         event(new Registered($user));

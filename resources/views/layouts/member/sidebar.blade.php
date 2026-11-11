@@ -52,7 +52,7 @@
                             <span>{{ __('Dashboard') }}</span>
                         </a>
                     </li>
-                    
+                    @cannot('gmt')
                     <li class="sidebar-list">
                         <i class="fa-solid fa-thumbtack"></i>
                         <label class="badge badge-light-primary">{{ App\Models\Invoice::where('user_id', Illuminate\Support\Facades\Auth::user()->id)->count() }}</label>
@@ -66,8 +66,8 @@
                             <span>{{ __('Invoice') }} </span>
                         </a>
                     </li>
-                    
-                    @can('member')
+                    @endcannot
+                    @canany(['member','gmt'])
                         <li class="sidebar-main-title">
                             <div>
                                 <h6>{{ __('Master Data') }}</h6>

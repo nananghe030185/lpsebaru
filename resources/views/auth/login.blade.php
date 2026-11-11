@@ -13,8 +13,8 @@
                     <div>
                         <div>
                             <a class="logo text-center" href="{{ route('admin.dashboard') }}">
-                                <img class="img-fluid for-light w-10 h-5" src="{{ asset('assets/images/logo/logo_LPSE.png') }}" alt="looginpage" width="200px">
-                                <img class="img-fluid for-dark w-10 h-5" src="{{ asset('assets/images/logo/logo_LPSE.png') }}" alt="looginpage"  width="200px">
+                                <img class="img-fluid for-light w-10 h-5" src="{{ asset('assets/images/other-images/logo-login.png') }}" alt="looginpage">
+                                <img class="img-fluid for-dark w-10 h-5" src="{{ asset('assets/images/other-images/logo-login.png') }}" alt="looginpage">
                             </a>
                         </div>
                         
