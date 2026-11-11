@@ -20,7 +20,7 @@ class SendOutbox extends Command
      */
     public function handle()
     {
-        // $this->kirim();
+        $this->kirim();
         $this->terima();
     }
 
