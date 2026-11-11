@@ -79,7 +79,12 @@ class SendOutbox extends Command
     public function kirim()
     {
         // kirim pesan chanel telegram
-        $outboxTele = Outbox::where('channel','telegram')->where('status', 0)->where('recipient', '!=', null)->first();
+        $outboxTele = Outbox::where('channel','telegram')->where('status', 0)->whereNotNull('recipient')->first();
+
+        if(!$outboxTele) {
+            return;
+        }
+
         $responTele = TelegramHelper::sendMessage($outboxTele->recipient, $outboxTele->message);
         
         // update status to 1 if message sent successfully
