@@ -3,8 +3,8 @@
     <div>
         <div class="logo-wrapper">
             <a href="{{ route('admin.dashboard') }}">
-                <img class="img-fluid for-light" src="{{ asset('assets/images/logo/logo_LPSE.png') }}" alt="">
-                <img class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_LPSE.png') }}" alt="">
+                <img class="img-fluid for-light" src="{{ asset('assets/images/logo/logo-icon.png') }}" alt="" width="31px">
+                <img class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo-icon.png') }}" alt="" width="31px">
             </a>
             <div class="back-btn">
                 <i class="fa-solid fa-angle-left"></i>
@@ -15,7 +15,7 @@
         </div>
         <div class="logo-icon-wrapper">
             <a href="{{ route('admin.dashboard') }}">
-                <img class="img-fluid" src="{{ asset('assets/images/logo/logo-icon.png') }}" alt="">
+                <img class="img-fluid" src="{{ asset('assets/images/logo/logo-icon.png') }}" alt="admin1" width="31px">
             </a>
         </div>
         <nav class="sidebar-main">
@@ -24,7 +24,7 @@
                 <ul class="sidebar-links" id="simple-bar">
                     <li class="back-btn">
                         <a href="{{ route('admin.dashboard') }}">
-                            <img class="img-fluid" src="{{ asset('assets/images/logo/logo-icon.png') }}" alt="">
+                            <img class="img-fluid" src="{{ asset('assets/images/logo/logo-icon.png') }}" alt="admin2">
                         </a>
                         <div class="mobile-back text-end">
                             <span>Back</span><i class="fa-solid fa-angle-right ps-2" aria-hidden="true"></i>
