@@ -2,7 +2,7 @@
     @csrf
     @method('PUT')
     
-    <div class="form theme-form">
+    <div class="form theme-form custom-input">
         <div class="row">
             <div class="col-12">
                 <div class="mb-3">
@@ -11,11 +11,11 @@
                         <div class="input-group-text">
                             <i class="icon-user"></i>
                         </div>
-                        <input class="form-control" type="text" id="name" value="{{ isset($user->name) ? $user->name : old('name') }}" name="name" placeholder="Enter Name">
+                        <input class="form-control @error('name') is-invalid @enderror" type="text" id="name" value="{{ isset($user->name) ? $user->name : old('name') }}" name="name" placeholder="Enter Name">
                         @error('name')
-                            <span class="text-danger">
+                            <div class="invalid-feedback">
                                 <strong>{{ $message }}</strong>
-                            </span>
+                            </div>
                         @enderror
                     </div>
                 </div>
@@ -27,9 +27,11 @@
                         <div class="input-group-text">
                             <i class="icon-user"></i>
                         </div>
-                        <input class="form-control" type="text" id="username" value="{{ isset($user->username) ? $user->username : old('username') }}" name="username" placeholder="Enter Username">
+                        <input class="form-control @error('username') is-invalid @enderror" type="text" id="username" value="{{ isset($user->username) ? $user->username : old('username') }}" name="username" placeholder="Enter Username">
                         @error('username')
-                            <p class="text-danger">{{ $message }}</p>
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
                 </div>
@@ -41,11 +43,27 @@
                         <div class="input-group-text">
                             <i class="icon-email"></i>
                         </div>
-                        <input class="form-control" type="email" id="email" value="{{ isset($user->email) ? $user->email : old('email') }}" name="email" placeholder="Enter Email">
+                        <input class="form-control @error('email') is-invalid @enderror" type="email" id="email" value="{{ isset($user->email) ? $user->email : old('email') }}" name="email" placeholder="Enter Email">
                         @error('email')
-                            <span class="text-danger">
+                            <div class="invalid-feedback">
                                 <strong>{{ $message }}</strong>
-                            </span>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
+                    <label>Password</label>
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <i class="icon-lock"></i>
+                        </div>
+                        <input class="form-control @error('password') is-invalid @enderror" type="password" id="password" value="" name="password" placeholder="Masukan password baru jika ingin dirubah atau biarkan kosong">
+                        @error('password')
+                            <div class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </div>
                         @enderror
                     </div>
                 </div>

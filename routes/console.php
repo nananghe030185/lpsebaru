@@ -13,3 +13,4 @@ Schedule::command('scrape:lelang-sirup')->everySixHours();
 Schedule::command('app:auto-respon')->everySecond();
 Schedule::command('app:notifikasi-tender')->everyTwoSeconds();
 Schedule::command('app:send-outbox')->everyTwoSeconds();
+Schedule::command('app:tender-lelang-notif')->everyTwoHours();

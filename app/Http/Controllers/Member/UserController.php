@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use illuminate\Support\Str;
 
@@ -63,7 +64,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'username' => 'required|string|max:255|unique:users,username',
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
         ],[
             'name.required' => 'Nama tidak boleh kosong',
             'email.required' => 'alamat email tidak boleh kosong',
@@ -73,13 +74,15 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->username = $request->username;
+        if($request->password){
+            $user->password = Hash::make($request->password);
+        }
         $user->save();
         // redirect back with success message
         return redirect()->back()->with('success', __('Profile updated successfully'));
     }
 
     public function updateProfile(User $user, Request $request){
-
         // Validate input
         $request->validate([
             'perusahaan' => 'required|string|max:255',

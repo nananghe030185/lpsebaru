@@ -5,7 +5,9 @@ namespace App\Console\Commands;
 use App\Helpers\Helpers;
 use App\Models\ErrorLog;
 use App\Models\Lelang;
+use App\Models\NotificationLelang;
 use App\Models\Sirup;
+use App\Models\User;
 use Carbon\Carbon;
 use GuzzleHttp\Cookie\CookieJar;
 use Illuminate\Console\Command;
@@ -138,7 +140,7 @@ class LelangSirup extends Command
         foreach ($datas as $data) {
             DB::beginTransaction();
             try {
-                Lelang::updateOrCreate(
+                $lelang = Lelang::updateOrCreate(
                     [
                         'kode_rup' => $data['id']
                     ],
@@ -165,10 +167,56 @@ class LelangSirup extends Command
                         'sumber_dana' => strpos($data['sumberDana'],',') !== false ? explode(',', $data['sumberDana'])[0] : $data['sumberDana'],
                     ]
                 );
+
+                $this->notification($lelang);
                 DB::commit();
             }catch (\Throwable $e) {
+                Helpers::createErrorLog('Lelang ID : ' . $data['id'] . ' : ' . $e->getMessage(), $e->getTraceAsString());
                 DB::rollBack();
             }
         }
+    }
+
+    public function notification(Lelang $lelang)
+    {
+        $users = User::where('masa_berlaku', '>=', Carbon::now())
+            ->get();
+        $users->each(function ($user) use ($lelang){
+            $keywords = Str::of($user->kata_kunci)->explode(',')
+                ->map(fn($keyword) => trim($keyword))
+                ->filter(fn($keyword) => !empty($keyword))
+                ->toArray();
+            if(Str::contains($lelang->nama_paket, $keywords, ignoreCase: true)){
+                // Notifikasi Telegram
+                if($user->notif_telegram_lelang){
+                    NotificationLelang::create([
+                        'channel' => 'telegram',
+                        'user_id' => $user->id,
+                        'lelang_id' => $lelang->kode_rup,
+                        'status' => 'unread'
+                    ]);
+                }
+                
+                // Notifikasi Whatsapp
+                if($user->notif_whatsapp_lelang){
+                    NotificationLelang::create([
+                        'channel' => 'whatsapp',
+                        'user_id' => $user->id,
+                        'lelang_id' => $lelang->kode_rup,
+                        'status' => 'unread'
+                    ]);
+                }
+
+                // Notifikasi Email
+                if($user->notif_email_lelang){
+                    NotificationLelang::create([
+                        'channel' => 'email',
+                        'user_id' => $user->id,
+                        'lelang_id' => $lelang->kode_rup,
+                        'status' => 'unread'
+                    ]);
+                }
+            }
+        });
     }
 }

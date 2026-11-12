@@ -212,24 +212,29 @@ class ScrapeTenderV1
                     'Tender Batal'
                     ])) {
                     // Create notifications for the user
+                    if($user->notif_telegram_tender){
+                        Notification::create([
+                            'channel' => 'telegram',
+                            'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
+                            'tender_id' => $tender->id,
+                        ]);
+                    }
 
-                    Notification::create([
-                        'channel' => 'telegram',
-                        'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
-                        'tender_id' => $tender->id,
-                    ]);
+                    if($user->notif_email_tender){
+                        Notification::create([
+                            'channel' => 'email',
+                            'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
+                            'tender_id' => $tender->id,
+                        ]);
+                    }
 
-                    Notification::create([
-                        'channel' => 'email',
-                        'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
-                        'tender_id' => $tender->id,
-                    ]);
-
-                    Notification::create([
-                        'channel' => 'whatsapp',
-                        'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
-                        'tender_id' => $tender->id,
-                    ]);
+                    if($user->notif_whatsapp_tender){
+                        Notification::create([
+                            'channel' => 'whatsapp',
+                            'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
+                            'tender_id' => $tender->id,
+                        ]);
+                    }
                 }
             }
         });
