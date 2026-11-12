@@ -40,7 +40,8 @@ class SendOutbox extends Command
                     Outbox::create([
                         'status' => 0, // artinya pesan belum terkirim
                         'recipient' => $sender,
-                        'message' => 'Selamat datang! Terima kasih telah memulai percakapan dengan bot LPSE Indonesia. Kami siap membantu Anda. Silakan ketikkan sesuai menu yang tersedia atau gunakan perintah /help untuk melihat daftar perintah yang dapat Anda gunakan.',
+                        'message' => 'Selamat datang! Terima kasih telah memulai percakapan dengan bot LPSE Indonesia. Kami siap membantu Anda. 
+Silakan ketikkan sesuai menu yang tersedia atau gunakan perintah /help untuk melihat daftar perintah yang dapat Anda gunakan.',
                         'channel' => 'telegram'
                     ]);
                 }elseif($text == '/help'){
@@ -48,7 +49,7 @@ class SendOutbox extends Command
                     Outbox::create([
                         'status' => 0, // artinya pesan belum terkirim
                         'recipient' => $sender,
-                        'message' => 'Berikut <br>adalah beberapa perintah yang dapat Anda gunakan:
+                        'message' => 'Berikut adalah beberapa perintah yang dapat Anda gunakan:
 1. /start - Memulai percakapan dengan bot.
 2. /help - Menampilkan daftar perintah yang tersedia.
 3. /token - Mendapatkan token unik Anda untuk mengakses layanan bot.
