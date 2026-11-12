@@ -48,9 +48,11 @@ class SendOutbox extends Command
                     Outbox::create([
                         'status' => 0, // artinya pesan belum terkirim
                         'recipient' => $sender,
-                        'message' => 'Berikut \nadalah beberapa perintah yang dapat Anda gunakan:
+                        'message' => 'Berikut <br>adalah beberapa perintah yang dapat Anda gunakan:
 1. /start - Memulai percakapan dengan bot.
-2. /help - Menampilkan daftar perintah yang tersedia.',
+2. /help - Menampilkan daftar perintah yang tersedia.
+3. /token - Mendapatkan token unik Anda untuk mengakses layanan bot.
+4. /masaberlaku - Menampilkan informasi tentang masa berlaku keanggotaan Anda.',
                         'channel' => 'telegram'
                     ]);
                 }elseif($text == '/token'){
