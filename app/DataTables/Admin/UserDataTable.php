@@ -63,9 +63,10 @@ class UserDataTable extends DataTable
             ->editColumn('grup.name', function($row){
                 if($row->group_id == 1){
                     return '<span class="badge bg-info p-2">Super Admin</span>';
-                }else if($row->group_id == 2)
-                {
+                }else if($row->group_id == 2){
                     return '<span class="badge bg-success p-2">Member</span>';
+                }else if($row->group_id == 4){
+                    return '<span class="badge bg-warning p-2">GMT</span>';
                 }else{
                     return '<span class="badge bg-danger p-2">Non Member</span>';
                 }

@@ -23,34 +23,15 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <div class="mb-3 row">
-                                        <label class="col-sm-3 col-form-label">Nama Group User <span
-                                                class="text-danger">*</span></label>
-                                        <div class="col-sm-9">
-                                            <input class="form-control" type="text" name="name"
-                                                placeholder="Masukkan Nama Group" value="{{ old('name', $group->name) }}"
-                                                required>
-                                                @error('name')
-                                                    <p class="text-danger">{{ $message }}</p>
-                                                @enderror
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 row">
-                                        <label class="col-sm-3 col-form-label">Description</label>
-                                        <div class="col-sm-9">
-                                            <textarea class="form-control" name="description" rows="3"
-                                                placeholder="Masukkan Description">{{ old('description', $group->description) }}</textarea>
-                                                @error('description')
-                                                    <p class="text-danger">{{ $message }}</p>
-                                                @enderror
-                                        </div>
-                                    </div>
+                                    <x-form.text name="name" type="text" :required="true" :value="old('name', $group->name ?? '')">Nama Group User</x-form.text>
+
+                                    <x-form.textarea name="description" :value="old('description', $group->description ?? '')">Description</x-form.textarea>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer text-end">
-                            <button class="btn btn-primary" type="submit">Submit</button>
-                            <a href="{{ route('admin.user.group.index') }}" class="btn btn-secondary">Batal</a>
+                        <div class="card-footer text-end d-inline-flex gap-1 justify-content-end">
+                            <x-form.buttonsimpan></x-form.buttonsimpan>
+                            <x-form.buttonbatal href="{{ route('admin.user.group.index')}}"></x-form.buttonbatal>
                         </div>
                     </form>
                 </div>

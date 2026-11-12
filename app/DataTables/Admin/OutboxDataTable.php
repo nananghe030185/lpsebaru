@@ -160,8 +160,9 @@ class OutboxDataTable extends DataTable
                                     .draw();
                             });
                         // Get unique values and append as options
-                        selectUpline.append("<option value=\"true\">Terkirim</option>");
-                        selectUpline.append("<option value=\"false\">Gagal</option>");
+                        selectUpline.append("<option value=\"0\">Pending</option>");
+                        selectUpline.append("<option value=\"1\">Terkirim</option>");
+                        selectUpline.append("<option value=\"2\">Gagal</option>");
 
                         $("#select-all").on("change", function() {
                             $(".row-checkbox").prop("checked", this.checked);

@@ -29,7 +29,7 @@ class InboxDataTable extends DataTable
                 return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
             })
             ->editColumn('status', function($row){
-                if($row){
+                if($row->status){
                     return '<span class="text-success"><i class="fa-regular fa-circle-check"></i>Sudah dibaca</span>';
                 }else{
                     return '<span class="text-danger"><i class="far fa-times-circle"></i>Belum dibaca</span>';
@@ -157,8 +157,8 @@ class InboxDataTable extends DataTable
                                     .draw();
                             });
                         // Get unique values and append as options
-                        selectUpline.append("<option value=\"true\">Terkirim</option>");
-                        selectUpline.append("<option value=\"false\">Gagal</option>");
+                        selectUpline.append("<option value=\"true\">Sudah dibaca</option>");
+                        selectUpline.append("<option value=\"false\">Belum dibaca</option>");
 
                         $("#select-all").on("change", function() {
                             $(".row-checkbox").prop("checked", this.checked);
