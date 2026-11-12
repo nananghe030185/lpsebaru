@@ -77,7 +77,7 @@ class ScrapeTenderV1
                     ->get('/lelang')
                     ->cookies();
 
-                    $stringcookie = isset($getcookies->getCookieByName('SPSE_SESSION')->getValue()) ? $getcookies->getCookieByName('SPSE_SESSION')->getValue() : '';
+                    $stringcookie = is_null($getcookies->getCookieByName('SPSE_SESSION')->getValue()) ? '' : $getcookies->getCookieByName('SPSE_SESSION')->getValue();
                     $arrcookie = Str::of($stringcookie)->explode('=')->get(1);
                     $token = Str::replace('&___TS','',$arrcookie);
                     
