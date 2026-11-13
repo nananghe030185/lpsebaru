@@ -45,8 +45,8 @@ class SatkerController extends Controller
             $satker = Satker::findOrFail($id);
             $satker->update([
                 'nama_satker' => $request->nama_satker,
-                'lelang' => $request->lelang ?? false,
-                'swakelola' => $request->swakelola  ?? false,
+                'lelang' => $request->has('lelang'),
+                'swakelola' => $request->has('swakelola'),
             ]);
 
             DB::commit();

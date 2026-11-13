@@ -72,7 +72,7 @@ class UserController extends Controller
      */
     public function update (User $user, Request $request)
     {
-
+        // dd($request->all());
         // validate $request
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -88,9 +88,10 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->group_id = $request->group_id;
+        $user->status = $request->has('status');
         $user->update($validated);
         // redirect back with success message
-        return redirect()->route('admin.user.edit', $user->username)->with('success', __('User updated successfully'))
+        return redirect()->route('admin.user.index', $user->username)->with('success', __('User updated successfully'))
             ->withInput($request->except('password')); // Exclude password
         
 

@@ -108,17 +108,18 @@ class AutoResponController extends Controller
      */
     public function update(Request $request, AutoRespon $autoRespon)
     {
+        // dd($request->all(), $request->boolean('status'), $request->input('status'), $request->has('status'));
         //
         $request->validate([
             'keyword' => 'required|string|max:255',
             'response' => 'required|string',
-            'channel' => 'required|string|max:255',
         ]);
         $autoRespon->update([
             'keyword' => $request->keyword,
             'response' => $request->response,
-            'channel' => $request->channel,
-            'status' => $request->status,
+            'status' => $request->has('status'),
+            'whatsapp' => $request->has('whatsapp'),
+            'telegram' => $request->has('telegram'),
         ]);
         return redirect()->route('admin.auto-respon.index')->with('success', __('Auto Respon berhasil diupdate'));
     }

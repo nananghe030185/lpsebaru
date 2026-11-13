@@ -253,7 +253,7 @@
                                         </a>
                                     </li>
                                 @endcan
-                                @can('member')
+                                @canany(['member','gmt'])
                                     <li>
                                         <a href="{{ route('app.user.edit', Illuminate\Support\Facades\Auth::user()->username) }}">
                                             <i data-feather="user"> </i><span>My Profile</span>

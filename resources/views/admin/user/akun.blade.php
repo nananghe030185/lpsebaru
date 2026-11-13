@@ -14,6 +14,9 @@
                 <x-form.textgroup name="email" icon="icon-email" :value="isset($user->email) ? $user->email : old('email')" :required="true">{{__('Email')}}</x-form.textgroup>
             </div>
             <div class="col-12">
+                <x-form.toggle name="status" :toggle="old('status', $user ?? '')" :value="old('status', $user->status ?? '')">Status</x-form.toggle>
+            </div>
+            <div class="col-12">
                 <div class="mb-3">
                     <div class="card-wrapper border rounded-3 h-100 checkbox-checked">
                         <h6 class="sub-title">Group User</h6>

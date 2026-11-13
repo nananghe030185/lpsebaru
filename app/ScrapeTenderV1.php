@@ -35,12 +35,11 @@ class ScrapeTenderV1
         foreach ($this->lpses as $lpse) {
             try {
                 if($lpse->link != null and $lpse->state == true and $lpse->scrape == false){
-                    $key = 'Lembaga Kebijakan Pengadaan Barang/Jasa Pemerintah';
 
-                    if(Str::contains(Http::get($lpse->link)->body(), $key) == false){
+                    if(!Http::connectTimeout(5)->timeout(10)->get($lpse->link)->successful()){
                         
                         // skip if the lpse link is not valid
-                        Helpers::createErrorLog('Link : ' . $lpse->link . ' : ' . 'Link LPSE tidak valid', null);
+                        Helpers::createErrorLog('Link : ' . $lpse->link . ' : ' . 'Link LPSE tidak dapat diakses', null);
                         $lpse->state = false;
                         $lpse->save();
                         
@@ -51,6 +50,8 @@ class ScrapeTenderV1
                     $client = Http::baseUrl($lpse->link)
                             ->withOptions(['cookies' => $cookiejar])
                             ->withoutRedirecting()
+                            ->timeout(10)
+                            ->connectTimeout(5)
                             ->throw();
                     
                     // get cookies from the initial request to /lelang

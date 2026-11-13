@@ -40,7 +40,8 @@ class AutoRespon extends Command
             // jika user ada
             if($user)
             {
-                if($response = $this->response($inbox)){
+                $response = $this->response($inbox);
+                if($response){
                     Outbox::create([
                         'status' => 0, // artinya pesan belum terkirim
                         'recipient' => $inbox->sender,
@@ -70,10 +71,10 @@ class AutoRespon extends Command
     public function response(Inbox $inbox)
     {
         $arrs = Str::of($inbox->message)->explode('#');
-
+        $keyword = Str::lower(Str::replace('/', '', $arrs[0]));
         // Jika inbox merupakan pesan whatsapp
         if($inbox->channel == 'whatsapp'){
-            $msgrespon = ModelsAutoRespon::where('keyword', 'like', '%' . Str::lower($arrs[0]) . '%')->where('whatsapp',true)->first();
+            $msgrespon = ModelsAutoRespon::where('keyword', 'ilike', '%' . $keyword . '%')->where('whatsapp',true)->first();
             if ($msgrespon) {
                 return $msgrespon->response;
             } else {
@@ -83,7 +84,7 @@ class AutoRespon extends Command
         
         // Jika inbox merupakan pesan telegram
         if($inbox->channel == 'telegram'){
-            $msgrespon = ModelsAutoRespon::where('keyword', 'like', '%' . Str::lower($arrs[0]) . '%')->where('telegram',true)->first();
+            $msgrespon = ModelsAutoRespon::where('keyword', 'ilike', '%' . $keyword . '%')->where('telegram',true)->first();
             if ($msgrespon) {
                 return $msgrespon->response;
             } else {

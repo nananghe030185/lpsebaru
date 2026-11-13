@@ -57,7 +57,7 @@ class AutoResponDataTable extends DataTable
                 ]);
             })
             ->editColumn('response', function ($row) {
-                return '<div class="text-ellipsis w-96 text-nowrap">'. $row->response . '</div>';
+                return '<div class="text-ellipsis">'. $row->response . '</div>';
             })
             
             ->rawColumns(['checkbox','action','status','response'])

@@ -70,7 +70,7 @@ Silakan ketikkan sesuai menu yang tersedia atau gunakan perintah /help untuk mel
                         'sender' => $sender,
                         'message' => $text,
                         'channel' => 'telegram',
-                        'status' => false,
+                        'status' => true, // artinya pesan belum diproses
                     ]);
                 }
             }

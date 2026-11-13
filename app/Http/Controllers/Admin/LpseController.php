@@ -78,7 +78,7 @@ class LpseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // dd($request);
+        // dd($request->all());
         $request->validate([
             'kode_lpse' => 'required',
             'nama_lpse' => 'required',
@@ -102,8 +102,8 @@ class LpseController extends Controller
             'jumlah_pagu' => $request->jumlah_pagu,
             'slug' => $request->slug,
             'description' => $request->description,
-            'state' => $request->state ?? false,
-            'scrape' => $request->scrape ?? false,
+            'state' => $request->has('state'),
+            'scrape' => $request->has('scrape'),
         ]);
 
         // Handle file upload

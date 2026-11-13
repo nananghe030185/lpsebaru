@@ -26,9 +26,9 @@
                             @method('PUT')
                             @include('admin.autorespon.form')
                     </div>
-                    <div class="card-footer text-end">
-                        <button type="submit" name="submit" class="btn btn-primary">{{ __('Simpan') }}</button>
-                        <a href="{{ route('admin.auto-respon.index')}}" class="btn btn-danger">{{ __('Batal')}}</a>
+                    <div class="card-footer text-end d-inline-flex gap-1 justify-content-end">
+                        <x-form.buttonsimpan></x-form.buttonsimpan>
+                        <x-form.buttonbatal href="{{ route('admin.auto-respon.index')}}"></x-form.buttonbatal>
                     </div>
                 </div>
                 </form>
