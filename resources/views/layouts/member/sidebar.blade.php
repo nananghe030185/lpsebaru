@@ -161,7 +161,7 @@
 
                         <li class="sidebar-list">
                             <i class="fa-solid fa-thumbtack"></i>
-                            <label class="badge badge-light-primary">{{ App\Models\Fokus::where('fokus',false)->where('user_id', Illuminate\Support\Facades\Auth::user()->id)->count() }}</label>
+                            <label class="badge badge-light-primary">{{ App\Models\TenderKeyword::where('user_id', Illuminate\Support\Facades\Auth::user()->id)->count() }}</label>
                             <a class="sidebar-link sidebar-title link-nav" href="{{ route('app.tender-kata-kunci.index') }}">
                                 <svg class="stroke-icon">
                                     <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-widget') }}"></use>

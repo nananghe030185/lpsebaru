@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id');
             $table->bigInteger('tender_id');
-            $table->bigInteger('lpse_id');
+            $table->boolean('fokus')->default(false);
             $table->timestamps();
         });
     }

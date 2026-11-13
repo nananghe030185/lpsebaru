@@ -15,10 +15,20 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
+
+                {{-- @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif --}}
                  <form class="row g-3" action="{{ route('admin.auto-respon.store') }}" method="POST" enctype="multipart/form-data">
-                    <div class="card">
+                    <div class="card custom-input">
                         <div class="card-header">
-                            <h4>Auto Respon</h4>
+                            <h4>Tambah Auto Respon</h4>
                         </div>
                         <div class="card-body">
                                 @csrf

@@ -32,8 +32,8 @@ class TenderDataTable extends DataTable
             ->editColumn('lpse.nama_lpse', function ($row) {
                 return '<a href="' . $row->lpse->link .'" target="_blank">'. $row->lpse->nama_lpse .'</a>';
             })
-            ->editColumn('created_at', function (Tender $tender) {
-                return TableHelper::tanggal($tender->created_at);
+            ->editColumn('updated_at', function (Tender $tender) {
+                return TableHelper::tanggal($tender->updated_at);
             })
             // Define the action column with buttons
             ->editColumn('action', function ($row) {
@@ -776,8 +776,8 @@ class TenderDataTable extends DataTable
                 ->width(10)
                 ->addClass('text-center')
                 ->title('<div class="form-check"><input class="form-check-input checkbox-primary" id="select-all" type="checkbox"></div>'),
-            Column::make('created_at')
-                ->title('Tanggal Dibuat')
+            Column::make('updated_at')
+                ->title('Tanggal Diupdate')
                 ->searchable(true)
                 ->orderable(true),
             Column::make('tender_id')

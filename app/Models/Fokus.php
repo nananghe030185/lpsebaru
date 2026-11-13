@@ -9,15 +9,10 @@ class Fokus extends Model
 {
     protected $guarded = ['id'];
     protected $table = 'fokus_tenders';
-    protected $with = ['lpse','tender'];
-
-    public function lpse() : BelongsTo
-    {
-        return $this->belongsTo(Lpse::class, 'lpse_id', 'id');
-    }
+    protected $with = ['tender'];
 
     public function tender() : BelongsTo
     {
-        return $this->belongsTo(Tender::class);
+        return $this->belongsTo(Tender::class, 'tender_id', 'tender_id');
     }
 }

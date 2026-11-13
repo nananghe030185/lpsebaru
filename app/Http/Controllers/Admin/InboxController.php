@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\Admin\InboxDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\ErrorLog;
+use App\Models\Inbox;
 use App\Models\InboxModel;
 use Illuminate\Http\Request;
 
@@ -37,7 +38,7 @@ class InboxController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(InboxModel $inboxModel)
+    public function show(Inbox $inbox)
     {
         //
     }
@@ -45,7 +46,7 @@ class InboxController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(InboxModel $inboxModel)
+    public function edit(Inbox $inbox)
     {
         //
     }
@@ -53,7 +54,7 @@ class InboxController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, InboxModel $inboxModel)
+    public function update(Request $request, Inbox $inbox)
     {
         //
     }
@@ -61,9 +62,11 @@ class InboxController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(InboxModel $inboxModel)
+    public function destroy(Inbox $inbox)
     {
         //
+        $inbox->delete();
+        return redirect()->route('admin.inout.inbox.index')->with('success', 'Data berhasil dihapus'); 
     }
 
     public function bulkDelete(Request $request)
@@ -71,7 +74,7 @@ class InboxController extends Controller
         // 
          $ids = $request->input('ids', []);
         if (!empty($ids)) {
-            ErrorLog::whereIn('id', $ids)->delete();
+            Inbox::whereIn('id', $ids)->delete();
             return response()->json(['message' => 'Data berhasil dihapus.']);
         }
         return response()->json(['message' => 'Tidak ada data yang dipilih.'], 400);

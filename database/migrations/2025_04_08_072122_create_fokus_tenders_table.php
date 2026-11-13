@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('fokus_tenders', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('lpse_id');
             $table->bigInteger('user_id');
             $table->bigInteger('tender_id');
             $table->boolean('fokus');

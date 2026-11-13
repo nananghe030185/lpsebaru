@@ -8,6 +8,7 @@ use App\Models\Attachment;
 use App\Models\Fokus;
 use App\Models\FokusLelang;
 use App\Models\Lelang;
+use App\Models\TenderKeyword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 class Helpers
@@ -72,10 +73,19 @@ class Helpers
 
     public static function isUserFokusTender(Object $row)
     {
-      	$fokustender = Fokus::where('user_id', Auth::user()->id)->where('tender_id', $row->id)->where('fokus', true)->count();
-		if($fokustender){
-			return true;
-		}
+      	$fokustender = Fokus::where('user_id', Auth::user()->id)->where('tender_id', $row->tender_id)->where('fokus', true)->count();
+      if($fokustender){
+        return true;
+      }
       	return false;
+    }
+
+    public static function isUserFokusKataKunci(Object $row)
+    {
+        $fokusKataKunci = Fokus::where('user_id', $row->user_id)->where('tender_id', $row->tender_id)->count();
+        if($fokusKataKunci){
+            return true;
+        }
+        return false;
     }
 }

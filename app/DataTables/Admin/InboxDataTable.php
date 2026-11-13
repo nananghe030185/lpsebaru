@@ -37,7 +37,7 @@ class InboxDataTable extends DataTable
             })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
-                    'delete'  => 'admin.inout.outbox.destroy',
+                    'delete'  => 'admin.inout.inbox.destroy',
                     'data'   => $row
                 ]);
             })

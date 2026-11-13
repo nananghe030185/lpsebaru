@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\DataTables\Member\TenderKataKunciDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Fokus;
+use App\Models\TenderKeyword;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,12 +39,20 @@ class TenderKataKunciController extends Controller
 
     }
 
-    public function fokus(Fokus $tender_kata_kunci)
+    public function fokus(TenderKeyword $tender_kata_kunci)
     {
 
         DB::beginTransaction();
         try{
             $tender_kata_kunci->update([
+                'fokus' => true
+            ]);
+
+            // insert daata di tabel Fokus
+            Fokus::updateOrCreate([
+                'user_id' => $tender_kata_kunci->user_id,
+                'tender_id' => $tender_kata_kunci->tender_id,
+            ],[
                 'fokus' => true
             ]);
 
@@ -70,7 +79,15 @@ class TenderKataKunciController extends Controller
 
         DB::beginTransaction();
         try {
-            Fokus::whereIn('id', $ids)->update(['fokus' => true]);
+            foreach($ids as $id){
+                $tenderKataKunci = TenderKeyword::find($id);
+                Fokus::updateOrCreate([
+                    'user_id' => $tenderKataKunci->user_id,
+                    'tender_id' => $tenderKataKunci->tender_id
+                ],[
+                    'fokus' => true
+                ]);
+            }
             DB::commit();
             return redirect()->route('app.tender-kata-kunci.index')->with('success', 'Data berhasil difokuskan');
         } catch (Exception $e) {

@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Fokus;
 use App\Models\Notification;
 use App\Models\Lpse;
+use App\Models\TenderKeyword;
 use Illuminate\Database\Eloquent\Collection;
 
 
@@ -96,13 +97,109 @@ class ScrapeTenderV1
                 Helpers::createErrorLog('Link : ' . $lpse->link . ' : ' . $e->getMessage(), $e->getTraceAsString());
                 continue;
             }
-            
-            // break; // Break after processing the first LPSE for testing purposes
         }
+    }
 
-        // Unscrape all LPSEs
-        // Lpse::query()->update(['scrape' => false]);
+    
 
+    public function save( array $datas, int $lpse_id){
+        foreach ($datas['data'] as $data) {
+            try {
+                $tender = Tender::updateOrCreate(
+                    [
+                        'tender_id' => $data[0]
+                    ],
+                    [
+                        'lpse_id' => $lpse_id,
+                        'nama_lpse' => $data[2],
+                        'nama_paket' => Str::limit($data[1], 490),
+                        'slug' => Str::limit(
+                            Str::slug($data[0] . ' ' . $data[1]),
+                            250
+                        ),
+                        
+                        'tahap_tender' => Str::replace(' [...]','',$data[3]),
+                        'hps' => static::nominal($data[4]),
+                        'metode_pengadaan' => $data[5],
+                        'metode_pemilihan' => $data[6],
+                        'metode_evaluasi' => $data[7],
+                        'kategori' => $data[8],
+                        'tahun' => Carbon::now()->format('Y'),
+                        'nilai_kontrak' => $data[10],
+                    ]
+                );
+                if($tender->wasRecentlyCreated){
+                    $this->notificationTender($tender, $lpse_id);
+                    // update jumlah paket dan Pagu LPSE
+                    $lpse = Lpse::find($lpse_id);
+                    $lpse->jumlah_paket += 1;
+                    $lpse->jumlah_pagu += $tender->hps;
+                    $lpse->save();
+                }
+            } catch (\Throwable $e) {
+                Helpers::createErrorLog('Tender ID : ' . $data[0] . ' : ' . $e->getMessage(), $e->getTraceAsString());
+                continue;
+            }
+        }
+    }
+
+    public function notificationTender(Tender $tender, int $lpse_id)
+    {
+        $users = User::where('masa_berlaku', '>=', Carbon::now())
+            ->get();
+
+        $users->each(function ($user) use ($tender, $lpse_id){
+            $keywords = Str::of($user->kata_kunci)->explode(',')
+                ->map(fn($keyword) => trim($keyword))
+                ->filter(fn($keyword) => !empty($keyword))
+                ->toArray();
+
+            // insert fokus if the tender name contains any of the keywords
+            if(Str::contains($tender->nama_paket, $keywords, ignoreCase: true)){
+                // kumpulkan yang sesuai keyword di tabel tender keyword
+                TenderKeyword::updateOrCreate(
+                    [
+                        'tender_id' => $tender->tender_id,
+                        'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
+                    ],
+                    [
+                        'fokus' => false,
+                    ]
+                );
+
+                // send notification telegram to user
+                if(!in_array($tender->tahap_tender, [
+                    'Tender Gagal', 
+                    'Tender Sudah Selesai', 
+                    'Tender Batal'
+                    ])) {
+                    // Create notifications for the user
+                    if($user->notif_telegram_tender){
+                        Notification::create([
+                            'channel' => 'telegram',
+                            'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
+                            'tender_id' => $tender->tender_id,
+                        ]);
+                    }
+
+                    if($user->notif_email_tender){
+                        Notification::create([
+                            'channel' => 'email',
+                            'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
+                            'tender_id' => $tender->tender_id,
+                        ]);
+                    }
+
+                    if($user->notif_whatsapp_tender){
+                        Notification::create([
+                            'channel' => 'whatsapp',
+                            'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
+                            'tender_id' => $tender->tender_id,
+                        ]);
+                    }
+                }
+            }
+        });
     }
 
     public function setparams(string $token)
@@ -138,107 +235,6 @@ class ScrapeTenderV1
 
             // dd($params);
             return $params;
-    }
-
-    public function save( array $datas, int $lpse_id){
-        foreach ($datas['data'] as $data) {
-            try {
-                $tender = Tender::updateOrCreate(
-                    [
-                        'tender_id' => $data[0]
-                    ],
-                    [
-                        'lpse_id' => $lpse_id,
-                        'nama_lpse' => $data[2],
-                        'nama_paket' => Str::limit($data[1], 490),
-                        'slug' => Str::limit(
-                            Str::slug($data[0] . ' ' . $data[1]),
-                            250
-                        ),
-                        
-                        'tahap_tender' => Str::replace(' [...]','',$data[3]),
-                        'hps' => static::nominal($data[4]),
-                        'metode_pengadaan' => $data[5],
-                        'metode_pemilihan' => $data[6],
-                        'metode_evaluasi' => $data[7],
-                        'kategori' => $data[8],
-                        'tahun' => Carbon::now()->format('Y'),
-                        'nilai_kontrak' => $data[10],
-                    ]
-                );
-
-                if($tender->wasRecentlyCreated){
-                    $this->notificationTender($tender, $lpse_id);
-                    // update jumlah paket dan Pagu LPSE
-                    $lpse = Lpse::find($lpse_id);
-                    $lpse->jumlah_paket += 1;
-                    $lpse->jumlah_pagu += $tender->hps;
-                    $lpse->save();
-                }
-            } catch (\Throwable $e) {
-                Helpers::createErrorLog('Tender ID : ' . $data[0] . ' : ' . $e->getMessage(), $e->getTraceAsString());
-                continue;
-            }
-        }
-    }
-
-    public function notificationTender(Tender $tender, int $lpse_id)
-    {
-        $users = User::where('masa_berlaku', '>=', Carbon::now())
-            ->get();
-        
-        $users->each(function ($user) use ($tender, $lpse_id){
-            $keywords = Str::of($user->kata_kunci)->explode(',')
-                ->map(fn($keyword) => trim($keyword))
-                ->filter(fn($keyword) => !empty($keyword))
-                ->toArray();
-
-            // insert fokus if the tender name contains any of the keywords
-            if(Str::contains($tender->nama_paket, $keywords, ignoreCase: true)){
-                Fokus::updateOrCreate(
-                    [
-                        'tender_id' => $tender->id,
-                        'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
-                    ],
-                    [
-                        'lpse_id' => $lpse_id,
-                        'fokus' => false,
-                    ]
-                );
-
-                // send notification telegram to user
-                if(!in_array($tender->tahap_tender, [
-                    'Tender Gagal', 
-                    'Tender Sudah Selesai', 
-                    'Tender Batal'
-                    ])) {
-                    // Create notifications for the user
-                    if($user->notif_telegram_tender){
-                        Notification::create([
-                            'channel' => 'telegram',
-                            'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
-                            'tender_id' => $tender->id,
-                        ]);
-                    }
-
-                    if($user->notif_email_tender){
-                        Notification::create([
-                            'channel' => 'email',
-                            'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
-                            'tender_id' => $tender->id,
-                        ]);
-                    }
-
-                    if($user->notif_whatsapp_tender){
-                        Notification::create([
-                            'channel' => 'whatsapp',
-                            'user_id' => $user->id, // Assuming user_id 1 is the admin or system user
-                            'tender_id' => $tender->id,
-                        ]);
-                    }
-                }
-            }
-        });
     }
 
     public static function nominal(string $data)

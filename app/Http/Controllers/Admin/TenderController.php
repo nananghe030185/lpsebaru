@@ -27,22 +27,15 @@ class TenderController extends Controller
      */
     public function fokus(Tender $tender)
     {
-        $user_id = Auth::user()->id;
-
-        // Check if the tender is already focused
-        if (Fokus::where('tender_id', $tender->id)->where('user_id',$user_id)->exists()) {
-            return redirect()->route('admin.tender-lpse.index')->with('error', 'Paket sudah difokuskan sebelumnya');
-        }
-
         try{
             DB::beginTransaction();
             // Create a new Fokus record
-            $fokus = new Fokus();
-            $fokus->tender_id = $tender->id;
-            $fokus->lpse_id = $tender->lpse_id; // Assuming you want to set the lpse_id from the tender
-            $fokus->user_id = $user_id; // Assuming you want to set the user_id to the currently authenticated user
-            $fokus->fokus = true;
-            $fokus->save();
+            Fokus::updateOrCreate([
+                'user_id' => Auth::user()->id,
+                'tender_id' => $tender->tender_id,
+            ],[
+                'fokus' => true
+            ]);
 
             DB::commit();
         }catch (\Throwable $e) {

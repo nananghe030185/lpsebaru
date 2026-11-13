@@ -6,9 +6,9 @@
         <div class="input-group-text">
             <i class="{{ $icon }}" for="{{ $name }}"></i>
         </div>
-        <input class="form-control @error('{{ $name }}') is-invalid @enderror" id="{{ $name }}" name="{{ $name }}" type="text" placeholder="{{ $name }}" value="{{ $value }}" @readonly($readonly) @required($required)>
+        <input class="form-control @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}" type="text" placeholder="{{ $name }}" value="{{ $value }}" @readonly($readonly) @required($required)>
     </div>
-    @error('{{ $name }}')
+    @error($name)
         <small class="text-danger">
             <strong>{{ $message }}</strong>
         </small>

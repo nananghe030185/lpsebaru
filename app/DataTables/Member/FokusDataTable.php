@@ -30,12 +30,12 @@ class FokusDataTable extends DataTable
             ->addColumn('checkbox', function ($row) {
                 return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
             })
-            ->editColumn('updated_at', function (Fokus $fokus) {
-                return TableHelper::tanggal($fokus->updated_at);
+            ->editColumn('updated_at', function ($row) {
+                return TableHelper::tanggal($row->updated_at);
             })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
-                    'unfokus'  => 'app.fokus-paket.unfokus',
+                    'delete'  => 'app.fokus-paket.destroy',
                     'data'   => $row
                 ]);
             })
@@ -43,8 +43,8 @@ class FokusDataTable extends DataTable
                 $anchor = $fokus->tender->nama_paket;
                 return Helpers::link(route('redirect.tender',[$fokus->tender->slug]), $anchor).'<br><small class="text-muted">'. $fokus->tender->kategori .'-'. $fokus->tender->metode_pemilihan .'-' . $fokus->tender->metode_pengadaan . '-' . $fokus->tender->metode_evaluasi . '</small><br><small class="text-muted">Nilai Kontrak :' .$fokus->tender->nilai_kontrak. '</small>';
             })
-            ->editColumn('lpse.nama_lpse', function ($row) {
-                return '<a href="' . $row->lpse->link .'" target="_blank">'. $row->lpse->nama_lpse .'</a>';
+            ->editColumn('tender.lpse.nama_lpse', function ($row) {
+                return '<a href="' . $row->tender->lpse->link .'" target="_blank">'. $row->tender->lpse->nama_lpse .'</a>';
             })
             ->editColumn('tender.tahap_tender', function ($fokus) {
                 $anchor = $fokus->tender->tahap_tender;
@@ -61,7 +61,7 @@ class FokusDataTable extends DataTable
             ->editColumn('tender.hps', function ($fokus) {
                 return TableHelper::nominal_simple($fokus->tender->hps);
             })
-            ->rawColumns(['checkbox','tender.nama_paket','tender.tahap_tender','lpse.nama_lpse'])
+            ->rawColumns(['checkbox','tender.nama_paket','tender.tahap_tender','tender.lpse.nama_lpse'])
             ->setRowId('id');
     }
 
@@ -179,7 +179,7 @@ class FokusDataTable extends DataTable
                 // ->name('tender.nama_paket')
                 ->orderable(true)
                 ->searchable(true),
-            Column::make('lpse.nama_lpse')
+            Column::make('tender.lpse.nama_lpse')
                 ->title(__('LPSE'))
                 ->orderable(true)
                 ->searchable(true),

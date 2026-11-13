@@ -89,7 +89,7 @@ Silakan ketikkan sesuai menu yang tersedia atau gunakan perintah /help untuk mel
         }
 
         $responTele = TelegramHelper::sendMessage($outboxTele->recipient, $outboxTele->message);
-        
+dump($responTele);
         // update status to 1 if message sent successfully
         if (isset($responTele['message_id'])) {
             $outboxTele->status = 1;

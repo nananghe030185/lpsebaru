@@ -6,6 +6,7 @@ use App\Helpers\Helpers;
 use App\Helpers\TableHelper;
 use App\Models\Fokus;
 use App\Models\Tender;
+use App\Models\TenderKeyword;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -21,7 +22,7 @@ class TenderKataKunciDataTable extends DataTable
     /**
      * Build the DataTable class.
      *
-     * @param QueryBuilder<TenderKataKunci> $query Results from query() method.
+     * @param QueryBuilder<TenderKeyword> $query Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
@@ -29,27 +30,24 @@ class TenderKataKunciDataTable extends DataTable
             ->addColumn('checkbox', function ($row) {
                 return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
             })
-            ->editColumn('updated_at', function (Fokus $fokus) {
-                return TableHelper::tanggal($fokus->updated_at);
+            ->editColumn('updated_at', function ($row) {
+                return TableHelper::tanggal($row->updated_at);
             })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
                     'fokusKataKunci'  => 'app.tender-kata-kunci.fokus',
                     'delete' => 'app.tender-kata-kunci.destroy',
-                    'data'   => $row
+                    'data'   => $row,
+                    'isFokusKataKunci' => Helpers::isUserFokusKataKunci($row)
                 ]);
             })
             ->editColumn('tender.nama_paket', function ($fokus) {
                 $anchor = $fokus->tender->nama_paket;
                 return Helpers::link(route('redirect.tender',[$fokus->tender->slug]), $anchor).'<br><small class="text-muted">'. $fokus->tender->kategori .'-'. $fokus->tender->metode_pemilihan .'-' . $fokus->tender->metode_pengadaan . '-' . $fokus->tender->metode_evaluasi . '</small><br><small class="text-muted">Nilai Kontrak :' .$fokus->tender->nilai_kontrak. '</small>';
             })
-            ->editColumn('lpse.nama_lpse', function ($row) {
-                return '<a href="' . $row->lpse->link .'" target="_blank">'. $row->lpse->nama_lpse .'</a>';
+            ->editColumn('tender.lpse.nama_lpse', function ($row) {
+                return '<a href="' . $row->tender->lpse->link .'" target="_blank">'. $row->tender->lpse->nama_lpse .'</a>';
             })
-            // ->editColumn('tender.tahap_tender', function ($fokus) {
-            //     $anchor = $fokus->tender->tahap_tender;
-            //     return Helpers::link(route('redirect.tender.tahapan',[$fokus->tender->slug]), $anchor);
-            // })
             ->editColumn('tender.tahap_tender', function ($fokus) {
                 $anchor = $fokus->tender->tahap_tender;
 
@@ -66,7 +64,7 @@ class TenderKataKunciDataTable extends DataTable
                 $tender = Tender::find($fokus->tender_id);
                 return TableHelper::nominal_simple($fokus->tender->hps);
             })
-            ->rawColumns(['checkbox','tender.nama_paket','tender.tahap_tender','lpse.nama_lpse'])
+            ->rawColumns(['checkbox','action','tender.nama_paket','tender.lpse.nama_lpse','tender.tahap_tender'])
             ->setRowId('id');
     }
 
@@ -75,9 +73,11 @@ class TenderKataKunciDataTable extends DataTable
      *
      * @return QueryBuilder<TenderKataKunci>
      */
-    public function query(Fokus $model): QueryBuilder
+    public function query(TenderKeyword $model): QueryBuilder
     {
-        return $model->newQuery()->where('fokus', false)->where('user_id', Helpers::getCurrentUserId());
+        return $model->newQuery();
+            // ->with(['tender','lpse'])
+            // ->select('tender_keywords.*');
     }
 
     /**
@@ -202,7 +202,7 @@ class TenderKataKunciDataTable extends DataTable
                 ->name('tender.nama_paket')
                 ->orderable(true)
                 ->searchable(true),
-            Column::make('lpse.nama_lpse')
+            Column::make('tender.lpse.nama_lpse')
                 ->title(__('LPSE'))
                 ->orderable(true)
                 ->searchable(true),

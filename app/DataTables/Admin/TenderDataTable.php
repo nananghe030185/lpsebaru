@@ -38,8 +38,8 @@ class TenderDataTable extends DataTable
             ->editColumn('lpse.nama_lpse', function ($row) {
                 return '<a href="' . $row->lpse->link .'" target="_blank">'. $row->lpse->nama_lpse .'</a>';
             })
-            ->editColumn('created_at', function (Tender $tender) {
-                return TableHelper::tanggal($tender->created_at);
+            ->editColumn('updated_at', function (Tender $tender) {
+                return TableHelper::tanggal($tender->updated_at);
             })
             ->editColumn('hps', function (Tender $tender) {
                 return TableHelper::nominal_simple($tender->hps);
@@ -793,8 +793,8 @@ class TenderDataTable extends DataTable
                 ->printable(false)
                 ->width(10)
                 ->addClass('text-center'),
-            Column::make('created_at')
-                  ->title('Tanggal Dibuat')
+            Column::make('updated_at')
+                  ->title('Tanggal Diupdate')
                   ->orderable(true),
             Column::make('tender_id')
                   ->title('Kode')

@@ -33,15 +33,14 @@ class AutoResponController extends Controller
         $request->validate([
             'keyword' => 'required|string|max:255',
             'response' => 'required|string',
-            'whatsapp' => 'required|string',
-            'telegram' => 'required|string',
         ]);
 
         AutoRespon::create([
             'keyword' => $request->keyword,
             'response' => $request->response,
-            'whatsapp' => $request->whatsapp,
-            'telegram' => $request->telegram,
+            'status' => $request->has('status'),
+            'whatsapp' => $request->has('whatsapp'),
+            'telegram' => $request->has('telegram'),
         ]);
 
         return redirect()->route('admin.auto-respon.index')

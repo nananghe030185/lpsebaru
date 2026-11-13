@@ -13,6 +13,6 @@ class Notification extends Model
 
     public function tender() : BelongsTo
     {
-        return $this->belongsTo(Tender::class);
+        return $this->belongsTo(Tender::class, 'tender_id', 'tender_id');
     }
 }

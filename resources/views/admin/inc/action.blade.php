@@ -33,9 +33,13 @@
         @endisset
 
         @isset($fokusKataKunci)
-            <a href="{{ route($fokusKataKunci , $data) }}" class="star-icon" title="Fokus">
-                <i data-feather="star"></i>
-            </a>
+            @if ($isFokusKataKunci)
+                <i data-feather="star" class="text-warning"></i>
+            @else
+                <a href="{{ route($fokusKataKunci , $data) }}" class="star-icon" title="Fokus">
+                    <i data-feather="star"></i>
+                </a>
+            @endif
         @endisset
 
         @isset($scan)
