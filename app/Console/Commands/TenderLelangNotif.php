@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Helpers\Helpers;
+use App\Helpers\TableHelper;
 use App\Models\Notification;
 use App\Models\NotificationLelang;
 use App\Models\Outbox;
@@ -41,11 +42,12 @@ class TenderLelangNotif extends Command
             if(count($notifTeles) > 0)
                 {
                     $message = "Berikut adalah data LPSE yang tayang pada hari ini " . now()->format('d/m/Y') . ':
-                        ';
+
+';
                     foreach($notifTeles as $j => $notifTele){
-                        $message .= $j+1 . '. ' . Helpers::link(url('/r/tender\/') . $notifTele->tender->slug, $notifTele->tender->nama_paket) .'
-Kode Tenders : ' . $notifTele->tender->tender_id.'
-HPS          : '. $notifTele->tender->hps. '
+$message .= $j+1 . '. ' . Helpers::link(url('/r/tender\/') . $notifTele->tender->slug, $notifTele->tender->nama_paket) .'
+Kode Tender : ' . $notifTele->tender->tender_id.'
+HPS                  : '. TableHelper::nominal_simple($notifTele->tender->hps) . '
 Nama LPSE    : ' . Helpers::link($notifTele->tender->lpse->link, $notifTele->tender->lpse->nama_lpse) . '
 
 ';
@@ -54,7 +56,7 @@ Nama LPSE    : ' . Helpers::link($notifTele->tender->lpse->link, $notifTele->ten
                         $notifTele->save();
                     }
                     $message .= 'Salam
-LPSE Indonesia';
+' . Helpers::link(url('/'), 'LPSE Indonesia');
                     // masukan ke outbox untuk dikiirm
                     Outbox::create([
                         'recipient' => $user->telegram,

@@ -105,6 +105,7 @@ class ScrapeTenderV1
     public function save( array $datas, int $lpse_id){
         foreach ($datas['data'] as $data) {
             try {
+                $slug = preg_replace('/<span[^>]*>.*?<\/span>/is', '', $data[1]);
                 $tender = Tender::updateOrCreate(
                     [
                         'tender_id' => $data[0]
@@ -114,7 +115,7 @@ class ScrapeTenderV1
                         'nama_lpse' => $data[2],
                         'nama_paket' => Str::limit($data[1], 490),
                         'slug' => Str::limit(
-                            Str::slug($data[0] . ' ' . $data[1]),
+                            Str::slug($data[0] . ' ' . $slug),
                             250
                         ),
                         
@@ -171,7 +172,7 @@ class ScrapeTenderV1
                 if(!in_array($tender->tahap_tender, [
                     'Tender Gagal', 
                     'Tender Sudah Selesai', 
-                    'Tender Batal'
+                    'Tender Batal',
                     ])) {
                     // Create notifications for the user
                     if($user->notif_telegram_tender){

@@ -87,9 +87,11 @@ Silakan ketikkan sesuai menu yang tersedia atau gunakan perintah /help untuk mel
         if(!$outboxTele) {
             return;
         }
-
+        $outboxTele->message = preg_replace('/<span[^>]*>.*?<\/span>/is', '', $outboxTele->message);
+        // $message = strip_tags($outboxTele->message, '<b><i><u><a><code><pre>'); // remove html tags except for <b>, <i>, <u>, <a>, <code>, and <pre>
+dump($outboxTele->message);
         $responTele = TelegramHelper::sendMessage($outboxTele->recipient, $outboxTele->message);
-dump($responTele);
+
         // update status to 1 if message sent successfully
         if (isset($responTele['message_id'])) {
             $outboxTele->status = 1;
