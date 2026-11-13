@@ -8,9 +8,9 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// Schedule::command('scrape:tender-lpse')->everySixHours();
-// Schedule::command('scrape:lelang-sirup')->everySixHours();
-// Schedule::command('app:auto-respon')->everySecond();
-// Schedule::command('app:notifikasi-tender')->everyTwoSeconds();
-// Schedule::command('app:send-outbox')->everyTwoSeconds();
-// Schedule::command('app:tender-lelang-notif')->everyTwoHours();
+Schedule::command('scrape:tender-lpse')->everySixHours();
+Schedule::command('scrape:lelang-sirup')->everySixHours();
+Schedule::command('app:auto-respon')->everySecond();
+Schedule::command('app:notifikasi-tender')->everyTwoSeconds();
+Schedule::command('app:send-outbox')->everyTwoSeconds();
+Schedule::command('app:tender-lelang-notif')->everyTwoHours();

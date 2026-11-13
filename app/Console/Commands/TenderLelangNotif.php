@@ -46,9 +46,10 @@ class TenderLelangNotif extends Command
 ';
                     foreach($notifTeles as $j => $notifTele){
 $message .= $j+1 . '. ' . Helpers::link(url('/r/tender\/') . $notifTele->tender->slug, $notifTele->tender->nama_paket) .'
-Kode Tender : ' . $notifTele->tender->tender_id.'
-HPS                  : '. TableHelper::nominal_simple($notifTele->tender->hps) . '
-Nama LPSE    : ' . Helpers::link($notifTele->tender->lpse->link, $notifTele->tender->lpse->nama_lpse) . '
+Kode Tender   :  ' . $notifTele->tender->tender_id.'
+HPS                  :  '. TableHelper::nominal_simple($notifTele->tender->hps) . '
+Nama LPSE    :  ' . Helpers::link($notifTele->tender->lpse->link, $notifTele->tender->lpse->nama_lpse) . '
+Tahap Tender :  ' . $notifTele->tender->tahap_tender . '
 
 ';
                         // update notif jadi di baca
