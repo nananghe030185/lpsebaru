@@ -87,9 +87,12 @@ Tahap Tender :  ' . $notifTele->tender->tahap_tender . '
 ';
                     foreach($notifTeles as $j => $notifTele){
                         $message .= $j+1 . '. ' . Helpers::link(url('/r/lelang\/') . $notifTele->lelang->slug, $notifTele->lelang->nama_paket) .'
-Kode RUP   : ' . $notifTele->lelang->kode_rup.'
-Pagu       : '. $notifTele->lelang->pagu. '
-Nama KLPDI : ' . $notifTele->lelang->klpdi . '
+Kode RUP      : ' . $notifTele->lelang->kode_rup.'
+Pagu           : '. TableHelper::nominal_simple($notifTele->lelang->pagu). '
+Nama KLPDI  : ' . $notifTele->lelang->klpdi . '
+Jenis Pengadaan : '. $notifTele->lelang->jenis_pengadaan .'
+Metode    : '. $notifTele->lelang->metode .'
+Lokasi           : '. $notifTele->lelang->lokasi .'
 
 ';
 
@@ -99,7 +102,7 @@ Nama KLPDI : ' . $notifTele->lelang->klpdi . '
                     }
 
                     $message .= 'Salam
-LPSE Indonesia';
+' . Helpers::link(url('/'),'LPSE Indonesia');
                     // masukan ke outbox untuk dikiirm
                     Outbox::create([
                         'recipient' => $user->telegram,

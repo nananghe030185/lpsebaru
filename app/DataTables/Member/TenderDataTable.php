@@ -777,7 +777,7 @@ class TenderDataTable extends DataTable
                 ->addClass('text-center')
                 ->title('<div class="form-check"><input class="form-check-input checkbox-primary" id="select-all" type="checkbox"></div>'),
             Column::make('updated_at')
-                ->title('Tanggal Diupdate')
+                ->title('Tanggal Diperbarui')
                 ->searchable(true)
                 ->orderable(true),
             Column::make('tender_id')

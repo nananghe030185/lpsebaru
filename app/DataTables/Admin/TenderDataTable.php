@@ -794,7 +794,7 @@ class TenderDataTable extends DataTable
                 ->width(10)
                 ->addClass('text-center'),
             Column::make('updated_at')
-                  ->title('Tanggal Diupdate')
+                  ->title('Tanggal Diperbarui')
                   ->orderable(true),
             Column::make('tender_id')
                   ->title('Kode')

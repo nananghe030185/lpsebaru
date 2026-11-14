@@ -41,9 +41,8 @@ class LelangController extends Controller
      */
     public function redirect(Lelang $lelang)
     {
-
         return view('admin.redirect.lelang', [
-            'target' => 'https://sirup.lkpp.go.id/sirup/rup/detailPaketPenyedia2020?idPaket=' . $lelang->kode_rup,
+            'target' => 'https://sirup.inaproc.id/sirup/rup/detailPaketPenyedia2020?idPaket=' . $lelang->kode_rup,
         ]);
     }
 

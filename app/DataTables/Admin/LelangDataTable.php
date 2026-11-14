@@ -30,8 +30,8 @@ class LelangDataTable extends DataTable
             ->addColumn('checkbox', function ($row) {
                 return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
             })
-            ->editColumn('created_at', function (Lelang $lelang) {
-                return TableHelper::tanggal($lelang->created_at);
+            ->editColumn('updated_at', function (Lelang $lelang) {
+                return TableHelper::tanggal($lelang->updated_at);
             })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
@@ -179,8 +179,8 @@ class LelangDataTable extends DataTable
                 ->printable(false)
                 ->width(10)
                 ->addClass('text-center'),
-            Column::make('created_at')
-                  ->title('Tanggal Dibuat')
+            Column::make('updated_at')
+                  ->title('Tanggal Diperbarui')
                   ->orderable(true),
             Column::make('nama_paket')
                 ->title('Nama Paket')

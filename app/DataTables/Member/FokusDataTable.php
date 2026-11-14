@@ -167,7 +167,7 @@ class FokusDataTable extends DataTable
                 ->addClass('text-center')
                 ->title('<div class="form-check"><input class="form-check-input checkbox-primary" id="select-all" type="checkbox"></div>'),
             Column::make('updated_at')
-                ->title(__('Tanggal diupdate'))
+                ->title(__('Tanggal Diperbarui'))
                 ->searchable(true)
                 ->orderable(true),
             Column::make('tender.tender_id')
