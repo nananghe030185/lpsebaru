@@ -37,7 +37,7 @@ class TenderLelangNotif extends Command
             
             $user = User::find($user->user_id);
 
-            $notifTeles = Notification::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(5)->get();
+            $notifTeles = Notification::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(10)->get();
 
             if(count($notifTeles) > 0)
                 {
@@ -78,21 +78,21 @@ Tahap Tender :  ' . $notifTele->tender->tahap_tender . '
             
             $user = User::find($user->user_id);
 
-            $notifTeles = NotificationLelang::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(5)->get();
+            $notifTeles = NotificationLelang::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(10)->get();
 
             if(count($notifTeles) > 0)
                 {
-                    $message = "Berikut adalah data lelang SIRUP yang bisa anda siapkan mulai " . now()->format('d/m/Y') . ':
+                    $message = "Berikut adalah data lelang SIRUP yang tayang pada " . now()->format('d/m/Y') . ':
 
 ';
                     foreach($notifTeles as $j => $notifTele){
                         $message .= $j+1 . '. ' . Helpers::link(url('/r/lelang\/') . $notifTele->lelang->slug, $notifTele->lelang->nama_paket) .'
-Kode RUP      : ' . $notifTele->lelang->kode_rup.'
-Pagu           : '. TableHelper::nominal_simple($notifTele->lelang->pagu). '
-Nama KLPDI  : ' . $notifTele->lelang->klpdi . '
+Kode RUP             : ' . $notifTele->lelang->kode_rup.'
+Pagu                 : '. TableHelper::nominal_simple($notifTele->lelang->pagu). '
+Nama KLPDI            : ' . $notifTele->lelang->klpdi . '
 Jenis Pengadaan : '. $notifTele->lelang->jenis_pengadaan .'
-Metode    : '. $notifTele->lelang->metode .'
-Lokasi           : '. $notifTele->lelang->lokasi .'
+Metode               : '. $notifTele->lelang->metode .'
+Lokasi               : '. $notifTele->lelang->lokasi .'
 
 ';
 
