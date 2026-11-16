@@ -21,7 +21,7 @@ class LpseSeeder extends Seeder
         Lpse::create(['state' => true, 'kode_lpse' =>188, 'nama_lpse' => 'LPSE Kabupaten Kuburaya','link' => 'https://spse.inaproc.id/kuburayakab','slug' =>'lpse-kabupaten-kuburaya']);
         Lpse::create(['state' => false, 'kode_lpse' =>240, 'nama_lpse' => 'LPSE Universitas Bandar Lampung', 'link' => 'http://lpse.unila.ac.id/eproc4','slug' =>'lpse-universitas-bandar-lampung']);
         Lpse::create(['state' => false, 'kode_lpse' =>293, 'nama_lpse' => 'LPSE Universitas Negeri Padang', 'link' => 'http://lpse.unp.ac.id/eproc4','slug' =>'lpse-universitas-negeri-padang']);
-        Lpse::create(['state' => false, 'kode_lpse' =>302, 'nama_lpse' => 'LPSE Universitas Andalas', 'link' => 'http://lpse.unand.ac.id/eproc4','slug' =>'lpse-universitas-andalas']);
+        Lpse::create(['state' => false, 'kode_lpse' =>302, 'nama_lpse' => 'LPSE Universitas Andalas', 'link' => 'http://spse.inaproc.id/unand','slug' =>'lpse-universitas-andalas']);
         Lpse::create(['state' => true, 'kode_lpse' =>331, 'nama_lpse' => 'LPSE Kabupaten Tanjung Jabung Timur','link' => 'https://spse.inaproc.id/tanjabtimkab','slug' =>'lpse-kabupaten-tanjung-jabung-timur']);
         Lpse::create(['state' => true, 'kode_lpse' =>332, 'nama_lpse' => 'LPSE Kabupaten Tasikmalaya','link' => 'https://spse.inaproc.id/tasikmalayakab','slug' =>'lpse-kabupaten-tasikmalaya']);
         Lpse::create(['state' => false, 'kode_lpse' =>387, 'nama_lpse' => 'LPSE Universitas Negeri Manado', 'link' => 'http://lpse.unima.ac.id/eproc4','slug' =>'lpse-universitas-negeri-manado']);
@@ -703,5 +703,8 @@ class LpseSeeder extends Seeder
         Lpse::create(['state' => true, 'kode_lpse' =>186, 'nama_lpse' => 'LPSE Kabupaten Kuantan Singingi','link' => 'https://spse.inaproc.id/kuansing','slug' =>'lpse-kabupaten-kuantan-singingi']);
         Lpse::create(['state' => true, 'kode_lpse' =>669, 'nama_lpse' => 'LPSE Kabupaten Nias Barat','link' => 'https://spse.inaproc.id/niasbaratkab','slug' =>'lpse-kabupaten-nias-barat']);
         Lpse::create(['state' => true, 'kode_lpse' =>44, 'nama_lpse' => 'LPSE Kepolisian Republik Indonesia','link' => 'https://spse.inaproc.id/polri','slug' =>'lpse-kepolisian-republik-indonesia']);
+        Lpse::create(['state' => true, 'kode_lpse' =>804, 'nama_lpse' => 'Badan Pangan Nasional','link' => 'https://spse.inaproc.id/badanpangan','slug' =>'lpse-badan-pangan-nasional']);
+        Lpse::create(['state' => true, 'kode_lpse' =>805, 'nama_lpse' => 'Badan Karantina Indonesia','link' => 'https://spse.inaproc.id/karantinaindonesia','slug' =>'lpse-badan-karantina-indonesia']);
+        Lpse::create(['state' => true, 'kode_lpse' =>806, 'nama_lpse' => 'Badan Nasional Pengelola Perbatasan','link' => 'https://spse.inaproc.id/bnpp','slug' =>'lpse-badan-nasional-pengelola-perbatasan']);
     }
 }

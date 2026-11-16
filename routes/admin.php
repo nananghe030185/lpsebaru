@@ -84,7 +84,10 @@ Route::middleware(['auth','admin'])->group(function () {
     // Route::resource('/admin/pengaturan/perangkat', WhatsappController::class)->names('admin.whatsapp');
     Route::get('/admin/pengaturan/hapus-data', function () {
         return view('admin.pengaturan.hapus');
-    })->name('admin.pengaturan.hapus-data');
+    });
+
+    Route::post('/admin/pengaturan/hapus-data', [PengaturanController::class, 'hapusdata'])->name('admin.pengaturan.hapus-data');
+    
     Route::get('/admin/pengaturan/artisan', function () {
         return view('admin.pengaturan.artisan');
     })->name('admin.pengaturan.artisan');

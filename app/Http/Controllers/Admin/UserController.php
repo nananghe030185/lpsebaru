@@ -15,6 +15,10 @@ use Illuminate\Contracts\Support\Renderable;
 use App\Http\Requests\Admin\CreateUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Http\Requests\Admin\UpdateProfileRequest;
+use App\Models\Fokus;
+use App\Models\FokusLelang;
+use App\Models\Notification;
+use App\Models\NotificationLelang;
 
 class UserController extends Controller
 {
@@ -59,6 +63,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+
         // $countries = Country::all()->pluck('name','id');
         // return view('admin.user.edit', ['user' => $user, 'roles' => $this->role->get()], compact('countries'));
         return view('admin.user.edit', ['user' => $user]);
@@ -115,9 +120,25 @@ class UserController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy(User $user)
+    public function destroy(int $user)
     {
-        // return $this->repository->destroy($user->id);
+        $user = User::find($user);
+        $user->delete();
+
+        // remove row fokus lelang
+        FokusLelang::where('user_id', $user->id)->delete();
+
+        // remode fokus tender
+        Fokus::where('user_id', $user->id)->delete();
+
+        // Remove Lelang Notifikation
+        NotificationLelang::where('user_id', $user->id)->delete();
+
+        // remove notification tender
+        Notification::where('user_id', $user->id)->delete();
+
+        // redirect
+        return redirect()->route('admin.user.index')->with('success','Data berhasil dihapus');
     }
     
     /**
