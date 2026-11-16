@@ -37,7 +37,7 @@ class TenderLelangNotif extends Command
             
             $user = User::find($user->user_id);
 
-            $notifTeles = Notification::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(10)->get();
+            $notifTeles = Notification::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(5)->get();
 
             if(count($notifTeles) > 0)
                 {
@@ -78,7 +78,7 @@ Tahap Tender :  ' . $notifTele->tender->tahap_tender . '
             
             $user = User::find($user->user_id);
 
-            $notifTeles = NotificationLelang::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(10)->get();
+            $notifTeles = NotificationLelang::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(5)->get();
 
             if(count($notifTeles) > 0)
                 {
