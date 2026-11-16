@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\Admin\PengaturanDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\Fokus;
+use App\Models\FokusLelang;
 use App\Models\Inbox;
 use App\Models\Lelang;
 use App\Models\Notification;
@@ -11,6 +13,7 @@ use App\Models\NotificationLelang;
 use App\Models\Outbox;
 use App\Models\Pengaturan;
 use App\Models\Tender;
+use App\Models\TenderKeyword;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -81,11 +84,24 @@ class PengaturanController extends Controller
         ]);
 
         if($request->has('lelang')){
-            Lelang::where('created_at', '<', $request->before)->delete();
+            $datalelangs = Lelang::where('created_at', '<', $request->before)->get();
+            foreach($datalelangs as $datalelang){
+                $datalelang->delete();
+                // remove data lelang fokus
+                FokusLelang::findOrFail($datalelang->id);
+            }
         }
 
         if($request->has('tender')){
-            Tender::where('created_at', '<', $request->before)->delete();
+            $dataTenders = Tender::where('created_at', '<', $request->before)->get();
+            foreach($dataTenders as $dataTender)
+                {
+                    $dataTender->delete();
+
+                    // delete data fokus
+                    Fokus::where('tender_id', $dataTender->tender_id)->delete();
+                    TenderKeyword::where('tender_id',  $dataTender->tender_id)->delete();
+                }
         }
 
         if($request->has('inbox')){
