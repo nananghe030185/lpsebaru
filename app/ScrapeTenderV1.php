@@ -79,8 +79,8 @@ class ScrapeTenderV1
                     ->get('/lelang')
                     ->cookies();
 
-                    $stringcookie = is_null($getcookies->getCookieByName('SPSE_SESSION')->getValue()) ? '' : $getcookies->getCookieByName('SPSE_SESSION')->getValue();
-                    $arrcookie = Str::of($stringcookie)->explode('=')->get(1);
+                    $stringcookie = $getcookies->getCookieByName('SPSE_SESSION')?->getValue() ?? '';
+                    $arrcookie = Str::of($stringcookie)->explode('=')->get(1, '');
                     $token = Str::replace('&___TS','',$arrcookie);
                     
                     foreach ($getcookies as $ck) {
@@ -89,7 +89,9 @@ class ScrapeTenderV1
 
                     $respon = $client->withHeaders($headers)->asForm()->withoutVerifying()->post('/dt/lelang?tahun=' . Carbon::now()->format('Y'), $this->setparams($token));
 
-                    $this->save($respon->json(), $lpse->id);
+                    if(is_array($respon->json())){
+                        $this->save($respon->json(), $lpse->id);
+                    }
 
                 }
             }catch (\Exception $e) {

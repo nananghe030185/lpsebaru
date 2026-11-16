@@ -122,7 +122,7 @@ class UserController extends Controller
      */
     public function destroy(int $user)
     {
-        $user = User::find($user);
+        $user = User::findOrFail($user);
         $user->delete();
 
         // remove row fokus lelang

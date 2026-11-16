@@ -7,7 +7,7 @@
             <i class="icofont icofont-calendar" for="masa_berlaku"></i>
         </div>
         <input class="form-control" id="human-friendly" name="{{ $name }}" type="date" value="{{ $value }}" placeholder="Masa Berlaku" @readonly($readonly) @required($required)>
-        @error('{{ $name }}')
+        @error($name)
             <div class="invalid-feedback"> 
                 {{ $message }}
             </div>

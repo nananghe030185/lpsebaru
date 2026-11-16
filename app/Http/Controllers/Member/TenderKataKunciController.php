@@ -9,6 +9,7 @@ use App\Models\TenderKeyword;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TenderKataKunciController extends Controller
 {
@@ -24,10 +25,11 @@ class TenderKataKunciController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Fokus $tender_kata_kunci)
+    public function destroy(int $tender_kata_kunci)
     {
         DB::beginTransaction();
         try{
+            $tender_kata_kunci = TenderKeyword::findOrFail($tender_kata_kunci);
             $tender_kata_kunci->delete();
             DB::commit();
             return redirect()->route('app.tender-kata-kunci.index')->with('success', __('Data telah di hapus'));
@@ -70,6 +72,7 @@ class TenderKataKunciController extends Controller
     public function bulkFokus(Request $request)
     {
         $ids = $request->input('ids', []);
+
         // explode the ids to ensure they are in array format
         $ids = explode(',', $ids);
 
@@ -99,11 +102,13 @@ class TenderKataKunciController extends Controller
     public function bulkDelete(Request $request)
     {
         $ids = $request->input('ids', []);
+        // dd($ids);
+
         if (empty($ids)) {
             return redirect()->back()->with('error', 'No items selected for deletion.');
         }
 
-        Fokus::whereIn('id', $ids)->delete();
+        TenderKeyword::whereIn('id', $ids)->delete();
         return redirect()->route('app.tender-kata-kunci.index')->with('success', 'Selected Fokus Lelang deleted successfully.');
     }
 }
