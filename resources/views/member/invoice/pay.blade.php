@@ -68,18 +68,22 @@
                                 <th>{{ __('Harga') }}</th>
                                 <td>Rp. {{ number_format($invoice->total, 0, ',', '.') }}</td>
                             </tr>
+                            @if($invoice->pdf_url && $invoice->status == 'pending')
+                            <tr>
+                                <th>Cara Pembayaran</th>
+                                <td><a href="{{ $invoice->pdf_url }}" target="_blank" class="btn btn-success">Klik Disini</a></td>
+                            </tr>
+                            @endif
                         </table>
                     </div>
                     <div class="card-footer text-end d-inline-flex gap-1 justify-content-end">
-                        <x-form.buttonsimpan>{{ __('Bayar') }}</x-form.buttonsimpan>
+                        <x-form.buttonsimpan id="pay">{{ __('Bayar') }}</x-form.buttonsimpan>
                         <x-form.buttonbatal :href="route('app.invoice.index')"></x-form.buttonbatal>
-                        {{-- <button id="pay" name="submit" class="btn btn-primary">{{ __('Bayar') }}</button>
-                        <a href="{{ route('app.invoice.index')}}" class="btn btn-danger">{{ __('Batal')}}</a> --}}
                     </div>
                 </div>
             </div>
 
-           {{-- <div id="result-json"></div> --}}
+           <div id="result-json" style="display: none"></div>
         </div>
     </div>
 @endsection
@@ -97,6 +101,7 @@
                      document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
                 
                     const baseurl = window.location.origin;
+
                     fetch(baseurl + '/api/invoice/checkout', {
                         method : 'POST',
                         headers : {
@@ -114,6 +119,8 @@
                     document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
                 
                     const baseurl = window.location.origin;
+                    // console.log(baseUrl);
+
                     fetch(baseurl + '/api/invoice/checkout', {
                         method : 'POST',
                         headers : {

@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-           {{-- <div id="result-json"></div> --}}
+           <div id="result-json" style="display: none"></div>
         </div>
     </div>
 @endsection

@@ -79,8 +79,10 @@ class InvoiceController extends Controller
         Invoice::create($request->all());
 
         // kurangi stok kupon
-        $kupon->stok -= 1;
-        $kupon->save();
+        if($kupon !== null){
+            $kupon->stok -= 1;
+            $kupon->save();
+        }
 
         return redirect()->route('app.invoice.index')->with('success', 'Invoice created successfully.');
     }
