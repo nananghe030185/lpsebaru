@@ -68,13 +68,17 @@
                                 <th>{{ __('Harga') }}</th>
                                 <td>Rp. {{ number_format($invoice->total, 0, ',', '.') }}</td>
                             </tr>
+                            @if($invoice->pdf_url && $invoice->status == 'pending')
+                            <tr>
+                                <th>Cara Pembayaran</th>
+                                <td><a href="{{ $invoice->pdf_url }}" target="_blank" class="btn btn-success">Klik Disini</a></td>
+                            </tr>
+                            @endif
                         </table>
                     </div>
                     <div class="card-footer text-end d-inline-flex gap-1 justify-content-end">
                         <x-form.buttonsimpan id="pay">{{ __('Bayar') }}</x-form.buttonsimpan>
                         <x-form.buttonbatal :href="route('admin.invoice.index')"></x-form.buttonbatal>
-                        {{-- <button id="pay" name="submit" class="btn btn-primary">{{ __('Bayar') }}</button>
-                        <a href="{{ route('admin.invoice.index')}}" class="btn btn-danger">{{ __('Batal')}}</a> --}}
                     </div>
                 </div>
             </div>
@@ -88,6 +92,7 @@
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $client_key }}"></script>
     <script type="text/javascript">
         document.getElementById('pay').onclick = function(){
+            
             // SnapToken acquired from previous step
             snap.pay('{{ $invoice->snap_token }}', {
                 // Optional

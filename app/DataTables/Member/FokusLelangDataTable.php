@@ -43,8 +43,7 @@ class FokusLelangDataTable extends DataTable
                 return TableHelper::nominal_simple($lelang->lelang->pagu);
             })
             ->editColumn('lelang.nama_paket', function (FokusLelang $lelang) {
-                return Helpers::link(
-                    'https://sirup.lkpp.go.id/sirup/rup/detailPaketPenyedia2020?idPaket=' . $lelang->lelang->kode_rup,
+                return Helpers::link(route('redirect.lelang',[$lelang->lelang->slug]) ,
                     Str::of($lelang->lelang->nama_paket)->limit(100)
                 );
             })
@@ -132,13 +131,10 @@ class FokusLelangDataTable extends DataTable
                                     .draw();
                             });
                         // Get unique values and append as options
-                        api.column(columnIdx).data().unique().sort().each(function(d, j) {
-                            // Remove HTML tags if present
-                            var text = d.replace(/(<([^>]+)>)/gi, "");
-                            if (select1.find("option[value=\'" + text + "\']").length === 0) {
-                                select1.append("<option value=\"" + text + "\">" + text + "</option>");
-                            }
-                        });
+                        select1.append("<option value=\"Jasa Konsultansi\">Jasa Konsultansi</option>");
+                        select1.append("<option value=\"Barang\">Barang</option>");
+                        select1.append("<option value=\"Pekerjaan Konstruksi\">Pekerjaan Konstruksi</option>");
+                        select1.append("<option value=\"Jasa Lainnya\">Jasa Lainnya</option>");
 
                         var columnIdm = api.column("lelang.metode:name").index();
                         var select2 = $("<select name=\"filter2\" id=\"filter2\" class=\"form-control jenis_metode\"><option value=\"\">Semua Jenis Metode</option></select>")
@@ -150,14 +146,13 @@ class FokusLelangDataTable extends DataTable
                                     .search(val ? "^" + val + "$" : "", true, false)
                                     .draw();
                             });
-                        // Get unique values and append as options
-                        api.column(columnIdm).data().unique().sort().each(function(d, j) {
-                            // Remove HTML tags if present
-                            var text = d.replace(/(<([^>]+)>)/gi, "");
-                            if (select2.find("option[value=\'" + text + "\']").length === 0) {
-                                select2.append("<option value=\"" + text + "\">" + text + "</option>");
-                            }
-                        });
+                        select2.append("<option value=\"Seleksi\">Seleksi</option>");
+                        select2.append("<option value=\"Penunjukan Langsung\">Penunjukan Langsung</option>");
+                        select2.append("<option value=\"Tender\">Tender</option>");
+                        select2.append("<option value=\"Tender Cepat\">Tender Cepat</option>");
+                        select2.append("<option value=\"Dikecualikan\">Dikecualikan</option>");
+                        select2.append("<option value=\"Pengadaan Langsung\">Pengadaan Langsung</option>");
+                        select2.append("<option value=\"E-Purchasing\">E-Purchasing</option>");
 
                         $("#select-all").on("click", function() {
                             $(".row-checkbox").prop("checked", this.checked);

@@ -138,7 +138,7 @@
 
  */
 :root {
-  --theme-default: #7366FF;
+  --theme-default: #00aa5b; /*7366FF*/
   --theme-secondary: #838383;
   --light-background: rgba(242, 243, 247, 0.7);
   --body-font-color: #2F2F3B;
@@ -162,7 +162,7 @@
   --light-slate: #F5F6F9;
   --product-shadow: 0px 1px 0px rgba(82, 82, 108, 0.15);
   --light-shade-primary: rgba(245, 244, 255);
-  --rgb-primary: rgb(115, 102, 255);
+  --rgb-primary: rgb(10, 213, 3);
   --f-lighter: #7f8183;
   --light-datatable-odd: #F5F6FA;
   --dark-light-color: rgba(10, 10, 10, 0.5);
@@ -33787,11 +33787,11 @@ select.crypto-select.primary {
 }
 .badge-light-primary {
   background-color: rgba(115, 102, 255, 0.34);
-  color: #7366FF;
+  color: var(--theme-default); /*#7366FF;*/
 }
 .badge-light-primary:hover {
   background-color: rgba(115, 102, 255, 0.34);
-  color: #7366FF;
+  color: var(--theme-default);
 }
 
 .badge-l-primary {
@@ -34277,7 +34277,7 @@ select.crypto-select.primary {
 }
 
 .profile-box {
-  background: linear-gradient(103.75deg, #33B1EE -13.9%, var(--theme-default) 79.68%);
+  background: linear-gradient(103.75deg, #3cff85 -13.9%, var(--theme-default) 79.68%);
   color: #fff;
   height: 238px;
 }
@@ -34907,7 +34907,7 @@ select.crypto-select.primary {
 }
 
 .fill-primary {
-  fill: #7366FF;
+  fill: var(--theme-default);
 }
 
 .fill-secondary {
@@ -56574,7 +56574,7 @@ table.table-bordered thead tr th p {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #7366FF;
+  background-color: var(--theme-default);
   border-radius: 5px 0px 0px 5px;
   opacity: 0;
   visibility: hidden;
@@ -56587,7 +56587,7 @@ table.table-bordered thead tr th p {
   transition: all 0.5s ease;
   position: relative;
   margin-bottom: 10px;
-  background-color: #f1f0ff;
+  background-color: #e5fff3; /*f1f0ff*/
 }
 .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links .simplebar-wrapper .simplebar-mask .simplebar-content-wrapper .simplebar-content > li .sidebar-link.active::after {
   opacity: 1;
@@ -66715,7 +66715,7 @@ html[dir=rtl] .dtfh-floatingparent-foot > div {
 }
 .setting-sidebar .color-layout > div,
 .layout-sidebar .color-layout > div {
-  background-color: #7366FF;
+  background-color: var(--theme-default); /*#7366FF;*/
   height: 100%;
   width: 100%;
   border-radius: 5px;

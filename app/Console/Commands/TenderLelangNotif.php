@@ -39,9 +39,8 @@ class TenderLelangNotif extends Command
 
             $notifTeles = Notification::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(5)->get();
 
-            if(count($notifTeles) > 0)
-                {
-                    $message = "Berikut adalah data LPSE yang tayang pada hari ini " . now()->format('d/m/Y') . ':
+            while(count($notifTeles) > 0){
+                $message = "Berikut adalah data LPSE yang tayang pada hari ini " . now()->format('d/m/Y') . ':
 
 ';
                     foreach($notifTeles as $j => $notifTele){
@@ -53,8 +52,9 @@ Tahap Tender :  ' . $notifTele->tender->tahap_tender . '
 
 ';
                         // update notif jadi di baca
-                        $notifTele->status = 'read';
-                        $notifTele->save();
+                        // $notifTele->status = 'read';
+                        // $notifTele->save();
+                        $notifTele->delete();
                     }
                     $message .= 'Salam
 ' . Helpers::link(url('/'), 'LPSE Indonesia');
@@ -65,7 +65,8 @@ Tahap Tender :  ' . $notifTele->tender->tahap_tender . '
                         'channel' => 'telegram',
                         'status' => 0
                     ]);
-                }
+                $notifTeles = Notification::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(5)->get();
+            }
         }
     }
 
@@ -80,7 +81,7 @@ Tahap Tender :  ' . $notifTele->tender->tahap_tender . '
 
             $notifTeles = NotificationLelang::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(5)->get();
 
-            if(count($notifTeles) > 0)
+            while(count($notifTeles) > 0)
                 {
                     $message = "Berikut adalah data lelang SIRUP yang tayang pada " . now()->format('d/m/Y') . ':
 
@@ -97,8 +98,9 @@ Lokasi                    : '. $notifTele->lelang->lokasi .'
 ';
 
                         // update notif jadi di baca
-                        $notifTele->status = 'read';
-                        $notifTele->save();
+                        // $notifTele->status = 'read';
+                        // $notifTele->save();
+                        $notifTele->delete();
                     }
 
                     $message .= 'Salam
@@ -110,7 +112,8 @@ Lokasi                    : '. $notifTele->lelang->lokasi .'
                         'channel' => 'telegram',
                         'status' => 0
                     ]);
-                }
+                $notifTeles = NotificationLelang::where('status', 'unread')->where('channel', 'telegram')->where('user_id', $user->id)->take(5)->get();
+            }
         }
     }
 }

@@ -3,11 +3,6 @@
 setTimeout(function () {
     (function ($) {
         "use strict";
-        $(".select2").select2({
-            placeholder: "Pilih Data yang tersedia",
-            width: "resolve",
-            allowClear: true,
-        });
 
         // Single Search Select
         $(".invoice_status").select2({
@@ -138,6 +133,11 @@ setTimeout(function () {
         });
         $(".js-programmatic-disable").on("click", function () {
             $(".js-example-disabled").prop("disabled", true);
+        });
+        $(".select2").select2({
+            placeholder: "Pilih Data yang tersedia",
+            width: "resolve",
+            allowClear: true,
         });
     })(jQuery);
 }, 350);

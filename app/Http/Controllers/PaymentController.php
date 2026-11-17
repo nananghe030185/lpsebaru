@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AppLpse;
+use App\Models\Invoice;
 use App\Models\LaporanKeuangan;
 use App\Models\Outbox;
 use App\Models\OutboxModel;
@@ -490,7 +491,7 @@ class PaymentController extends Controller
     }
 
     public function status(Request $request){
-        Tiket::where('order_id', $request->order_id)->update([
+        Invoice::where('nomer', $request->order_id)->update([
             'pdf_url' => $request->pdf_url,
             'description' => 'Silahkan selesaikan pembayaran anda, panduan pembayaran unduh pdf disamping'
         ]);
