@@ -85,4 +85,17 @@ class OutboxController extends Controller
         }
         return response()->json(['message' => 'Tidak ada data yang dipilih.'], 400);
     }
+
+    public function bulkResend(Request $request)
+    {
+        // 
+         $ids = $request->input('ids', []);
+        if (!empty($ids)) {
+            Outbox::whereIn('id', $ids)->update([
+                'status' => 0
+            ]);
+            return response()->json(['message' => 'Data berhasil diresend.']);
+        }
+        return response()->json(['message' => 'Tidak ada data yang dipilih.'], 400);
+    }
 }

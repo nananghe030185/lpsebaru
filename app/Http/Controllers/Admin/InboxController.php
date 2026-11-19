@@ -79,4 +79,6 @@ class InboxController extends Controller
         }
         return response()->json(['message' => 'Tidak ada data yang dipilih.'], 400);
     }
+
+    
 }

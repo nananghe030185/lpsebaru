@@ -31,6 +31,7 @@ class TenderDataTable extends DataTable
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
                     'fokusTender'  => 'admin.tender-lpse.fokus',
+                    'edit' => 'admin.tender-lpse.edit',
                     'data'   => $row,
                     'isFokusTender' => Helpers::isUserFokusTender($row)
                 ]);

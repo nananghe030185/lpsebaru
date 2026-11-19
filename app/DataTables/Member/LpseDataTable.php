@@ -94,13 +94,14 @@ class LpseDataTable extends DataTable
                 ->width(200),
             Column::make('link')
                 ->title('Link')
+                ->hidden()
                 ->width(200),
             Column::make('jumlah_paket')
                 ->title('Jumlah Paket')
                 ->width(150)
                 ->className('text-end'),
             Column::make('jumlah_pagu')
-                ->title('Jumlah Pagu')
+                ->title('HPS')
                 ->width(150)
                 ->className('text-end'),
         ];

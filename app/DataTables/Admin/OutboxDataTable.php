@@ -124,6 +124,37 @@ class OutboxDataTable extends DataTable
                                 }
                             }',
                         ],
+                        'bulk-resend' => [
+                            'text' => '<i class="fa fa-telegram"></i> Bulk Resend', // Button text with optional icon
+                            'className' => 'btn btn-info', // CSS class for styling
+                            'action' => 'function (e, dt, node, config) {
+                                var ids = [];
+                                $("#outbox-table tbody .row-checkbox:checked").each(function() {
+                                    ids.push($(this).val());
+                                });
+                                if (ids.length > 0) {
+                                    if (confirm("Are you sure you want to resend selected Outbox?")) {
+                                        $.ajax({
+                                            url: "' . route('admin.inout.outbox.bulk-resend') . '",
+                                            type: "POST",
+                                            data: { 
+                                                ids: ids,
+                                                _token: "' . csrf_token() . '"
+                                            },
+                                            success: function(response) {
+                                                dt.ajax.reload();
+                                                toastr.warning("Selected Outbox resend successfully.");
+                                            },
+                                            error: function(xhr) {
+                                                toastr.warning("Error resend Outbox: " + xhr.responseText);
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    toastr.warning("No Outbox selected for resend.");
+                                }
+                            }',
+                        ],
                     ])
                     ->initComplete('function() {
                         var api = this.api();

@@ -58,6 +58,7 @@ Route::middleware(['auth','admin'])->group(function () {
 
     // outbox
     Route::post('/admin/inout/outbox/bulk-delete', [OutboxController::class, 'bulkDelete'])->name('admin.inout.outbox.bulk-delete');
+    Route::post('/admin/inout/inbox/bulk-resend', [OutboxController::class, 'bulkResend'])->name('admin.inout.outbox.bulk-resend');
     Route::get('/admin/inout/outbox/resend/{outbox}', [OutboxController::class, 'resend'])->name('admin.inout.outbox.resend');
     Route::resource('/admin/inout/outbox', OutboxController::class)->names('admin.inout.outbox');
     
@@ -110,7 +111,7 @@ Route::middleware(['auth','admin'])->group(function () {
     // Tender LPSE
     Route::get('/admin/tender-lpse/fokus/{tender}', [TenderController::class, 'fokus'])->name('admin.tender-lpse.fokus');
     Route::post('/admin/tender-lpse/bulk-delete', [TenderController::class, 'bulkDelete'])->name('admin.tender-lpse.bulk-delete');
-    Route::resource('/admin/tender-lpse', TenderController::class)->names('admin.tender-lpse')->except(['create','store','show','edit','update','destroy']);;
+    Route::resource('/admin/tender-lpse', TenderController::class)->names('admin.tender-lpse')->except(['create','show','destroy']);;
 
     // Blog, Category, Role, Tag
     Route::resource('/admin/blog', BlogController::class)->names('admin.blog')->except(['show']);;

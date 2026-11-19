@@ -175,6 +175,8 @@ class ScrapeTenderV1
                     'Tender Gagal', 
                     'Tender Sudah Selesai', 
                     'Tender Batal',
+                    'Seleksi Batal',
+                    'Seleksi Gagal'
                     ])) {
                     // Create notifications for the user
                     if($user->notif_telegram_tender){

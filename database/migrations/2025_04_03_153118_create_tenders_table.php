@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('syarat_kualifikasi')->nullable();
             $table->string('tahun');
             $table->string('nilai_kontrak');
+            $table->text('description')->nullable();
 
             $table->timestamps();
 

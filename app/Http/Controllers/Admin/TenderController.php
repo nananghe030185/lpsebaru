@@ -21,7 +21,17 @@ class TenderController extends Controller
         return $dataTable->render('admin.tender.index');
     }
 
+    public function edit(Tender $tender_lpse)
+    {
+        return view('admin.tender.edit', compact('tender_lpse'));
+    }
 
+    public function update(Request $request, Tender $tender_lpse){
+        $tender_lpse->description = $request->description;
+        $tender_lpse->save();
+
+        return redirect()->route('admin.tender-lpse.index')->with('success','Data Berhasil diupdate');
+    }
     /**
      * Fokuskan paket  tender
      */
@@ -56,6 +66,9 @@ class TenderController extends Controller
         ]);
     }
 
+    public function page(Tender $tender){
+        dd($tender);
+    }
     /**
      * Redirect to tender schedule page on LPSE website
      */
