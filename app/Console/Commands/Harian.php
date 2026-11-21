@@ -32,6 +32,8 @@ class Harian extends Command
     {
         //
         $this->reminder();
+
+        $this->akunKadaluarsa();
     }
 
     public function reminder()
@@ -49,5 +51,17 @@ class Harian extends Command
     public function pesanReminder(string $daybefore)
     {
         return 'Masa Berlaku Keanggotaan anda akan berakhir dalam ' . $daybefore . ' hari, silahkan lakukan pembayaran untuk tetap menikmati fitur dari ' . config('app.name');
+    }
+
+    public function akunKadaluarsa()
+    {
+        $users = User::where('group_id', '>', 1)->where('group_id','>', 2)->get();
+        $users->each(function ($user){
+            if(now()->diffInDays($user->masa_berlaku) <= 0){
+                // update group Id menjadi non member -> 2
+                $user->group_id = 2;
+                $user->save();
+            }
+        });
     }
 }

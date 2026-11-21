@@ -200,7 +200,7 @@ class InvoiceController extends Controller
                 // tambah masa berlaku akun
                 $userhelper = new UserHelper($invoice->user);
                 $userhelper->tambahMasaBerlaku($invoice->durasi);
-
+                $userhelper->updateGroupId($invoice->membership);
                 // buat input di laporan
                 Keuangan::create([
                     'user_id' => $invoice->user_id,
@@ -212,17 +212,18 @@ class InvoiceController extends Controller
 
                 Komisi::create([
                     'id_downline' => $invoice->user_id,
-                    'id_upline' => $invoice->user->upline,
+                    'id_upline' => $invoice->user->upline_id,
                     'keterangan' => 'Komisi dari pembayaran Invoice ' . $invoice->nomer,
                     'nominal' => $invoice->total * AppHelper::getPersenKomisi() / 100,
                     'pay_date' => now(),
                     'state' => false, // belum dibayar
                 ]);
 
-                // Tambah Komisi User
-                // $user = User::findOrFail($invoice->user_id);
-                // $komisi = $user->komisi;
-                // $user->update(['komisi' => $komisi + ($invoice->total * AppHelper::getPersenKomisi() / 100)]);
+                // Tambah Komisi User upline
+                $user = User::findOrFail($invoice->user_id); //  user yang pesen invoice
+                $upline = $user->upline;
+                $komisi = $upline->komisi; // komisi upline sebelumnya
+                $upline->update(['komisi' => $komisi + ($invoice->total * AppHelper::getPersenKomisi() / 100)]);
 
                 // Kirim notifikasi jika diperlukan
                 // $userhelper->user->notify(new InvoiceNotification($invoice));

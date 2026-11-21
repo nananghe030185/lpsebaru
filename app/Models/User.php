@@ -74,7 +74,7 @@ class User extends Authenticatable implements HasMedia
             'email_verified_at' => 'datetime',
             'masa_berlaku' => 'datetime',
             'password' => 'hashed',
-            'upline' => 'integer',
+            'upline_id' => 'integer',
             'notif_email_tender' => 'boolean',
             'notif_email_lelang' => 'boolean',
             'notif_whatsapp_tender' => 'boolean',
@@ -88,7 +88,7 @@ class User extends Authenticatable implements HasMedia
     protected $with = [
         'media',
         'grup',
-        // 'upline'
+        'upline'
     ];
 
     public static function booted()
@@ -132,14 +132,14 @@ class User extends Authenticatable implements HasMedia
     protected function jumlahDownline():Attribute
     {
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => User::where('upline' , $attributes['id'])->count()
+            get: fn(mixed $value, array $attributes) => User::where('upline_id' , $attributes['id'])->count()
         );
     }
 
-    // public function upline() : BelongsTo
-    // {
-    //     return $this->belongsTo(User::class, 'upline', 'id');
-    // }
+    public function upline() : BelongsTo
+    {
+        return $this->belongsTo(User::class, 'upline_id', 'id');
+    }
 
     public function getRouteKeyName()
     {

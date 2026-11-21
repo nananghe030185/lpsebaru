@@ -40,14 +40,14 @@ return new class extends Migration
             $table->boolean('notif_email_lelang')->default(false);
             $table->string('image')->nullable();
             $table->dateTime('masa_berlaku')->default(now());
-            $table->integer('upline')->unsigned()->nullable();
+            $table->integer('upline_id')->unsigned()->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
             // $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             // $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-            $table->foreign('upline')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('upline_id')->references('id')->on('users')->onDelete('cascade');
         });
 
          Schema::create('password_reset_tokens', function (Blueprint $table) {

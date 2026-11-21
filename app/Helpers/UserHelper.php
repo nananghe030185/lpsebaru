@@ -108,4 +108,22 @@ class UserHelper
         $this->user->masa_berlaku = now()->addDays($days);
         $this->user->save();
     }
+
+    public function updateGroupId(string $membership){
+        switch ($membership) {
+            case 'Personal':
+                $this->user->group_id = 4;
+                $this->user->save();
+                break;
+            case 'Premium':
+                $this->user->group_id = 5;
+                $this->user->save();
+                break;
+            default:
+                # Corporate
+                $this->user->group_id = 6;
+                $this->user->save();
+                break;
+        }
+    }
 }
