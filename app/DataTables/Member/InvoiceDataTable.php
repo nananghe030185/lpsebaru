@@ -45,7 +45,7 @@ class InvoiceDataTable extends DataTable
                 return 'Rp. ' . number_format($row->total);
             })
             ->editColumn('durasi', function ($row) {
-                return $row->durasi / 30;
+                return $row->membership . ' - ' . $row->durasi / 30;
             })
             ->editColumn('status', function ($row) {
                 if($row->status == 'paid') {

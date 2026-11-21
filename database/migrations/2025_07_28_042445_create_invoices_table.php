@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->text('keterangan')->nullable();
             $table->integer('durasi')->nullable();
+            $table->string('membership')->nullable();
             $table->decimal('total', 15, 2);
             $table->string('status')->default('unpaid'); // Assuming status can be 'paid', 'unpaid', etc.
             $table->bigInteger('order_id')->default(0);

@@ -54,16 +54,29 @@
             $('#durasi').change(function() {
                 var durasi = $(this).val();
                 var harga = 0;
-
+                var membership = 'Personal';
                 if (durasi == "{{ App\Helpers\AppHelper::getDurasiPersonal() }}") {
                     harga = "{{ App\Helpers\AppHelper::getHargaPersonal() }}";
+                    membership = 'Personal';
+                    $('#personal').show().stop(true, true).delay(200).slideDown(400);
+                    $('#premium').hide();
+                    $('#corporate').hide();
                 } else if (durasi == "{{ App\Helpers\AppHelper::getDurasiPremium() }}") {
                     harga = "{{ App\Helpers\AppHelper::getHargaPremium() }}";
+                    membership = 'Premium';
+                    $('#personal').hide();
+                    $('#premium').show().stop(true, true).delay(200).slideDown(400);
+                    $('#corporate').hide();
                 } else if (durasi == "{{ App\Helpers\AppHelper::getDurasiCorporate() }}") {
                     harga = "{{ App\Helpers\AppHelper::getHargaCorporate() }}";
+                    membership = 'Corporate';
+                    $('#personal').hide();
+                    $('#premium').hide();
+                    $('#corporate').show().stop(true, true).delay(200).slideDown(400);
                 }
 
                 $('#total').val(harga);
+                $('#membership').val(membership);
             });
         });
     </script>

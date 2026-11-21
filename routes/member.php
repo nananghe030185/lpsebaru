@@ -21,7 +21,26 @@ Route::middleware(['auth'])->group(function(){
 
     // Dashboard
     Route::get('/app/dashboard', [DashboardController::class, 'index'])->name('app.dashboard.index');
-    
+});
+
+Route::middleware(['auth','nonmember'])->group(function(){
+    // invoice
+    Route::get('/app/invoice/{invoice:nomer}/display', [InvoiceController::class, 'display'])->name('app.invoice.display');
+    Route::get('/app/invoice/{invoice:nomer}/pay', [InvoiceController::class, 'pay'])->name('app.invoice.pay');
+    Route::resource('/app/invoice', InvoiceController::class)->names('app.invoice')->except(['show','edit','update']);
+});
+
+Route::middleware(['auth','member'])->group(function(){
+    // LPSE
+    Route::get('/app/lpse', [LpseController::class, 'index'])->name('app.lpse.index');
+
+    // Master Satuan Kerja
+    Route::get('/app/satuan-kerja', [SatkerController::class, 'index'])->name('app.satuan-kerja.index');
+
+    // KLPDI
+    Route::get('/app/klpdi', [KlpdiController::class, 'index'])->name('app.klpdi.index');
+});
+Route::middleware(['auth','corporate'])->group(function(){
     // Lelang Sirup
     Route::get('/app/lelang-sirup/bulk-fokus', [LelangController::class, 'bulkFokus'])->name('app.lelang-sirup.bulk-fokus');
     Route::get('/app/lelang-sirup/fokus/{lelang}', [LelangController::class, 'fokus'])->name('app.lelang-sirup.fokus');
@@ -33,16 +52,9 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('app/fokus-paket/unfokus/{fokus_paket}', [FokusController::class, 'unfokus'])->name('app.fokus-paket.unfokus');
     Route::resource('/app/fokus-paket', FokusController::class)->names('app.fokus-paket')->except(['create','store','show','edit','update']);
+});
 
-    // LPSE
-    Route::get('/app/lpse', [LpseController::class, 'index'])->name('app.lpse.index');
-
-    // Master Satuan Kerja
-    Route::get('/app/satuan-kerja', [SatkerController::class, 'index'])->name('app.satuan-kerja.index');
-
-    // KLPDI
-    Route::get('/app/klpdi', [KlpdiController::class, 'index'])->name('app.klpdi.index');
-
+Route::middleware(['auth','member'])->group(function(){
     // Tender LPSE
     Route::get('/app/tender-lpse/bulk-fokus', [TenderController::class, 'bulkFokus'])->name('app.tender-lpse.bulk-fokus');
     Route::get('/app/tender-lpse/fokus/{tender}', [TenderController::class, 'fokus'])->name('app.tender-lpse.fokus');
@@ -56,13 +68,9 @@ Route::middleware(['auth'])->group(function(){
     // add bulk unfokus route
     Route::get('/app/fokus-paket/bulk-unfokus', [FokusController::class, 'bulkUnfokus'])->name('app.fokus-paket.bulk-unfokus');
     Route::resource('/app/fokus-paket', FokusController::class)->names('app.fokus-paket')->except(['create','store','show','edit','update']);;
-    
-    Route::get('/app/invoice/{invoice:nomer}/display', [InvoiceController::class, 'display'])->name('app.invoice.display');
-    Route::get('/app/invoice/{invoice:nomer}/pay', [InvoiceController::class, 'pay'])->name('app.invoice.pay');
-    Route::resource('/app/invoice', InvoiceController::class)->names('app.invoice')->except(['show','edit','update']);
-    
+});
+Route::middleware(['auth'])->group(function(){
     // User
     Route::put('/app/user/update-profile/{user}', [UserController::class,'updateProfile'])->name('app.user.update-profile');
     Route::resource('/app/user', UserController::class)->names('app.user')->except(['index','create','store','show','destroy']);
-
 });

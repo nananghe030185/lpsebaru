@@ -346,7 +346,7 @@
 				<div class="card !shadow-none !rounded-[0.8rem] !bg-[#f0f0f8]">
 				  <div class="card-body flex-[1_1_auto] p-[40px]">
 					<blockquote class="!text-[0.85rem] !leading-[1.7] !font-normal pl-4 icon !mb-0 relative p-0 border-0 before:content-['\201d'] before:absolute before:top-[-1.5rem] before:left-[-0.9rem] before:text-[rgba(52,63,82,0.05)] before:text-[10rem] before:leading-none before:z-[1]">
-					  <p>“Aplikasi LPSE Indonesia mudah digunakan simple but powerfull, saya yang awam saja mengenai aplikasi komputer dapat langsung menggunakan Aplikasi ini ”</p>
+					  <p>“Aplikasi LPSE Indonesia mudah digunakan simple but powerful, saya yang awam saja mengenai aplikasi komputer dapat langsung menggunakan Aplikasi ini ”</p>
 					  <div class="flex items-center text-left">
 						<div class="info !pl-0">
 						  <h5 class="!mb-1 text-[.9rem] !leading-[1.5]">Rudi Setiawan</h5>

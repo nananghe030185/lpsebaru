@@ -192,7 +192,6 @@ class LelangDataTable extends DataTable
                 ->searchable(true)
                 ->orderable(true),
             Column::make('pemilihan')
-                ->hidden()
                 ->title('Pemilihan')
                 ->searchable(true)
                 ->orderable(true),

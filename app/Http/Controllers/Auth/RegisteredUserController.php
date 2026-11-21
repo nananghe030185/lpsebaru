@@ -44,7 +44,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'username' => Str::slug($request->username),
-            'masa_berlaku' => Carbon::now(),
+            'masa_berlaku' => Carbon::now()->addDays((int) AppHelper::getMasaPercobaan()),
             'upline' => $uplineId,
             'group_id' => AppHelper::getDefaultIdUserGroup()
         ]);

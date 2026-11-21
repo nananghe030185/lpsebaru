@@ -55,6 +55,7 @@ class InvoiceController extends Controller
             'total' => 'required|numeric',
             // 'status' => ['required', In::make(['paid', 'unpaid', 'pending'])],
         ]);
+
         $request->merge([
             'user_id' => Helpers::getCurrentUserId()
         ]);

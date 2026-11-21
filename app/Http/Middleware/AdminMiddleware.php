@@ -16,10 +16,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if( Auth::check() && Auth::user()->group_id !== 1 ) {
-            // If the user is authenticated but not an admin, redirect or abort
-            return abort(403, 'Unauthorized action.');
+        if( Auth::check() && Auth::user()->group_id === 1 ) {
+            return $next($request);
         }
-        return $next($request);
+        return abort(403, 'Unauthorized action.');
+        
     }
 }

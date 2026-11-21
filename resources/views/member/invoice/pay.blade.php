@@ -22,20 +22,26 @@
                             <div class="col-lg-12">
                                 <div class="pricingtable">
                                     <div class="pricingtable-header">
-                                        <h3 class="title">Personal</h3>
+                                        <h3 class="title">{{ $invoice->membership }}</h3>
                                     </div>
                                     <h5 class="mb-2">
                                         <span class="currency">Rp. </span>
                                         <span class="amount">{{ number_format($invoice->total, 0, ',', '.') }}</span>
                                     </h5>
-                                    <ul class="pricing-content">
-                                        <li>Email Notifikasi</li>
-                                        <li>Telegram Notifikasi</li>
-                                        <li>Whatsapp Notifikasi</li>
-                                        <li>Member Area</li>
-                                        <li>Akses Semua LPSE</li>
-                                        <li>Download Data Tender</li>
-                                        <li>Download Data Lelang</li>
+                                    <ul class="list-group">
+                                        <li class="list-group-item list-group-item-action list-hover-success"><i class="icofont icofont-check-circled text-success"></i> <strong>Dashboard</strong> Member</li>
+                                        <li class="list-group-item list-group-item-action list-hover-success"><i class="icofont icofont-check-circled text-success"></i> <strong>Unlimited</strong> Kata Kunci</li>
+                                        <li class="list-group-item list-group-item-action list-hover-success"><i class="icofont icofont-check-circled text-success"></i> <strong>Email</strong> Notifikasi</li>
+                                        <li class="list-group-item list-group-item-action list-hover-success"><i class="icofont icofont-check-circled text-success"></i> <strong>Telegram</strong> Notifikasi</li>
+                                        <li class="list-group-item list-group-item-action @if ($invoice->membership == 'Corporate')list-hover-success @else list-hover-danger @endif"><i class="icofont @if ($invoice->membership == 'Corporate') icofont-check-circled text-success @else icofont-close-circled text-danger @endif"></i> <strong>Whatsapp</strong> Notifikasi</li>
+                                        
+                                        <li class="list-group-item list-group-item-action list-hover-success"><i class="icofont icofont-check-circled text-success"></i> <strong>Paket LPSE</strong></li>
+
+                                            <li class="list-group-item list-group-item-action @if ($invoice->membership == 'Corporate')list-hover-success @else list-hover-danger @endif"><i class="icofont @if ($invoice->membership == 'Corporate') icofont-check-circled text-success @else icofont-close-circled text-danger @endif"></i> <strong>Paket Lelang SIRUP</strong></li>
+
+                                            <li class="list-group-item list-group-item-action @if ($invoice->membership == 'Corporate')list-hover-success @else list-hover-danger @endif"><i class="icofont @if ($invoice->membership == 'Corporate') icofont-check-circled text-success @else icofont-close-circled text-danger @endif"></i> <strong>Paket Swakelola SIRUP</strong></li>
+
+                                            <li class="list-group-item list-group-item-action @if ($invoice->membership == 'Corporate')list-hover-success @else list-hover-danger @endif"><i class="icofont @if ($invoice->membership == 'Corporate') icofont-check-circled text-success @else icofont-close-circled text-danger @endif"></i> <strong>7/24 Support</strong></li>
                                     </ul>
                                 </div>
                             </div>

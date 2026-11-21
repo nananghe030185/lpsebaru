@@ -18,7 +18,8 @@
             <div class="flex flex-wrap items-center justify-center switcher">
               <p class="!mb-0 !pr-[.75rem]">Bulanan</p>
               <div class="pricing-switchers w-8 h-4 clear-both !text-center !relative bg-[rgba(30,34,40,0.07)] box-content rounded-3xl border-[0.2rem] border-solid border-transparent">
-                <div class="pricing-switcher pricing-switcher-active cursor-pointer w-full float-left h-4 leading-4 !relative z-[888] transition-[0.3s] duration-[ease-in-out] uppercase text-white"></div>
+                <div class="pricing-switcher pricing-switcher-active cursor-pointer w-full float-left h-4 leading-4 !relative z-[888] transition-[0.3s] duration-[ease-in-out] uppercase text-white">
+				</div>
                 <div class="pricing-switcher cursor-pointer w-full float-left h-4 leading-4 !relative z-[888] transition-[0.3s] duration-[ease-in-out] uppercase"></div>
                 <div class="h-4 w-4 block absolute z-[555] transition-[0.3s] duration-[ease-in-out] m-0 rounded-[100%] border-[none] left-0 top-0 !bg-[rgba(63,120,224)] opacity-100 switcher-button"></div>
               </div>
@@ -76,7 +77,7 @@
 							<span> 7/24 <strong>Support</strong></span>
 						</li>
                     </ul>
-                    <a href="#" class="btn btn-soft-primary !rounded-[50rem] hover:translate-y-[-0.15rem] hover:shadow-[0_0.25rem_0.75rem_rgba(30,34,40,0.05)]">Choose Plan</a>
+                    <a href="{{  route('register') }}" class="btn btn-soft-primary !rounded-[50rem] hover:translate-y-[-0.15rem] hover:shadow-[0_0.25rem_0.75rem_rgba(30,34,40,0.05)]">Choose Plan</a>
                   </div>
                   <!--/.card-body -->
                 </div>
@@ -131,7 +132,7 @@
 							<span> 7/24 <strong>Support</strong></span>
 						</li>
                     </ul>
-                    <a href="#" class="btn btn-soft-primary !rounded-[50rem] hover:translate-y-[-0.15rem] hover:shadow-[0_0.25rem_0.75rem_rgba(30,34,40,0.05)]">Choose Plan</a>
+                    <a href="{{ route('register') }}" class="btn btn-soft-primary !rounded-[50rem] hover:translate-y-[-0.15rem] hover:shadow-[0_0.25rem_0.75rem_rgba(30,34,40,0.05)]">Choose Plan</a>
                   </div>
                   <!--/.card-body -->
                 </div>
@@ -144,8 +145,8 @@
                     <div class="icon btn btn-circle btn-lg btn-primary text-white !bg-[#3f78e0] border-[#3f78e0] hover:text-white hover:bg-[#3f78e0] hover:border-[#3f78e0] focus:shadow-[rgba(92,140,229,1)] active:text-white active:bg-[#3f78e0] active:border-[#3f78e0] disabled:text-white disabled:bg-[#3f78e0] disabled:border-[#3f78e0] pointer-events-none !p-0 xl:text-[1.3rem] !w-12 !h-12 !text-[calc(1.255rem_+_0.06vw)] inline-flex items-center justify-center leading-none !rounded-[100%]"> <i class="uil uil-store before:content-['\ed04']"></i> </div>
                     <h4 class="card-title">Premium</h4>
                     <div class="prices text-[#343f52]">
-                      <div class="price price-show !justify-start"><span class="price-currency">Rp</span><span class="price-value">150Rb</span> <span class="price-duration">Bulan</span></div>
-                      <div class="price price-hide price-hidden !justify-start"><span class="price-currency">Rp</span><span class="price-value">1,2Jt</span> <span class="price-duration">Bulan</span></div>
+                      {{-- <div class="price price-show !justify-start"><span class="price-currency">Rp</span><span class="price-value">150Rb</span> <span class="price-duration">Bulan</span></div> --}}
+                      <div class="price price-show !justify-start"><span class="price-currency">Rp</span><span class="price-value">1,2Jt</span> <span class="price-duration">Tahun</span></div>
                     </div>
                     <!--/.prices -->
                     <ul class="pl-0 list-none bullet-bg bullet-primary mt-7 !mb-8">
@@ -186,7 +187,7 @@
 							<span> 7/24 <strong>Support</strong></span>
 						</li>
                     </ul>
-                    <a href="#" class="btn btn-primary text-white !bg-[#3f78e0] border-[#3f78e0] hover:text-white hover:bg-[#3f78e0] hover:border-[#3f78e0] focus:shadow-[rgba(92,140,229,1)] active:text-white active:bg-[#3f78e0] active:border-[#3f78e0] disabled:text-white disabled:bg-[#3f78e0] disabled:border-[#3f78e0] !rounded-[50rem] hover:translate-y-[-0.15rem] hover:shadow-[0_0.25rem_0.75rem_rgba(30,34,40,0.15)]">Choose Plan</a>
+                    <a href="{{ route('register') }}" class="btn btn-primary text-white !bg-[#3f78e0] border-[#3f78e0] hover:text-white hover:bg-[#3f78e0] hover:border-[#3f78e0] focus:shadow-[rgba(92,140,229,1)] active:text-white active:bg-[#3f78e0] active:border-[#3f78e0] disabled:text-white disabled:bg-[#3f78e0] disabled:border-[#3f78e0] !rounded-[50rem] hover:translate-y-[-0.15rem] hover:shadow-[0_0.25rem_0.75rem_rgba(30,34,40,0.15)]">Choose Plan</a>
                   </div>
                   <!--/.card-body -->
                 </div>
@@ -199,8 +200,8 @@
                     <div class="icon btn btn-circle btn-lg btn-soft-primary pointer-events-none !p-0 xl:text-[1.3rem] !w-12 !h-12 !text-[calc(1.255rem_+_0.06vw)] inline-flex items-center justify-center leading-none !rounded-[100%]"> <i class="uil uil-store-alt before:content-['\ecf9']"></i> </div>
                     <h4 class="card-title">Corporate</h4>
                     <div class="prices text-[#343f52]">
-                      <div class="price price-show !justify-start"><span class="price-currency">Rp</span><span class="price-value">125Rb</span> <span class="price-duration">Bulan</span></div>
-                      <div class="price price-hide price-hidden !justify-start"><span class="price-currency">Rp</span><span class="price-value">2Jt</span> <span class="price-duration">Tahun</span></div>
+                      {{-- <div class="price price-show !justify-start"><span class="price-currency">Rp</span><span class="price-value">125Rb</span> <span class="price-duration">Bulan</span></div> --}}
+                      <div class="price price-show !justify-start"><span class="price-currency">Rp</span><span class="price-value">2Jt</span> <span class="price-duration">Tahun</span></div>
                     </div>
                     <!--/.prices -->
                     <ul class="pl-0 list-none bullet-bg bullet-soft-primary mt-7 !mb-8">
@@ -241,7 +242,7 @@
 							<span> 7/24 <strong>Support</strong></span>
 						</li>
                     </ul>
-                    <a href="#" class="btn btn-soft-primary !rounded-[50rem] hover:translate-y-[-0.15rem] hover:shadow-[0_0.25rem_0.75rem_rgba(30,34,40,0.05)]">Choose Plan</a>
+                    <a href="{{ route('register') }}" class="btn btn-soft-primary !rounded-[50rem] hover:translate-y-[-0.15rem] hover:shadow-[0_0.25rem_0.75rem_rgba(30,34,40,0.05)]">Choose Plan</a>
                   </div>
                   <!--/.card-body -->
                 </div>

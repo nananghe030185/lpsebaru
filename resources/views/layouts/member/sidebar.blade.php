@@ -67,7 +67,7 @@
                         </a>
                     </li>
                     @endcannot
-                    @canany(['member','gmt'])
+                    @canany(['trial','member','corporate','gmt'])
                         <li class="sidebar-main-title">
                             <div>
                                 <h6>{{ __('Master Data') }}</h6>
@@ -118,7 +118,8 @@
                                 <h6>{{ __('Paket') }}</h6>
                             </div>
                         </li>
-
+                        
+                        @canany(['corporate','gmt'])
                         <li class="sidebar-list">
                             <i class="fa-solid fa-thumbtack"></i>
                             <a class="sidebar-link sidebar-title link-nav" href="{{ route('app.lelang-sirup.index') }}">
@@ -145,7 +146,7 @@
                                 <span>{{ __('Fokus Lelang') }} </span>
                             </a>
                         </li>
-
+                        @endcanany
                         <li class="sidebar-list">
                             <i class="fa-solid fa-thumbtack"></i>
                             <a class="sidebar-link sidebar-title link-nav" href="{{ route('app.tender-lpse.index') }}">
