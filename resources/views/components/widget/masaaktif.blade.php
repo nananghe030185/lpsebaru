@@ -16,7 +16,8 @@
                         </div>
                     </div>
                     <div class="school-body"> 
-                        <img src="{{ asset('assets/images/dashboard-8/payment-option/cash.svg') }}" alt="total students">
+                        <i data-feather="calendar" class="fs-6 f-w-500 text-primary"></i>
+                        {{-- <img src="{{ asset('assets/images/dashboard-8/payment-option/cash.svg') }}" alt="total students"> --}}
                         <div class="right-line">
                             <img src="{{ asset('assets/images/dashboard-7/line.png') }}" alt="line">
                         </div>
