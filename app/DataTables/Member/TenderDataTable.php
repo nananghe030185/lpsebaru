@@ -4,6 +4,7 @@ namespace App\DataTables\Member;
 
 use App\Helpers\Helpers;
 use App\Helpers\TableHelper;
+use App\Models\Lpse;
 use App\Models\Tender;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -51,6 +52,7 @@ class TenderDataTable extends DataTable
                 $anchor = $tender->nama_paket;
                 return Helpers::link(route('redirect.tender', [$tender->slug]), $anchor).'<br><small class="text-muted">'. $tender->kategori .'-'. $tender->metode_pemilihan .'-' . $tender->metode_pengadaan . '-' . $tender->metode_evaluasi . '</small><br><small class="text-muted">Nilai Kontrak :' .$tender->nilai_kontrak. '</small>';
             })
+            
             ->editColumn('tahap_tender', function (Tender $tender) {
                  $anchor = '';
                 if($tender->tahap_tender == 'Tender Sudah Selesai'){
@@ -794,13 +796,15 @@ class TenderDataTable extends DataTable
                   ->searchable(true)
                   ->orderable(true),
             Column::make('nama_paket')
+                ->name('nama_paket')
                   ->title('Nama Paket')
                   ->searchable(true)
                   ->orderable(true),
             Column::make('lpse.nama_lpse')
-                  ->title('Nama KLPDI')
-                  ->searchable(true)
-                  ->orderable(true),
+                ->name('lpse.nama_lpse')
+                ->title('Nama KLPDI')
+                ->searchable(true)
+                ->orderable(true),
             Column::make('tahap_tender')
                   ->title('Tahapan')
                   ->name('tahap_tender')

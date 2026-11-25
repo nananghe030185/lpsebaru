@@ -6,7 +6,7 @@
 
                 <x-form.text name="nama_lpse" :required="true" :value="old('nama_lpse', $lpse->nama_lpse ?? '')" :autofocus="true">Nama LPSE</x-form.text>
                 
-                <x-form.text name="slug" :required="true" :value="old('slug', $lpse->slug ?? '')">Slug</x-form.text>
+                <x-form.text name="slug_lpse" :required="true" :value="old('slug_lpse', $lpse->slug_lpse ?? '')">Slug</x-form.text>
 
                 <x-form.text name="link" :required="true" :value="old('link', $lpse->link ?? '')">Link</x-form.text>
 

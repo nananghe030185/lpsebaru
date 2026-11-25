@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('link')->nullable();
             $table->integer('jumlah_paket')->nullable(false)->default(0);
             $table->double('jumlah_pagu')->nullable(false)->default(0);
-            $table->string('slug')->unique()->nullable();
+            $table->string('slug_lpse')->unique()->nullable();
             $table->string('description')->nullable();
             $table->string('logo')->nullable();
             $table->boolean('scrape')->default(false);
