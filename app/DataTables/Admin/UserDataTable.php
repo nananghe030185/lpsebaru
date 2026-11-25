@@ -175,7 +175,8 @@ class UserDataTable extends DataTable
                 ->orderable(true)
                 ->addClass('text-end'),
             Column::make('kata_kunci')
-                ->title('Kata Kunci'),
+                ->title('Kata Kunci')
+                ->searchable(),
         ];
     }
 
