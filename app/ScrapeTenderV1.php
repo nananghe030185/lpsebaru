@@ -41,9 +41,7 @@ class ScrapeTenderV1
                         
                         // skip if the lpse link is not valid
                         Helpers::createErrorLog('Link : ' . $lpse->link . ' : ' . 'Link LPSE tidak dapat diakses', null);
-                        $lpse->state = false;
-                        $lpse->save();
-                        
+
                         continue;
                     }
 
