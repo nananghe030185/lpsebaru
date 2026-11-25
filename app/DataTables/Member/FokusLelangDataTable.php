@@ -10,11 +10,8 @@ use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Support\Str;
-use Yajra\DataTables\DataTables;
 
 class FokusLelangDataTable extends DataTable
 {
@@ -179,6 +176,10 @@ class FokusLelangDataTable extends DataTable
                     ->title(__('Tanggal Diperbarui'))
                     ->searchable(true)
                     ->orderable(true),
+            Column::make('lelang.kode_rup')
+                ->title('Kode RUP')
+                ->searchable(true)
+                ->orderable(true),
             Column::make('lelang.nama_paket')
                     ->title(__('Nama Paket'))
                     ->orderable(true)

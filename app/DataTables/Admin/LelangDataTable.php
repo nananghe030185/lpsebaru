@@ -179,6 +179,10 @@ class LelangDataTable extends DataTable
             Column::make('updated_at')
                   ->title('Tanggal Diperbarui')
                   ->orderable(true),
+            Column::make('kode_rup')
+                ->title('Kode RUP')
+                ->searchable(true)
+                ->orderable(true),
             Column::make('nama_paket')
                 ->title('Nama Paket')
                 ->searchable(true)

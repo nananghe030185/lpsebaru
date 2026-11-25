@@ -6,7 +6,6 @@ use App\Models\Blog;
 use Illuminate\Http\Request;
 use App\DataTables\Admin\BlogDataTable;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\Admin\CreateBlogRequest;
 use App\Http\Requests\Admin\UpdateBlogRequest;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;

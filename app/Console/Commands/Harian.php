@@ -5,8 +5,6 @@ namespace App\Console\Commands;
 use App\Helpers\AppHelper;
 use App\Models\User;
 use App\Notifications\MessageNotification;
-use App\Notifications\TenderNotification;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class Harian extends Command

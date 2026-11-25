@@ -807,7 +807,7 @@ class TenderDataTable extends DataTable
                   ->title('Tanggal Diperbarui')
                   ->orderable(true),
             Column::make('tender_id')
-                  ->title('Kode')
+                  ->title('Kode Tender')
                   ->searchable(true)
                   ->orderable(true),
             Column::make('nama_paket')
@@ -815,7 +815,7 @@ class TenderDataTable extends DataTable
                   ->searchable(true)
                   ->orderable(true),
             Column::make('lpse.nama_lpse')
-                  ->title('Nama KLPDI')
+                  ->title('LPSE')
                   ->searchable(true)
                   ->orderable(true),
             Column::make('tahap_tender')

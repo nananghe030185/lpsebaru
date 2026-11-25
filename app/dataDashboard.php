@@ -129,9 +129,9 @@ class dataDashboard
     /***
      * Jumlah user berdasarkan group
      */
-    public function totalUserByGroup(int $group_id)
+    public function totalUserByGroup(array $group_id)
     {
-        return User::where('group_id', $group_id)->count();
+        return User::whereIn('group_id', $group_id)->count();
     }
 
     /***

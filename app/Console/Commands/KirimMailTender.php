@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Helpers\Helpers;
-use App\Models\ErrorLog;
 use App\Models\Notification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;

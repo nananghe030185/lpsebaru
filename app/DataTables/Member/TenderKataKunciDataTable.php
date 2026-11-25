@@ -4,7 +4,6 @@ namespace App\DataTables\Member;
 
 use App\Helpers\Helpers;
 use App\Helpers\TableHelper;
-use App\Models\Fokus;
 use App\Models\Tender;
 use App\Models\TenderKeyword;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -12,8 +11,6 @@ use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class TenderKataKunciDataTable extends DataTable

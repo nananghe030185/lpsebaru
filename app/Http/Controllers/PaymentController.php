@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\AppLpse;
+use App\Helpers\AppHelper;
+use App\Models\Groups;
 use App\Models\Invoice;
-use App\Models\LaporanKeuangan;
-use App\Models\Outbox;
+use App\Models\Keuangan;
+use App\Models\Notification;
 use App\Models\OutboxModel;
+use App\Models\Pengaturan;
 use App\Models\Tiket;
 use App\Models\User;
-use App\Models\UserGroup;
-use App\Models\UserProfile;
 use Carbon\Carbon;
-use Filament\Notifications\Notification;
 use Illuminate\Http\Request;
 use Midtrans\Config;
 use Midtrans\Snap;
@@ -67,14 +67,14 @@ class PaymentController extends Controller
         }
 
         // Cek status transaksi
-        $transaction = Tiket::where('order_id',$request->order_id)->first();
+        $transaction = Invoice::where('order_id',$request->order_id)->first();
 
         if (!$transaction) {
             return response()->json(['message' => 'Transaction not found'], 404);
         }
 
         // Kirim Pesan ke User
-        $profile = UserProfile::where('user_id', $transaction->user_id)->first();
+        $profile = User::where('user_id', $transaction->user_id)->first();
         $message = [];
        if ($request->transaction_status == 'settlement') 
        {
@@ -84,7 +84,7 @@ class PaymentController extends Controller
             $this->tambahMasaBerlaku($transaction);
 
             // Masukan ke laporan keuangan
-            LaporanKeuangan::create([
+            Keuangan::create([
                 'user_id' => $transaction->user_id,
                 'tanggal' => now(),
                 'keterangan' => static::pesanDiterima($transaction, $request),
@@ -93,7 +93,7 @@ class PaymentController extends Controller
 
             // diupdate group id
             $transaction->user->update([
-                'group_id' => UserGroup::where('name', Str::explode(' ', $transaction->item)[0])->first()->id
+                'group_id' => Groups::where('name', Str::explode(' ', $transaction->item)[0])->first()->id
             ]);
             // Kirim pesan ke user
             // via email
@@ -134,7 +134,7 @@ class PaymentController extends Controller
              $this->tambahMasaBerlaku($transaction);
 
              // Masukan ke laporan keuangan
-            LaporanKeuangan::create([
+            Keuangan::create([
                 'user_id' => $transaction->user_id,
                 'tanggal' => now(),
                 'keterangan' => static::pesanDiterima($transaction, $request),
@@ -262,7 +262,7 @@ class PaymentController extends Controller
         $user_id = $record->user_id ?? 0;
         $durasi = $record->days ?? 0;
 
-        $profile = UserProfile::where('user_id', $user_id)->first();
+        $profile = User::where('user_id', $user_id)->first();
         $masa_berlaku = $profile->masa_berlaku;
 
         if ($profile->isAktif) {
@@ -278,7 +278,7 @@ class PaymentController extends Controller
     public static function pesanDiterima($record, $request)
     {
         
-        $pesan_notifikasi_perpanjangan = AppLpse::setting('message_notifikasi_perpanjangan');
+        $pesan_notifikasi_perpanjangan = AppHelper::getMessageNotifikasiPerpanjangan();
 
         return Str::replace(
             [
@@ -306,7 +306,7 @@ class PaymentController extends Controller
     {
         $user_id = $record->user_id ?? 0;
 
-        $profile = UserProfile::where('user_id', $user_id)->first();
+        $profile = User::where('user_id', $user_id)->first();
 
         if($record->status == 'settlement' || $record->status == 'capture') {
             // Kirim Notifikasi ke user

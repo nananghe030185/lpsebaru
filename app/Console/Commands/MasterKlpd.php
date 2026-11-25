@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Klpd;
 use App\Models\Klpdi;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;

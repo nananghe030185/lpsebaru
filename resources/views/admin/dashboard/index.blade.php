@@ -22,9 +22,9 @@
             <div class="col-xxl-auto col-xl-3 col-sm-6 box-col-3">
                 <div class="row">
                     <div class="col-xl-12">
-                        <x-widget.card color="success" jumlah="{{ $member }}" :icon="asset('assets/svg/icon-sprite.svg#c-customer')" >{{__('Member')}}</x-widget.card>
+                        <x-widget.card color="success" jumlah="{{ $member }}" :icon="asset('assets/svg/icon-sprite.svg#c-customer')" :href="route('admin.user.group.index')">{{__('Member')}}</x-widget.card>
                         
-                        <x-widget.card color="success" jumlah="{{ $nonmember }}" :icon="asset('assets/svg/icon-sprite.svg#c-customer')" >{{__('Non Member')}}</x-widget.card>
+                        <x-widget.card color="success" jumlah="{{ $nonmember }}" :icon="asset('assets/svg/icon-sprite.svg#c-customer')" :href="route('admin.user.group.index')">{{__('Non Member')}}</x-widget.card>
                     </div>
                 </div>
             </div>

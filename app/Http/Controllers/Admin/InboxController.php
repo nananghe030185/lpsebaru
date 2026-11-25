@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\Admin\InboxDataTable;
 use App\Http\Controllers\Controller;
-use App\Models\ErrorLog;
 use App\Models\Inbox;
-use App\Models\InboxModel;
 use Illuminate\Http\Request;
 
 class InboxController extends Controller

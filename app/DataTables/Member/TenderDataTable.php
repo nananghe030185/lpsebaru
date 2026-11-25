@@ -4,15 +4,11 @@ namespace App\DataTables\Member;
 
 use App\Helpers\Helpers;
 use App\Helpers\TableHelper;
-use App\Models\Lpse;
 use App\Models\Tender;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class TenderDataTable extends DataTable
@@ -792,7 +788,7 @@ class TenderDataTable extends DataTable
                 ->searchable(true)
                 ->orderable(true),
             Column::make('tender_id')
-                  ->title('Kode')
+                  ->title('Kode Tender')
                   ->searchable(true)
                   ->orderable(true),
             Column::make('nama_paket')
@@ -802,7 +798,7 @@ class TenderDataTable extends DataTable
                   ->orderable(true),
             Column::make('lpse.nama_lpse')
                 ->name('lpse.nama_lpse')
-                ->title('Nama KLPDI')
+                ->title('LPSE')
                 ->searchable(true)
                 ->orderable(true),
             Column::make('tahap_tender')

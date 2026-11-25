@@ -12,7 +12,7 @@ Schedule::command('scrape:tender-lpse')->everyFourHours();
 Schedule::command('scrape:lelang-sirup')->everySixHours();
 Schedule::command('app:auto-respon')->everySecond();
 Schedule::command('app:notifikasi-tender')->everyTwoSeconds();
-Schedule::command('app:send-outbox')->everyTwoSeconds()->withoutOverlapping();
+Schedule::command('app:send-outbox')->everyTwoSeconds();
 Schedule::command('app:tender-lelang-notif')->everyOddHour();
-Schedule::command('app:harian')->dailyAt('00:00')->timezone('Asia/Jakarta')->withoutOverlapping();
+Schedule::command('app:harian')->dailyAt('00:00')->timezone('Asia/Jakarta');
 

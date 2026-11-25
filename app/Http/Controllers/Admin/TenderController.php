@@ -6,7 +6,6 @@ use App\DataTables\Admin\TenderDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Fokus;
 use App\Models\Tender;
-use App\Models\TenderModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

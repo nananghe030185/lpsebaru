@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\Admin\KomisiDataTable;
 use App\Http\Controllers\Controller;
-
 use App\Models\Komisi;
 use App\Models\User;
 use Carbon\Carbon;

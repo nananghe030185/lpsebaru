@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\TelegramHelper;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;

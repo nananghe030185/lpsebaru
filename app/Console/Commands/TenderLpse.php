@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Helpers\Helpers;
-use App\Models\ErrorLog;
 use App\Models\Lpse;
 use App\ScrapeTenderV1;
 use Illuminate\Console\Command;

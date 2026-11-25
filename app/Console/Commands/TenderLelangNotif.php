@@ -8,7 +8,6 @@ use App\Models\Notification;
 use App\Models\NotificationLelang;
 use App\Models\Outbox;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;

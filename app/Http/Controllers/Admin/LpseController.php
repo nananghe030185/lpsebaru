@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\Admin\LpseDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Lpse;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class LpseController extends Controller

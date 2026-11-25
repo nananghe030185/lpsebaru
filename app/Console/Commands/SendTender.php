@@ -2,16 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\Helpers;
-use App\Helpers\TableHelper;
-use App\Helpers\TelegramHelper;
-use App\Models\ErrorLog;
-use App\Models\Notification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Str;
 
 class SendTender extends Command
 {

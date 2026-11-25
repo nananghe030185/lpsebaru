@@ -7,7 +7,6 @@ use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\FokusLelang;
 use App\Models\Lelang;
-use App\Models\LelangModel;
 use Illuminate\Http\Request;
 
 class LelangController extends Controller

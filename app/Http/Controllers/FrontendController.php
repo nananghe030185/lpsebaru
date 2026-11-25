@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Lelang;
 use App\Models\Tender;
-use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {

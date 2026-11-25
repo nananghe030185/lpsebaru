@@ -4,19 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\dataDashboard;
 use App\Http\Controllers\Controller;
-use App\Models\ErrorLog;
-use App\Models\Fokus;
-use App\Models\Lelang;
-use App\Models\Lpse;
-use App\Models\Pengumuman;
-use App\Models\Tender;
-use App\Models\TenderKeyword;
-use App\Models\User;
-use App\Models\Invoice;
-use App\Models\Visitor;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -27,8 +15,8 @@ class DashboardController extends Controller
         $totalLelang = $dataDashboard->totalRowLelang();
         $totalTender = $dataDashboard->totalRowTender();
 
-        $member = $dataDashboard->totalUserByGroup(2);
-        $nonmember = $dataDashboard->totalUserByGroup(3);
+        $member = $dataDashboard->totalUserByGroup([3,4,5,6,7]);
+        $nonmember = $dataDashboard->totalUserByGroup([2]);
 
         $tenderkeyword = $dataDashboard->totalTenderKeyword();
         $fokus = $dataDashboard->totalFokus();
