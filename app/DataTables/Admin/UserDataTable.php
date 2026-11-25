@@ -71,8 +71,10 @@ class UserDataTable extends DataTable
                     return '<span class="badge bg-success p-2">Personal</span>';
                 }else if($row->group_id == 5){
                     return '<span class="badge bg-success p-2">Premium</span>';
-                }else if($row->group_id == 7){
+                }else if($row->group_id == 6){
                     return '<span class="badge bg-success p-2">Corporate</span>';
+                }else if($row->group_id == 7){
+                    return '<span class="badge bg-success p-2">GMT</span>';
                 }else{
                     return '<span class="badge bg-danger p-2">Member</span>';
                 }
@@ -149,6 +151,8 @@ class UserDataTable extends DataTable
         return [
             Column::make('id')
                 ->hidden(),
+            Column::make('status')
+                ->title(__('Status')),
             Column::make('name')
                 ->title(__('Name'))
                 ->searchable(true)
@@ -170,8 +174,8 @@ class UserDataTable extends DataTable
                 ->title(__('Komisi'))
                 ->orderable(true)
                 ->addClass('text-end'),
-            Column::make('status')
-                ->title(__('Status')),  
+            Column::make('kata_kunci')
+                ->title('Kata Kunci'),
         ];
     }
 

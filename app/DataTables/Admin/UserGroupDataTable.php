@@ -24,9 +24,6 @@ class UserGroupDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('created_at', function ($row) {
-                return $row->created_at->diffForHumans();
-            })
             ->editColumn('action', function ($row) {
                 return view('admin.inc.action', [
                     'edit'   => 'admin.user.group.edit',
@@ -89,9 +86,7 @@ class UserGroupDataTable extends DataTable
                 ->title('Jumlah User')
                 ->searchable(false)
                 ->orderable(false)
-                ->className('text-center'),
-            Column::make('created_at')
-                ->title('Created At'),
+                ->className('text-center')
         ];
     }
 
