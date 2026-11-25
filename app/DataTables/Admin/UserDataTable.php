@@ -64,11 +64,17 @@ class UserDataTable extends DataTable
                 if($row->group_id == 1){
                     return '<span class="badge bg-info p-2">Super Admin</span>';
                 }else if($row->group_id == 2){
-                    return '<span class="badge bg-success p-2">Member</span>';
-                }else if($row->group_id == 4){
-                    return '<span class="badge bg-warning p-2">GMT</span>';
-                }else{
                     return '<span class="badge bg-danger p-2">Non Member</span>';
+                }else if($row->group_id == 3){
+                    return '<span class="badge bg-warning p-2">Trial</span>';
+                }else if($row->group_id == 4){
+                    return '<span class="badge bg-success p-2">Personal</span>';
+                }else if($row->group_id == 5){
+                    return '<span class="badge bg-success p-2">Premium</span>';
+                }else if($row->group_id == 7){
+                    return '<span class="badge bg-success p-2">Corporate</span>';
+                }else{
+                    return '<span class="badge bg-danger p-2">Member</span>';
                 }
             })
 
