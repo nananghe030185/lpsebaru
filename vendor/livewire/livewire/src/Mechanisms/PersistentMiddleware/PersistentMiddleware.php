@@ -1,0 +1,207 @@
+<?php
+
+namespace Livewire\Mechanisms\PersistentMiddleware;
+
+use Illuminate\Routing\Router;
+use Livewire\Mechanisms\Mechanism;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use function Livewire\on;
+use Illuminate\Support\Str;
+use Livewire\Drawer\Utils;
+use Livewire\Mechanisms\HandleRequests\HandleRequests;
+
+class PersistentMiddleware extends Mechanism
+{
+    protected static $persistentMiddleware = [
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        \Laravel\Jetstream\Http\Middleware\AuthenticateSession::class,
+        \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        \App\Http\Middleware\RedirectIfAuthenticated::class,
+        \Illuminate\Auth\Middleware\Authenticate::class,
+        \Illuminate\Auth\Middleware\Authorize::class,
+        \App\Http\Middleware\Authenticate::class,
+    ];
+
+    protected $path;
+    protected $method;
+    protected $origin;
+    protected $routeContext;
+
+    function boot()
+    {
+        on('dehydrate', function ($component, $context) {
+            [$path, $method] = $this->extractPathAndMethodFromRequest();
+            $isLivewireRoute = app(HandleRequests::class)->isLivewireRoute();
+
+            $context->addMemo('path', $path);
+            $context->addMemo('method', $method);
+            $context->addMemo('origin', $isLivewireRoute ? $this->origin : request()->getSchemeAndHttpHost());
+            $context->addMemo('route', $isLivewireRoute ? $this->routeContext : $this->getRouteContext(request()->route()));
+        });
+
+        on('snapshot-verified', function ($snapshot) {
+            // Only apply middleware to requests hitting the Livewire update endpoint, and not any fake requests such as a test.
+            if (! app(HandleRequests::class)->isLivewireRoute()) return;
+
+            $this->extractRequestContextFromSnapshot($snapshot);
+
+            $this->applyPersistentMiddleware();
+        });
+
+        on('flush-state', function() {
+            // Only flush these at the end of a full request, so that child components have access to this data.
+            $this->path = null;
+            $this->method = null;
+            $this->origin = null;
+            $this->routeContext = null;
+        });
+    }
+
+    function addPersistentMiddleware($middleware)
+    {
+        static::$persistentMiddleware = Router::uniqueMiddleware(array_merge(static::$persistentMiddleware, (array) $middleware));
+    }
+
+    function setPersistentMiddleware($middleware)
+    {
+        static::$persistentMiddleware = Router::uniqueMiddleware((array) $middleware);
+    }
+
+    function getPersistentMiddleware()
+    {
+        return static::$persistentMiddleware;
+    }
+
+    protected function extractPathAndMethodFromRequest()
+    {
+        if (app(HandleRequests::class)->isLivewireRoute()) {
+            return [$this->path, $this->method];
+        }
+
+        return [request()->path(), request()->method()];
+    }
+
+    protected function extractRequestContextFromSnapshot($snapshot)
+    {
+        if (
+            ! is_string($snapshot['memo']['path'] ?? null)
+            || ! is_string($snapshot['memo']['method'] ?? null)
+            || ! is_string($snapshot['memo']['origin'] ?? null)
+            || ! array_key_exists('route', $snapshot['memo'])
+            || ! (is_array($snapshot['memo']['route']) || is_null($snapshot['memo']['route']))
+        ) abort(404);
+
+        // Store these locally, so dynamically added child components can use this data.
+        $this->path = $snapshot['memo']['path'];
+        $this->method = $snapshot['memo']['method'];
+        $this->origin = $snapshot['memo']['origin'];
+        $this->routeContext = $snapshot['memo']['route'];
+    }
+
+    protected function applyPersistentMiddleware()
+    {
+        if ($this->origin !== request()->getSchemeAndHttpHost()) abort(404);
+
+        $request = $this->makeFakeRequest();
+
+        $middleware = $this->getApplicablePersistentMiddleware($request);
+
+        // Only send through pipeline if there are middleware found
+        if (is_null($middleware)) return;
+
+        Utils::applyMiddleware($request, $middleware);
+    }
+
+    protected function makeFakeRequest()
+    {
+        $originalPath = $this->formatPath($this->path);
+        $originalMethod = $this->method;
+
+        $currentPath = $this->formatPath(request()->path());
+
+        // Clone server bag to ensure changes below don't overwrite the original.
+        $serverBag = clone request()->server;
+
+        // Replace the Livewire endpoint path with the path from the original request.
+        $serverBag->set(
+            'REQUEST_URI',
+            str_replace($currentPath, $originalPath, $serverBag->get('REQUEST_URI'))
+        );
+
+        $serverBag->set('REQUEST_METHOD', $originalMethod);
+
+        /**
+         * Make the fake request from the current request with path and method changed so
+         * all other request data, such as headers, are available in the fake request,
+         * but merge in the new server bag with the updated `REQUEST_URI`.
+         */
+        $request = request()->duplicate(
+            server: $serverBag->all()
+        );
+
+        return $request;
+    }
+
+    protected function formatPath($path)
+    {
+        return '/' . ltrim($path, '/');
+    }
+
+    protected function getApplicablePersistentMiddleware($request)
+    {
+        $route = $this->getRouteFromRequest($request);
+
+        // Rendered without a route (an error page, say) and still matching none: no route middleware applied then, so none now.
+        if (! $route && $this->routeContext === null) return [];
+
+        if ($this->routeContext !== $this->getRouteContext($route)) abort(404);
+
+        $middleware = app('router')->gatherRouteMiddleware($route);
+
+        return $this->filterMiddlewareByPersistentMiddleware($middleware);
+    }
+
+    protected function getRouteFromRequest($request)
+    {
+        try {
+            $route = app('router')->getRoutes()->match($request);
+            $request->setRouteResolver(fn() => $route);
+        } catch (NotFoundHttpException | MethodNotAllowedHttpException $exception) {
+            return null;
+        }
+
+        return $route;
+    }
+
+    protected function getRouteContext($route)
+    {
+        if (! $route) return null;
+
+        return [
+            'uri' => $route->uri(),
+            'domain' => $route->getDomain(),
+        ];
+    }
+
+    protected function filterMiddlewareByPersistentMiddleware($middleware)
+    {
+        $middleware = collect($middleware);
+
+        $persistentMiddleware = collect(app(PersistentMiddleware::class)->getPersistentMiddleware());
+
+        return $middleware
+            ->filter(function ($value, $key) use ($persistentMiddleware) {
+                return $persistentMiddleware->contains(function($iValue, $iKey) use ($value) {
+                    // Some middlewares can be closures.
+                    if (! is_string($value)) return false;
+
+                    // Ensure any middleware arguments aren't included in the comparison
+                    return Str::before($value, ':') == $iValue;
+                });
+            })
+            ->values()
+            ->all();
+    }
+}

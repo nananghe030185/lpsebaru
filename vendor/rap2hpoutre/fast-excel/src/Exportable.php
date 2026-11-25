@@ -1,0 +1,840 @@
+<?php
+
+namespace Rap2hpoutre\FastExcel;
+
+use DateInterval;
+use DateTimeInterface;
+use Illuminate\Support\Collection;
+use InvalidArgumentException;
+use OpenSpout\Common\Entity\Cell;
+use OpenSpout\Common\Entity\Cell\StringCell;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Entity\Style\Style;
+use OpenSpout\Writer\Common\AbstractOptions;
+use OpenSpout\Writer\WriterInterface;
+use OpenSpout\Writer\XLSX\Entity\SheetView;
+use OpenSpout\Writer\XLSX\Options as XlsxOptions;
+use OpenSpout\Writer\XLSX\Writer;
+use Traversable;
+
+/**
+ * Trait Exportable.
+ *
+ * @property bool                           $transpose
+ * @property bool                           $with_header
+ * @property callable|null                  $writer_configurator
+ * @property \Illuminate\Support\Collection $data
+ */
+trait Exportable
+{
+    /**
+     * @var Style
+     */
+    private $header_style;
+    private $rows_style;
+
+    /** @var Style[] */
+    private $header_column_styles = [];
+
+    /** @var Style[] */
+    private $column_styles = [];
+
+    /** @var bool */
+    private $string_values = false;
+
+    /** @var bool */
+    private $escape_formulas = false;
+
+    /** @var array<string, string> */
+    private $column_formats = [];
+
+    /** @var string|null */
+    private $hidden_column_prefix = null;
+
+    /** @var bool */
+    private $right_to_left = false;
+
+    /** @var bool */
+    private $auto_size_columns = false;
+
+    /** @var float */
+    private $auto_size_max_width = 60.0;
+
+    /** @var float */
+    private $auto_size_min_width = 0.0;
+
+    /**
+     * Whether the export in progress is actually measuring columns: auto-sizing
+     * is on and the writer is one that stores widths per sheet. Resolved once
+     * per export so csv and ods pay nothing per row.
+     *
+     * @var bool
+     */
+    private $auto_size_active = false;
+
+    /**
+     * Widest measured content per column for the sheet being written, keyed by
+     * 0-based column index. Reset after each sheet, so this holds one float per
+     * column, never per row.
+     *
+     * @var array<int, float>
+     */
+    private $auto_size_widths = [];
+
+    /**
+     * @param AbstractOptions $options
+     *
+     * @return mixed
+     */
+    abstract protected function setOptions(&$options);
+
+    /**
+     * Exclude columns whose key starts with the given prefix from the exported
+     * file (both the header row and every data row). This is opt-in: without
+     * calling it, every column is exported, so existing columns that happen to
+     * start with an underscore keep working as before.
+     *
+     * It is meant for callback-only data (lookups, computed flags, etc.) that
+     * you need inside the export callback but do not want in the output:
+     *
+     *     (new FastExcel($users))->hideColumnsPrefixedWith()->export('users.xlsx', fn ($user) => [
+     *         'Name'  => $user->name,
+     *         '_role' => $user->role, // used for logic, never written to the file
+     *     ]);
+     *
+     * Only string keys are considered, so positional/list rows are never
+     * affected. Column styles are matched against the remaining (visible)
+     * columns.
+     *
+     * @param string $prefix
+     */
+    public function hideColumnsPrefixedWith(string $prefix = '_'): static
+    {
+        $this->hidden_column_prefix = $prefix;
+
+        return $this;
+    }
+
+    /** @param Style[] $styles */
+    public function setHeaderColumnStyles($styles): static
+    {
+        $this->header_column_styles = $styles;
+
+        return $this;
+    }
+
+    /** @param Style[] $styles */
+    public function setColumnStyles($styles): static
+    {
+        $this->column_styles = $styles;
+
+        return $this;
+    }
+
+    /**
+     * Export every scalar value as a string (text cell). Useful to preserve
+     * leading zeros or long numeric IDs (e.g. phone numbers) that would
+     * otherwise be written as numbers. Per-column setColumnFormat() rules take
+     * precedence over this flag.
+     *
+     * @param bool $enabled
+     */
+    public function stringValues(bool $enabled = true): static
+    {
+        $this->string_values = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Write string values as explicit text cells so a value starting with "="
+     * (or other formula-triggering input) is never emitted as a live formula
+     * cell. Protects against CSV/formula injection and "corrupt file" errors.
+     *
+     * @param bool $enabled
+     */
+    public function escapeFormulas(bool $enabled = true): static
+    {
+        $this->escape_formulas = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Force the cell type for specific columns, keyed by column name, e.g.
+     * ['phone' => 'string', 'price' => 'number']. A 'string' column is written
+     * as text; a 'number' column casts numeric strings back to int/float. These
+     * rules win over stringValues().
+     *
+     * @param array<string, string> $formats
+     */
+    public function setColumnFormat(array $formats): static
+    {
+        $this->column_formats = $formats;
+
+        return $this;
+    }
+
+    /**
+     * Size each column to fit its widest value. Widths are measured while the
+     * rows stream past and written once, just before the file is finalized, so
+     * this costs one float per column and never buffers rows.
+     *
+     * This is a heuristic, not Excel's AutoFit: the width is a character count
+     * (adjusted for bold and font size) rather than real glyph metrics, so
+     * proportional fonts will be a little off. Use configureOptionsUsing() with
+     * setColumnWidth() when you need exact widths.
+     *
+     * xlsx only. ODS stores widths per workbook rather than per sheet and in
+     * points, and csv has no widths at all, so both are left untouched.
+     *
+     * @param bool  $enabled
+     * @param float $maxWidth Upper bound, so one huge cell cannot blow up a
+     *                        column. Excel itself refuses anything over 255.
+     * @param float $minWidth Lower bound; 0 lets narrow columns shrink freely.
+     */
+    public function autoSizeColumns(bool $enabled = true, float $maxWidth = 60.0, float $minWidth = 0.0): static
+    {
+        if ($maxWidth <= 0 || $maxWidth > 255) {
+            throw new InvalidArgumentException('autoSizeColumns() max width must be between 0 and 255.');
+        }
+
+        if ($minWidth < 0 || $minWidth > $maxWidth) {
+            throw new InvalidArgumentException('autoSizeColumns() min width must be between 0 and the max width.');
+        }
+
+        $this->auto_size_columns = $enabled;
+        $this->auto_size_max_width = $maxWidth;
+        $this->auto_size_min_width = $minWidth;
+
+        return $this;
+    }
+
+    /**
+     * @param string        $path
+     * @param callable|null $callback
+     *
+     * @throws \OpenSpout\Common\Exception\InvalidArgumentException
+     * @throws \OpenSpout\Common\Exception\UnsupportedTypeException
+     * @throws \OpenSpout\Writer\Exception\WriterNotOpenedException
+     * @throws \OpenSpout\Common\Exception\IOException
+     *
+     * @return string
+     */
+    public function export($path, ?callable $callback = null)
+    {
+        self::exportOrDownload($path, 'openToFile', $callback);
+
+        return realpath($path) ?: $path;
+    }
+
+    /**
+     * @param               $path
+     * @param callable|null $callback
+     *
+     * @throws \OpenSpout\Common\Exception\InvalidArgumentException
+     * @throws \OpenSpout\Common\Exception\UnsupportedTypeException
+     * @throws \OpenSpout\Writer\Exception\WriterNotOpenedException
+     * @throws \OpenSpout\Common\Exception\IOException
+     *
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse|string
+     */
+    public function download($path, ?callable $callback = null)
+    {
+        if (method_exists(response(), 'streamDownload')) {
+            return response()->streamDownload(function () use ($path, $callback) {
+                self::exportOrDownload($path, 'openToBrowser', $callback);
+            }, $path);
+        }
+        self::exportOrDownload($path, 'openToBrowser', $callback);
+
+        return '';
+    }
+
+    /**
+     * @param               $path
+     * @param string        $function
+     * @param callable|null $callback
+     *
+     * @throws \OpenSpout\Common\Exception\IOException
+     * @throws \OpenSpout\Common\Exception\InvalidArgumentException
+     * @throws \OpenSpout\Common\Exception\UnsupportedTypeException
+     * @throws \OpenSpout\Writer\Exception\WriterNotOpenedException
+     * @throws \OpenSpout\Common\Exception\SpoutException
+     */
+    private function exportOrDownload($path, $function, ?callable $callback = null)
+    {
+        $writer = $this->makeWriter($path);
+
+        $has_sheets = ($writer instanceof \OpenSpout\Writer\XLSX\Writer || $writer instanceof \OpenSpout\Writer\ODS\Writer);
+
+        // CSV (and any other single-sheet format) cannot hold multiple sheets.
+        // Fail with a clear message instead of a cryptic "undefined method
+        // ...::getCurrentSheet()" fatal further down.
+        if (!$has_sheets && $this->data instanceof SheetCollection && $this->data->count() > 1) {
+            throw new InvalidArgumentException(
+                'The "'.pathinfo($path, PATHINFO_EXTENSION).'" format does not support multiple sheets; use xlsx or ods.'
+            );
+        }
+
+        $writer->$function($path);
+
+        $this->auto_size_active = $this->auto_size_columns && $writer instanceof Writer;
+        $this->auto_size_widths = [];
+
+        if ($this->right_to_left && $writer instanceof Writer) {
+            $sheetView = new SheetView();
+            $sheetView->setRightToLeft(true);
+            $writer->getCurrentSheet()->setSheetView($sheetView);
+        }
+
+        // It can export one sheet (Collection) or N sheets (SheetCollection)
+        $data = $this->transpose ? $this->transposeData() : ($this->data instanceof SheetCollection ? $this->data : collect([$this->data]));
+
+        $last_key = $data->keys()->last();
+
+        foreach ($data as $key => $collection) {
+            if ($collection instanceof Collection) {
+                $this->writeRowsFromCollection($writer, $collection, $callback);
+            } elseif ($collection instanceof Traversable) {
+                $this->writeRowsFromGenerator($writer, $collection, $callback);
+            } elseif (is_array($collection)) {
+                $this->writeRowsFromArray($writer, $collection, $callback);
+            } else {
+                throw new InvalidArgumentException('Unsupported type for $data');
+            }
+            $this->applyAutoSizeColumns($writer);
+            if ($has_sheets && is_string($key)) {
+                $writer->getCurrentSheet()->setName($key);
+            }
+            if ($has_sheets && $last_key !== $key) {
+                $writer->addNewSheetAndMakeItCurrent();
+            }
+            if ($this->right_to_left && $writer instanceof Writer) {
+                $sheetView = new SheetView();
+                $sheetView->setRightToLeft(true);
+                $writer->getCurrentSheet()->setSheetView($sheetView);
+            }
+        }
+        $writer->close();
+    }
+
+    private function makeWriter(string $path): WriterInterface
+    {
+        $extension = $this->resolveWriterExtension($path);
+
+        $options = match ($extension) {
+            'csv'   => new \OpenSpout\Writer\CSV\Options(),
+            'ods'   => new \OpenSpout\Writer\ODS\Options(),
+            default => new \OpenSpout\Writer\XLSX\Options(),
+        };
+
+        $this->setOptions($options);
+
+        if (is_callable($this->writer_configurator ?? null)) {
+            $writer = call_user_func($this->writer_configurator, $options, $extension);
+
+            if ($writer instanceof WriterInterface) {
+                return $writer;
+            }
+        }
+
+        return match ($extension) {
+            'csv'   => new \OpenSpout\Writer\CSV\Writer($options),
+            'ods'   => new \OpenSpout\Writer\ODS\Writer($options),
+            default => new \OpenSpout\Writer\XLSX\Writer($options),
+        };
+    }
+
+    private function resolveWriterExtension(string $path): string
+    {
+        if (str_ends_with($path, 'csv')) {
+            return 'csv';
+        }
+
+        if (str_ends_with($path, 'ods')) {
+            return 'ods';
+        }
+
+        return 'xlsx';
+    }
+
+    /**
+     * Transpose data from rows to columns.
+     *
+     * @return SheetCollection
+     */
+    private function transposeData()
+    {
+        $data = $this->data instanceof SheetCollection ? $this->data : collect([$this->data]);
+        $transposedData = [];
+
+        foreach ($data as $key => $collection) {
+            foreach ($collection as $row => $columns) {
+                foreach ($columns as $column => $value) {
+                    $transposedData[$key][$column][$row] = $value;
+                }
+            }
+        }
+
+        return new SheetCollection($transposedData);
+    }
+
+    /**
+     * Write collection rows to the writer, streaming row by row.
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    private function writeRowsFromCollection($writer, Collection $collection, ?callable $callback = null)
+    {
+        // Apply callback
+        if ($callback) {
+            $collection = $collection
+                ->map($callback)
+                ->reject(fn ($value) => $value === null || $value === false)
+                ->values();
+        }
+
+        if ($collection->isEmpty()) {
+            if ($this->data instanceof SheetCollection) {
+                $this->writePlaceholderRowForEmptySheet($writer);
+            }
+
+            return;
+        }
+
+        // Prepare collection (i.e remove non-string)
+        $this->prepareCollection($collection);
+        // Add header row.
+        if ($this->with_header) {
+            $this->writeHeader($writer, $collection->first());
+        }
+
+        $use_styles = $this->rows_style || $this->column_styles || $this->escape_formulas;
+
+        $written = 0;
+
+        // Write rows one by one so Row objects can be garbage-collected as
+        // they are written, instead of materializing them all up front.
+        foreach ($collection as $values) {
+            // Row::fromValues works only with arrays
+            if (!is_array($values)) {
+                $values = $values->toArray();
+            }
+
+            $values = $this->removeHiddenColumns($values);
+
+            if ($use_styles) {
+                // Column styles are matched against the value keys; use positional
+                // keys so numeric style indexes work with associative rows.
+                $this->writeRow($writer, $this->createRow(array_values($values), $this->rows_style, $this->column_styles));
+            } elseif ($this->rowHasCell($values)) {
+                // Row::fromValues() cannot accept Cell instances; build the row
+                // manually so pre-built cells are written through as-is. We
+                // already know it has a cell, so call the builder directly
+                // instead of createRow() to avoid a second rowHasCell() scan.
+                $this->writeRow($writer, $this->buildRowFromCells(array_values($values)));
+            } else {
+                $this->writeRow($writer, Row::fromValues($values));
+            }
+
+            if ($this->end_row !== null && ++$written >= $this->end_row) {
+                break;
+            }
+        }
+    }
+
+    private function writeRowsFromGenerator($writer, Traversable $generator, ?callable $callback = null)
+    {
+        $hasRows = false;
+        $written = 0;
+
+        foreach ($generator as $item) {
+            if ($callback) {
+                $item = $callback($item);
+                if ($item === null || $item === false) {
+                    continue;
+                }
+            }
+
+            $hasRows = true;
+
+            $item = $this->transformRow($item);
+            $item = $this->removeHiddenColumns($item);
+
+            if ($this->with_header && $written === 0) {
+                $this->writeHeader($writer, $item);
+            }
+
+            $this->writeRow($writer, $this->createRow($item, $this->rows_style, $this->column_styles));
+            $written++;
+            if ($this->end_row !== null && $written >= $this->end_row) {
+                break;
+            }
+        }
+
+        if (!$hasRows && $this->data instanceof SheetCollection) {
+            $this->writePlaceholderRowForEmptySheet($writer);
+        }
+    }
+
+    private function writeRowsFromArray($writer, array $array, ?callable $callback = null)
+    {
+        $collection = collect($array);
+
+        // Rows must be arrays or objects; anything else (e.g. a flat list of
+        // scalars) is silently skipped, as before. Empty-sheet placeholder
+        // handling is done by writeRowsFromCollection.
+        if ($collection->isNotEmpty() && !is_object($collection->first()) && !is_array($collection->first())) {
+            return;
+        }
+
+        $this->writeRowsFromCollection($writer, $collection, $callback);
+    }
+
+    private function writeHeader($writer, $first_row)
+    {
+        if ($first_row === null) {
+            return;
+        }
+
+        $row = is_array($first_row) ? $first_row : $first_row->toArray();
+        $keys = array_keys($this->removeHiddenColumns($row));
+        $this->writeRow($writer, $this->createRow($keys, $this->header_style, $this->header_column_styles));
+    }
+
+    /**
+     * Remove "hidden" columns from a row before it is written. Does nothing
+     * unless hideColumnsPrefixedWith() has been called, so exports are
+     * unchanged by default. Because the header is derived from the first row's
+     * keys, hidden columns are dropped from the header automatically as well.
+     *
+     * Numeric keys are always kept, so positional/list rows are left untouched.
+     *
+     * @param array $row
+     *
+     * @return array
+     */
+    private function removeHiddenColumns(array $row): array
+    {
+        $prefix = $this->hidden_column_prefix;
+        if ($prefix === null || $prefix === '') {
+            return $row;
+        }
+
+        return array_filter(
+            $row,
+            static fn ($key) => !is_string($key) || !str_starts_with($key, $prefix),
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
+    /**
+     * Prepare collection by removing non string if required.
+     */
+    protected function prepareCollection(Collection $collection)
+    {
+        $need_conversion = false;
+        $first_row = $collection->first();
+
+        if (!$first_row) {
+            return;
+        }
+
+        foreach ($first_row as $item) {
+            if (!is_string($item)) {
+                $need_conversion = true;
+                break;
+            }
+        }
+        if ($need_conversion || $this->string_values || $this->column_formats) {
+            $collection->transform(fn ($data) => $this->transformRow($data));
+        }
+    }
+
+    /**
+     * Transform one row (i.e remove non-string).
+     */
+    private function transformRow($data): array
+    {
+        $row = [];
+        foreach (is_array($data) ? $data : collect($data)->all() as $key => $value) {
+            $value = is_null($value) ? '' : $this->formatValue($value, $key);
+            if (is_string($value) || is_int($value) || is_float($value) || $value instanceof DateTimeInterface || $value instanceof Cell) {
+                $row[$key] = $value;
+            }
+        }
+
+        return $row;
+    }
+
+    /**
+     * Apply the configured export format to a single value. A per-column rule
+     * (setColumnFormat) wins over the global stringValues() flag. Dates and
+     * non-numeric strings are always left untouched.
+     *
+     * @param mixed      $value
+     * @param int|string $key
+     *
+     * @return mixed
+     */
+    private function formatValue($value, $key)
+    {
+        $format = $this->column_formats[$key] ?? ($this->string_values ? 'string' : null);
+
+        if ($format === 'string' && (is_int($value) || is_float($value))) {
+            return (string) $value;
+        }
+
+        if ($format === 'number' && is_string($value) && is_numeric($value)) {
+            return $value + 0;
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param Style $style
+     *
+     * @return Exportable
+     */
+    public function headerStyle(Style $style)
+    {
+        $this->header_style = $style;
+
+        return $this;
+    }
+
+    /**
+     * @param Style $style
+     *
+     * @return Exportable
+     */
+    public function rowsStyle(Style $style)
+    {
+        $this->rows_style = $style;
+
+        return $this;
+    }
+
+    /**
+     * OpenSpout multi-sheet workbooks require at least one non-empty row per worksheet.
+     * Empty rows are skipped by the XLSX writer and would otherwise produce a corrupt file.
+     *
+     * @param \OpenSpout\Writer\WriterInterface $writer
+     */
+    private function writePlaceholderRowForEmptySheet($writer): void
+    {
+        if (!$writer instanceof \OpenSpout\Writer\XLSX\Writer && !$writer instanceof \OpenSpout\Writer\ODS\Writer) {
+            return;
+        }
+
+        // Deliberately not writeRow(): this filler is not user data and must
+        // not influence auto-sized column widths.
+        $writer->addRow($this->createRow([' ']));
+    }
+
+    /**
+     * Create openspout row from values with optional row and cell styling.
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    private function createRow(array $values = [], ?Style $rows_style = null, array $column_styles = []): Row
+    {
+        // Fast path: no pre-built cells and no escaping, let OpenSpout build
+        // the cells from the scalar values.
+        if (!$this->escape_formulas && !$this->rowHasCell($values)) {
+            return Row::fromValuesWithStyles($values, $rows_style, $column_styles);
+        }
+
+        return $this->buildRowFromCells($values, $rows_style, $column_styles);
+    }
+
+    /**
+     * Build a Row cell by cell: pre-built Cell values are used as-is, and the
+     * remaining scalars are converted while preserving any per-column style.
+     * With escapeFormulas() enabled, string scalars become StringCell so a
+     * leading "=" can never be turned into a live formula.
+     * Row::fromValuesWithStyles() cannot be used here because it calls
+     * Cell::fromValue() on every value.
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    private function buildRowFromCells(array $values, ?Style $rows_style = null, array $column_styles = []): Row
+    {
+        $cells = [];
+        foreach ($values as $key => $value) {
+            $style = $column_styles[$key] ?? null;
+            if ($value instanceof Cell) {
+                $cells[] = $value;
+            } elseif ($this->escape_formulas && is_string($value)) {
+                $cells[] = new StringCell($value, $style);
+            } else {
+                $cells[] = Cell::fromValue($value, $style);
+            }
+        }
+
+        return new Row($cells, $rows_style);
+    }
+
+    /**
+     * Whether any value in the given row is already an OpenSpout Cell instance.
+     */
+    private function rowHasCell(array $row): bool
+    {
+        foreach ($row as $value) {
+            if ($value instanceof Cell) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Hand a row to the writer, measuring it first when auto-sizing is on.
+     * Every data row goes through here so the measurement cannot drift from
+     * what is actually written (hidden columns removed, cells already built).
+     *
+     * @param \OpenSpout\Writer\WriterInterface $writer
+     */
+    private function writeRow($writer, Row $row): void
+    {
+        if ($this->auto_size_active) {
+            $this->measureRow($row);
+        }
+
+        $writer->addRow($row);
+    }
+
+    /**
+     * Widen the running per-column maximum to fit this row. Only the maximum is
+     * kept, so memory is proportional to the number of columns, not rows.
+     */
+    private function measureRow(Row $row): void
+    {
+        $row_style = $row->getStyle();
+
+        foreach ($row->getCells() as $index => $cell) {
+            $cell_style = $cell->getStyle();
+
+            // Excel's AutoFit leaves wrapped columns alone and grows the row
+            // height instead; do the same rather than undoing the wrap.
+            if ($cell_style->shouldWrapText() || $row_style->shouldWrapText()) {
+                continue;
+            }
+
+            // A cell only carries a font of its own when one was set on it;
+            // otherwise the row's font applies, which is where headerStyle()
+            // and rowsStyle() land.
+            $font = $cell_style->shouldApplyFont() ? $cell_style : $row_style;
+            $width = $this->cellDisplayLength($cell) * $this->fontScale($font);
+
+            if ($width > ($this->auto_size_widths[$index] ?? 0.0)) {
+                $this->auto_size_widths[$index] = $width;
+            }
+        }
+    }
+
+    /**
+     * How much wider than a plain default-font cell this style renders. Bold
+     * Calibri is a few percent wider, and a larger font scales roughly with its
+     * size, since column width is expressed in characters of the normal font.
+     */
+    private function fontScale(Style $style): float
+    {
+        $scale = $style->isFontBold() ? 1.08 : 1.0;
+
+        if ($style->hasSetFontSize() && $style->getFontSize() > 0) {
+            $scale *= $style->getFontSize() / XlsxOptions::DEFAULT_FONT_SIZE;
+        }
+
+        return $scale;
+    }
+
+    /**
+     * Width, in characters, needed to show a cell's value. Dates and intervals
+     * are estimated from a typical rendering because the number format that
+     * Excel will actually apply is not visible from here.
+     */
+    private function cellDisplayLength(Cell $cell): float
+    {
+        $value = $cell->getValue();
+
+        if ($value === null) {
+            return 0.0;
+        }
+
+        if (is_bool($value)) {
+            return $value ? 4.0 : 5.0; // TRUE / FALSE
+        }
+
+        if (is_int($value) || is_float($value)) {
+            return (float) strlen((string) $value);
+        }
+
+        if ($value instanceof DateTimeInterface) {
+            return $value->format('His') === '000000' ? 10.0 : 19.0;
+        }
+
+        if ($value instanceof DateInterval) {
+            return 8.0;
+        }
+
+        return $this->longestLineLength((string) $value);
+    }
+
+    /**
+     * A multi-line value only needs to fit its longest line: the newlines
+     * break the text regardless of how wide the column is.
+     */
+    private function longestLineLength(string $value): float
+    {
+        $longest = 0;
+        foreach (explode("\n", $value) as $line) {
+            $length = mb_strlen(rtrim($line, "\r"));
+            if ($length > $longest) {
+                $longest = $length;
+            }
+        }
+
+        return (float) $longest;
+    }
+
+    /**
+     * Write the measured widths onto the sheet that was just filled, then reset
+     * the tracker for the next one. Safe to call after the last row because
+     * OpenSpout only emits the <cols> fragment when the file is finalized.
+     *
+     * ODS and csv never get here: ODS holds widths on the workbook options
+     * rather than the sheet, and in points instead of characters, and csv has
+     * no widths at all.
+     *
+     * @param \OpenSpout\Writer\WriterInterface $writer
+     */
+    private function applyAutoSizeColumns($writer): void
+    {
+        $widths = $this->auto_size_widths;
+        $this->auto_size_widths = [];
+
+        if (!$this->auto_size_active || $widths === []) {
+            return;
+        }
+
+        $sheet = $writer->getCurrentSheet();
+        ksort($widths);
+
+        foreach ($widths as $index => $width) {
+            // An entirely empty column keeps Excel's default width; forcing it
+            // to the minimum would be a change nobody asked for.
+            if ($width <= 0.0) {
+                continue;
+            }
+
+            // Two characters of padding, matching the breathing room Excel's
+            // own AutoFit leaves so the last glyph is not flush to the border.
+            $width = min(max($width + 2, $this->auto_size_min_width), $this->auto_size_max_width);
+            $sheet->setColumnWidth(round($width, 2), $index + 1);
+        }
+    }
+}
