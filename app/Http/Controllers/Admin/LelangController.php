@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FokusLelang;
 use App\Models\Lelang;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LelangController extends Controller
 {
@@ -32,7 +33,8 @@ class LelangController extends Controller
             []
         );
 
-        return redirect()->route('admin.lelang-sirup.index')->with('success', 'Lelang berhasil difokuskan.');
+        Alert::toast('Data Lelang berhasil difokuskan')->success()->flash();
+        return redirect()->route('admin.lelang-sirup.index');
     }
 
     /**

@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SatkerController extends Controller
 {
@@ -51,7 +52,8 @@ class SatkerController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.satuan-kerja.index')->with('success', __('Satuan Kerja berhasil diupdate'));
+            Alert::toast('Satuan Kerja berhasil diupdate')->success()->flash();
+            return redirect()->route('admin.satuan-kerja.index');
         } catch (Exception $e){
 
             DB::rollback();
@@ -76,10 +78,9 @@ class SatkerController extends Controller
     public function reload()
     {
         Artisan::call('app:master-satker');
-        // This method can be used to reload the data or perform any necessary actions.
-        // For example, you might want to clear cache or refresh data from an external source.
-        // return redirect()->route('admin.satuan-kerja.index')->with('success', __('Data Satuan Kerja telah diperbarui'));
-        return redirect()->route('admin.satuan-kerja.index')->with('success', __('Data Satuan Kerja telah diperbarui'));
+
+        Alert::toast('Data Satuan Kerja telah diperbarui')->success()->flash();
+        return redirect()->route('admin.satuan-kerja.index');
     }
 
 }

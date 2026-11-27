@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Midtrans\Config;
 use Midtrans\Snap;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class InvoiceController extends Controller
 {
@@ -72,7 +73,8 @@ class InvoiceController extends Controller
             $kupon->save();
         }
 
-        return redirect()->route('admin.invoice.index')->with('success', 'Invoice created successfully.');
+        Alert::toast('Invoice berhasil disimpan')->success()->flash();
+        return redirect()->route('admin.invoice.index');
     }
 
     public function display(Invoice $invoice)
@@ -86,7 +88,8 @@ class InvoiceController extends Controller
     public function destroy(Invoice $invoice)
     {
         $invoice->delete();
-        return redirect()->route('admin.invoice.index')->with('success', 'Invoice deleted successfully.');
+        Alert::toast('data Invoice berhasil dihapus')->success()->flash();
+        return redirect()->route('admin.invoice.index');
     }
 
     public function bulkDelete(Request $request)

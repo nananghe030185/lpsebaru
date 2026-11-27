@@ -7,6 +7,7 @@ use App\Models\BroadcastModel;
 use App\Models\Outbox;
 use App\Models\User;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class BroadcastController extends Controller
 {
@@ -112,7 +113,8 @@ class BroadcastController extends Controller
             $this->sendOutbox($value, $request->message);
         }
 
-        return redirect()->back()->with('success', 'Broadcast Telegram Member berhasil dikirim ke Outbox.');
+        Alert::toast('Broadcast telegram member berhassil dikirim ke outbox')->success()->flash();
+        return redirect()->back();
     }
 
     public function telegramnonmember(Request $request)
@@ -128,7 +130,8 @@ class BroadcastController extends Controller
             $this->sendOutbox($value, $request->message);
         }
 
-        return redirect()->back()->with('success', 'Broadcast Telegram Member berhasil dikirim ke Outbox.');
+        Alert::toast('Broadcasst telegram member berhasil dikirim ke outbox')->success()->flash();
+        return redirect()->back();
     }
 
     public function telegramsemua(Request $request)
@@ -144,7 +147,8 @@ class BroadcastController extends Controller
             $this->sendOutbox($value, $request->message);
         }
 
-        return redirect()->back()->with('success', 'Broadcast Telegram Member berhasil dikirim ke Outbox.');
+        Alert::toast('Broadcast telegram member berhasil dikirim ke outbox')->success()->flash();
+        return redirect()->back();
     }
 
     public function telegramouter(Request $request)

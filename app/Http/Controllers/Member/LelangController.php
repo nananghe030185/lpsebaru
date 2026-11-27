@@ -9,6 +9,7 @@ use App\Models\FokusLelang;
 use App\Models\Lelang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LelangController extends Controller
 {
@@ -30,7 +31,8 @@ class LelangController extends Controller
             []
         );
 
-        return redirect()->route('app.lelang-sirup.index')->with('success', 'Lelang berhasil difokuskan.');
+        Alert::toast('Lelang berhasil difokuskan')->success()->flash();
+        return redirect()->route('app.lelang-sirup.index');
     }
 
     public function bulkFokus(Request $request)
@@ -38,12 +40,14 @@ class LelangController extends Controller
         $ids = $request->input('ids', []);
 
         if (empty($ids)) {
-            return redirect()->back()->with('error', 'Tidak ada lelang yang dipilih.');
+            Alert::toast('Tidak ada data yang dipilih')->error()->flash();
+            return redirect()->back();
         }
        // explode the ids and focus on each lelang
         $ids = explode(',', $ids);
         if (count($ids) > 100) {
-            return redirect()->back()->with('error', 'Maksimal 100 lelang dapat difokuskan sekaligus.');
+            Alert::toast('Maksimal 100 data')->error()->flash();
+            return redirect()->back();
         }
         
         // Loop through each ID and focus the lelang
@@ -60,7 +64,8 @@ class LelangController extends Controller
             }
         }
 
-        return redirect()->route('app.lelang-sirup.index')->with('success', 'Lelang berhasil difokuskan.');
+        Alert::toast('Lelang berhasil difokuskan')->success()->flash();
+        return redirect()->route('app.lelang-sirup.index');
     }
 
     public function isfokus()

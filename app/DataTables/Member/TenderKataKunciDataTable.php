@@ -73,8 +73,6 @@ class TenderKataKunciDataTable extends DataTable
     public function query(TenderKeyword $model): QueryBuilder
     {
         return $model->newQuery();
-            // ->with(['tender','lpse'])
-            // ->select('tender_keywords.*');
     }
 
     /**
@@ -97,52 +95,104 @@ class TenderKataKunciDataTable extends DataTable
                             ->className('btn btn-success btn-sm')
                             ->exportOptions(['columns' => ':visible']),
                         'bulk-fokus' => [
-                            'text' => '<i class="fa fa-bullseye"></i> Bulk Fokus', // Button text with optional icon
+                            'text' => '<i class="fa fa-bullseye"></i> Fokus', // Button text with optional icon
                             'className' => 'btn btn-primary', // CSS class for styling
                             'action' => 'function (e, dt, node, config) {
                                 var ids = [];
                                 $("#tenderkatakunci-table tbody .row-checkbox:checked").each(function() {
                                     ids.push($(this).val());
                                 });
-                                if (ids.length > 0) {
-                                    if (confirm("Are you sure you want to fokus selected items?")) {
-                                        window.location = "' . route('app.tender-kata-kunci.bulk-fokus') . '?ids=" + ids.join(",");
-                                    }
-                                } else {
-                                    toaster.warning("No items selected for fokus.");
+                                if (ids.length === 0) {
+                                    Swal.fire({
+                                        icon : "error",
+                                        title : "Tidak ada data yang dipilih",
+                                        confirmButtonText : "Batal"
+                                    });
+                                    return
                                 }
-                            }'
-],
-                    'bulk-delete' => [
-                            'text' => '<i class="fa fa-trash"></i> Bulk Delete',
-                            'className' => 'btn btn-danger',
-                            'action' => 'function (e, dt, node, config) {
-                                var ids = [];
-                                $("#tenderkatakunci-table tbody .row-checkbox:checked").each(function() {
-                                    ids.push($(this).val());
+                                Swal.fire({
+                                    icon : "info",
+                                    title : "Anda yakin ingin memfokuskan data yang dipilih ?",
+                                    showCancelButton : true,
+                                    confirmButtonText : "OK",
+                                    cancelButtonText : "Batal",
+                                    cancelButtonColor : "#d33",
+                                }).then((result) => {
+                                    if(result.isConfirmed){
+                                        window.location = "' . route('app.tender-kata-kunci.bulk-fokus') . '?ids=" + ids.join(",");
+                                        Swal.fire({
+                                            toast : true,
+                                            position : "top-end",
+                                            icon : "success",
+                                            text : "Data yang dipilih berhasil difokuskan",
+                                            showConfirmButton : false,
+                                            timer : 3000,
+                                            timerProgressBar : true
+                                        });
+                                    }
                                 });
-                                if (ids.length > 0) {
-                                    if (confirm("Are you sure you want to delete selected items?")) {
+                            }'
+                        ],
+                        'bulk-delete' => [
+                            'text' => '<i class="fa fa-trash"></i> Delete', // Button text with optional icon
+                            'className' => 'btn btn-danger', // CSS class for styling
+                            'action' => 'function (e, dt, node, config) {
+                                var selectedIds = [];
+                                $(".row-checkbox:checked").each(function() {
+                                    selectedIds.push($(this).val());
+                                });
+
+                                if (selectedIds.length === 0) {
+                                    Swal.fire({
+                                        icon : "error",
+                                        title : "Tidak ada data yang dipilih",
+                                        confirmButtonText : "Batal"
+                                    });
+                                    return
+                                }
+                                Swal.fire({
+                                    icon : "warning",
+                                    title : "Anda yakin ingin menghapus data yang dipilih ?",
+                                    showCancelButton : true,
+                                    confirmButtonText : "Hapus",
+                                    cancelButtonText : "Batal",
+                                    cancelButtonColor : "#d33",
+                                }).then((result) => {
+                                    if(result.isConfirmed){
                                         $.ajax({
                                             url: "' . route('app.tender-kata-kunci.bulk-delete') . '",
                                             type: "POST",
                                             data: {
-                                                ids: ids,
+                                                ids: selectedIds,
                                                 _token: "' . csrf_token() . '"
                                             },
                                             success: function(response) {
-                                                dt.ajax.reload();
-                                                toastr.warning(response.message || "Deleted successfully!");
+                                                dt.ajax.reload(); // Reload the DataTable
+                                                Swal.fire({
+                                                    toast : true,
+                                                    position : "top-end",
+                                                    icon : "success",
+                                                    text : response.message,
+                                                    showConfirmButton : false,
+                                                    timer : 3000,
+                                                    timerProgressBar : true
+                                                });
                                             },
-                                            error: function(xhr) {
-                                                toastr.warning("Error deleting items.");
+                                            error: function(xhr, status, error) {
+                                                Swal.fire({
+                                                    toast : true,
+                                                    position : "top-end",
+                                                    icon : "error",
+                                                    text : xhr.responseJSON?.message ?? "Terjadi kesalahan saat menghapus data",
+                                                    showConfirmButton : false,
+                                                    timer : 2000,
+                                                    timerProgressBar : true
+                                                });
                                             }
                                         });
                                     }
-                                } else {
-                                    toastr.warning("No items selected for deletion.");
-                                }
-                            }'
+                                });
+                            }',
                         ],
                     ])
                     ->initComplete('function() {

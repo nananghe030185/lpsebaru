@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use illuminate\Support\Str;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -79,7 +80,8 @@ class UserController extends Controller
         }
         $user->save();
         // redirect back with success message
-        return redirect()->back()->with('success', __('Profile updated successfully'));
+        Alert::toast('Profil berhasil diupdate')->success()->flash();
+        return redirect()->back();
     }
 
     public function updateProfile(User $user, Request $request){
@@ -126,7 +128,8 @@ class UserController extends Controller
         
         $user->save();
 
-        return redirect()->back()->with('success', __('Profile updated successfully'));
+        Alert::toast('Profile berhasil diupdate')->success()->flash();
+        return redirect()->back();
     }
 
     /**

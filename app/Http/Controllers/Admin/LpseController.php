@@ -8,6 +8,7 @@ use App\Models\Lpse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LpseController extends Controller
 {
@@ -68,8 +69,8 @@ class LpseController extends Controller
             $file->move(public_path('assets/images/logo'), $filename);
             $lpse->update(['logo' => $filename]);
         }
-
-        return redirect()->route('admin.lpse.index')->with('success','LPSE baru telah di tambahkan');
+        Alert::toast('LPSE berhasil disimpan')->success()->flash();
+        return redirect()->route('admin.lpse.index');
     }
     /**
      * Update the specified resource in storage.
@@ -111,7 +112,8 @@ class LpseController extends Controller
             $file->move(public_path('assets/images/logo'), $filename);
             $lpse->update(['logo' => $filename]);
         }
-        return redirect()->route('admin.lpse.index')->with('success', __('LPSE berhasil diupdate'));
+        Alert::toast('LPSE berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.lpse.index');
     }
 
 
@@ -131,8 +133,8 @@ class LpseController extends Controller
                 $lpse->update(['state' => $state]);
             }
         }
-
-        return redirect()->route('admin.lpse.index')->with('success', __('Status semua LPSE berhasil diubah'));
+        Alert::toast('Status semua LPSE berhasil diubah')->success()->flash();
+        return redirect()->route('admin.lpse.index');
     }
 
     public function scrape(int $id, Request $request)
@@ -145,7 +147,8 @@ class LpseController extends Controller
     public function unscrapeall()
     {
         Lpse::query()->update(['scrape' => false]); // Reset all scrape status
-        return redirect()->route('admin.lpse.index')->with('success', 'Semua data LPSE berhasil diupdate.');
+        Alert::toast('Status semua LPSE berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.lpse.index');
     }
 
     public function reload()
@@ -153,14 +156,16 @@ class LpseController extends Controller
         Artisan::call('app:master-lpse');
         // This method can be used to reload the data or perform any necessary actions.
         // For example, you might want to clear cache or refresh data from an external source.
-        return redirect()->route('admin.lpse.index')->with('success', __('Data LPSE telah diperbarui'));
+        Alert::toast('Data LPSE telah diperbarui')->success()->flash();
+        return redirect()->route('admin.lpse.index');
     }
 
     public function destroy(Lpse $lpse)
     {
         $lpse->delete();
 
-        return redirect()->route('admin.lpse.index')->with('success', 'Data berhasil dihapus'); 
+        Alert::toast('LPSE telah dihapus')->warning()->flash();
+        return redirect()->route('admin.lpse.index'); 
     }
 
     public function map(){

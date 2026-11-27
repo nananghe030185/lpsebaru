@@ -8,6 +8,7 @@ use App\Models\Kupon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use illuminate\Support\Str;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KuponController extends Controller
 {
@@ -51,7 +52,8 @@ class KuponController extends Controller
             'stok' => $request->stok
         ]);
 
-        return redirect()->route('admin.kupon.index')->with('success', 'Kupon created successfully.');
+        Alert::toast('Kupon berhasil disimpan')->success()->flash();
+        return redirect()->route('admin.kupon.index');
     }
 
     /**
@@ -89,7 +91,8 @@ class KuponController extends Controller
             'masa_berlaku' => $request->masa_berlaku,
         ]);
 
-        return redirect()->route('admin.kupon.index')->with('success', 'Kupon update successfully.');
+        Alert::toast('Kupon berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.kupon.index');
     }
 
     /**

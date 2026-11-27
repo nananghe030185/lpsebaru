@@ -3,19 +3,10 @@
 namespace App\Http\Controllers\Member;
 
 use App\dataDashboard;
-use App\Helpers\Helpers;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
-use App\Models\ErrorLog;
-use App\Models\Fokus;
-use App\Models\Lelang;
-use App\Models\Lpse;
-use App\Models\Tender;
-use App\Models\TenderKeyword;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+
 
 class DashboardController extends Controller
 {

@@ -6,6 +6,7 @@ use App\DataTables\Admin\InboxDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Inbox;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class InboxController extends Controller
 {
@@ -64,7 +65,8 @@ class InboxController extends Controller
     {
         //
         $inbox->delete();
-        return redirect()->route('admin.inout.inbox.index')->with('success', 'Data berhasil dihapus'); 
+        Alert::toast('Pesan Inbox berhasil dihapus')->success()->flash();
+        return redirect()->route('admin.inout.inbox.index'); 
     }
 
     public function bulkDelete(Request $request)

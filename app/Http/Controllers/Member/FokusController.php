@@ -8,6 +8,7 @@ use App\Models\Fokus;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class FokusController extends Controller
 {
@@ -28,7 +29,9 @@ class FokusController extends Controller
         try{
             $fokus_paket->delete();
             DB::commit();
-            return redirect()->route('app.fokus-paket.index')->with('success', __('Data telah di hapus'));
+
+            Alert::toast('Data berhasil dihapus')->success()->flash();
+            return redirect()->route('app.fokus-paket.index');
         }catch(Exception $e){
             DB::rollback();
             throw $e;
@@ -45,7 +48,9 @@ class FokusController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('app.fokus-paket.index')->with('success', __('Melepaskan Fokus Paket tender berhasil'));
+
+            Alert::toast('Melepaskan Fokus Paket ternder berhasil')->success()->flash();
+            return redirect()->route('app.fokus-paket.index');
         }catch(Exception $e){
             DB::rollback();
             throw $e;

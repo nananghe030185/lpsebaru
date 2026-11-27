@@ -22,6 +22,7 @@
   <body>
     @yield('main_content')
     @include('layouts.authentication.scripts')
+    @sweetAlert
 </body>
 
 </html>

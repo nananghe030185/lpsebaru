@@ -8,6 +8,7 @@ use App\Models\Klpdi;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KlpdiController extends Controller
 {
@@ -43,7 +44,8 @@ class KlpdiController extends Controller
 
         $klpdi->update($request->only(['jenis_klpdi', 'nama_klpdi', 'kode_kabupaten', 'kode_klpdi', 'kode_provinsi']));
         
-        return redirect()->route('admin.klpdi.index')->with('success', __('Data KLPDI telah diperbarui'));
+        Alert::toast('Data KLPDI berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.klpdi.index');
     }
     /**
     * reload the resource.
@@ -51,9 +53,8 @@ class KlpdiController extends Controller
     public function reload()
     {
         Artisan::call('app:master-klpdi');
-        // This method can be used to reload the data or perform any necessary actions.
-        // For example, you might want to clear cache or refresh data from an external source.
-        // return redirect()->route('admin.klpdi.index')->with('success', __('Data KLPDI telah diperbarui'));
-        return redirect()->route('admin.klpdi.index')->with('success', __('Data KLPDI telah diperbarui'));
+        
+        Alert::toast('Data KLPDI berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.klpdi.index');
     }
 }

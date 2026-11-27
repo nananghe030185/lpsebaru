@@ -6,6 +6,7 @@ use App\DataTables\Member\FokusLelangDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\FokusLelang;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class FokusLelangController extends Controller
 {
@@ -24,17 +25,21 @@ class FokusLelangController extends Controller
     public function destroy(FokusLelang $fokus_lelang)
     {
         $fokus_lelang->delete();
-        return redirect()->route('app.fokus-lelang.index')->with('success', 'Fokus Lelang deleted successfully.');
+        Alert::toast('Fokus Lelang berhasil dihapus')->success()->flash();
+        return redirect()->route('app.fokus-lelang.index');
     }
 
     public function bulkDelete(Request $request)
     {
         $ids = $request->input('ids', []);
         if (empty($ids)) {
-            return redirect()->back()->with('error', 'No items selected for deletion.');
+            Alert::toast('Tidak ada data yang dipilih')->error()->flash();
+            return redirect()->back();
         }
 
         FokusLelang::whereIn('id', $ids)->delete();
-        return redirect()->route('app.fokus-lelang.index')->with('success', 'Selected Fokus Lelang deleted successfully.');
+
+        Alert::toast('Fokus Lelang yang dipilih berhasil dihapus')->success()->flash();
+        return redirect()->route('app.fokus-lelang.index');
     }
 }

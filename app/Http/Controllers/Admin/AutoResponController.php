@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\DataTables\Admin\AutoResponDataTable;
 use App\Models\AutoRespon;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AutoResponController extends Controller
 {
@@ -42,9 +43,8 @@ class AutoResponController extends Controller
             'whatsapp' => $request->has('whatsapp'),
             'telegram' => $request->has('telegram'),
         ]);
-
-        return redirect()->route('admin.auto-respon.index')
-            ->with('success', __('Auto Respon created successfully.'));
+        Alert::toast('Auto Respon created successfully')->success()->flash();
+        return redirect()->route('admin.auto-respon.index');
     }
 
     /**
@@ -120,7 +120,9 @@ class AutoResponController extends Controller
             'whatsapp' => $request->has('whatsapp'),
             'telegram' => $request->has('telegram'),
         ]);
-        return redirect()->route('admin.auto-respon.index')->with('success', __('Auto Respon berhasil diupdate'));
+        
+        Alert::toast('Auto Respon berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.auto-respon.index');
     }
 
     /**
@@ -131,6 +133,7 @@ class AutoResponController extends Controller
         //
         $autoRespon->delete();
 
-        return redirect()->to(route('admin.auto-respon.index'))->with('success', 'Data Berhasil di hapus');
+        Alert::toast('Auto Respon berhasil dihapus')->success()->flash();
+        return redirect()->to(route('admin.auto-respon.index'));
     }
 }

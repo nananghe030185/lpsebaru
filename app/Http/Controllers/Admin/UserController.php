@@ -16,6 +16,7 @@ use App\Models\Fokus;
 use App\Models\FokusLelang;
 use App\Models\Notification;
 use App\Models\NotificationLelang;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -93,8 +94,9 @@ class UserController extends Controller
         $user->status = $request->has('status');
         $user->update($validated);
         // redirect back with success message
-        return redirect()->route('admin.user.index', $user->username)->with('success', __('User updated successfully'))
-            ->withInput($request->except('password')); // Exclude password
+
+        Alert::toast('User berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.user.index', $user->username); // Exclude password
         
 
     }
@@ -135,7 +137,8 @@ class UserController extends Controller
         Notification::where('user_id', $user->id)->delete();
 
         // redirect
-        return redirect()->route('admin.user.index')->with('success','Data berhasil dihapus');
+        Alert::toast('User berhasil dihapus')->success()->flash();
+        return redirect()->route('admin.user.index');
     }
     
     /**
@@ -202,13 +205,15 @@ class UserController extends Controller
         
         $user->save();
 
-        return redirect()->back()->with('success', __('Profile updated successfully'));        
+        Alert::toast('User Profile berhasil diupdate')->success()->flash();
+        return redirect()->back();        
     }
     public function removeImage($id)
     {
         $user = User::find($id);
         $user->clearMediaCollection('image');
-        return redirect()->back()->with('success', 'Image removed successfully');
+        Alert::toast('Gambar berhasil di hapus')->success()->flash();
+        return redirect()->back();
     }
 
     public function updateImage(User $user, Request $request)
@@ -218,10 +223,14 @@ class UserController extends Controller
         ]);
 
         try {
+
             $user->addMediaFromRequest('image')->toMediaCollection('image');
-            return redirect()->back()->with('success', __('Image updated successfully'));
+
+            Alert::toast('Gambar berhasil diupdate')->success()->flash();
+            return redirect()->back();
         } catch (Exception $e) {
-            return redirect()->back()->withErrors(__('Failed to update image: ') . $e->getMessage());
+            Alert::toast('Gagal mengupdate gambar '. $e->getMessage())->error()->flash();
+            return redirect()->back();
         }
     }
 }

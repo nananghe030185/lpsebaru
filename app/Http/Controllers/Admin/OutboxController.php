@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Outbox;
 use App\Models\OutboxModel;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class OutboxController extends Controller
 {
@@ -15,6 +16,8 @@ class OutboxController extends Controller
      */
     public function index(OutboxDataTable $dataTable)
     {
+        
+
         return $dataTable->render('admin.inout.outbox');
     }
 
@@ -65,7 +68,8 @@ class OutboxController extends Controller
         $outbox->update([
             'status' => false
         ]);
-        return redirect()->route('admin.inout.outbox.index')->with('success', 'Data dalam antrian di kirim');
+        Alert::toast('Data dalam antrian')->success()->flash();
+        return redirect()->route('admin.inout.outbox.index');
     }
     /**
      * Remove the specified resource from storage.
@@ -73,7 +77,8 @@ class OutboxController extends Controller
     public function destroy(OutboxModel $outbox)
     {
         $outbox->delete();
-        return redirect()->route('admin.inout.outbox.index')->with('success', 'Outbox deleted successfully.');
+        Alert::toast('Data Outbox berhasil dihapus')->success()->flash();
+        return redirect()->route('admin.inout.outbox.index');
     }
 
     public function bulkDelete(Request $request)
@@ -94,7 +99,7 @@ class OutboxController extends Controller
             Outbox::whereIn('id', $ids)->update([
                 'status' => 0
             ]);
-            return response()->json(['message' => 'Data berhasil diresend.']);
+            return response()->json(['message' => 'Data berhasil di kirim ulang.']);
         }
         return response()->json(['message' => 'Tidak ada data yang dipilih.'], 400);
     }

@@ -31,20 +31,22 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Edit Blog</h4>
-                    </div>
-                    <div class="card-body add-post">
-                        <form class="row needs-validation" novalidate="" id="blogForm"
-                            action="{{ route('blog.update', $blog->id) }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
+                <form class="row needs-validation" novalidate="" id="blogForm" action="{{ route('admin.blog.update', $blog->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Edit Blog</h4>
+                        </div>
+                        <div class="card-body add-post">
                             @include('admin.blog.fields')
-                        </form>
+                        </div>
+                        <div class="card-footer text-end d-inline-flex gap-1 justify-content-end">
+                            <x-form.buttonsimpan></x-form.buttonsimpan>
+                            <x-form.buttonbatal :href="route('admin.blog.index')"></x-form.buttonbatal>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

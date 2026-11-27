@@ -114,6 +114,7 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::resource('/admin/tender-lpse', TenderController::class)->names('admin.tender-lpse')->except(['create','show','destroy']);;
 
     // Blog, Category, Role, Tag
+    Route::put('/admin/blog/status/{id}', [BlogController::class, 'status'])->name('admin.blog.status');
     Route::resource('/admin/blog', BlogController::class)->names('admin.blog')->except(['show']);;
     Route::post('/admin/category/update-orders', [CategoryController::class, 'updateOrders'])->name('admin.category.update.orders');
     Route::resource('/admin/category', CategoryController::class)->names('admin.category');

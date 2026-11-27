@@ -93,36 +93,65 @@ class TenderDataTable extends DataTable
                     ->parameters($this->getBuilderParameters())
                     ->buttons([
                         'bulk-delete' => [
-                            'text' => '<i class="fa fa-trash"></i> Bulk Delete', // Button text with optional icon
+                            'text' => '<i class="fa fa-trash"></i> Delete', // Button text with optional icon
                             'className' => 'btn btn-danger', // CSS class for styling
-                            'action' => 'function(e, dt, node, config) {
+                            'action' => 'function (e, dt, node, config) {
                                 var selectedIds = [];
                                 $(".row-checkbox:checked").each(function() {
                                     selectedIds.push($(this).val());
                                 });
 
                                 if (selectedIds.length === 0) {
-                                    alert("Please select at least one row to delete.");
-                                    return;
+                                    Swal.fire({
+                                        icon : "error",
+                                        title : "Tidak ada data yang dipilih",
+                                        confirmButtonText : "Batal"
+                                    });
+                                    return
                                 }
 
-                                if (confirm("Are you sure you want to delete the selected rows?")) {
-                                    $.ajax({
-                                        url: "' . route('admin.tender-lpse.bulk-delete') . '",
-                                        type: "POST",
-                                        data: {
-                                            ids: selectedIds,
-                                            _token: "' . csrf_token() . '"
-                                        },
-                                        success: function(response) {
-                                            dt.ajax.reload(); // Reload the DataTable
-                                            alert(response.message);
-                                        },
-                                        error: function(xhr) {
-                                            alert("An error occurred while deleting the rows.");
-                                        }
-                                    });
-                                }
+                                Swal.fire({
+                                    icon : "warning",
+                                    title : "Anda yakin ingin menghapus data yang dipilih ?",
+                                    showCancelButton : true,
+                                    confirmButtonText : "Hapus",
+                                    cancelButtonText : "Batal",
+                                    cancelButtonColor : "#d33",
+                                }).then((result) => {
+                                    if(result.isConfirmed){
+                                        $.ajax({
+                                            url: "' . route('admin.tender-lpse.bulk-delete') . '",
+                                            type: "POST",
+                                            data: {
+                                                ids: selectedIds,
+                                                _token: "' . csrf_token() . '"
+                                            },
+                                            success: function(response) {
+                                                dt.ajax.reload(); // Reload the DataTable
+                                                Swal.fire({
+                                                    toast : true,
+                                                    position : "top-end",
+                                                    icon : "success",
+                                                    text : response.message,
+                                                    showConfirmButton : false,
+                                                    timer : 3000,
+                                                    timerProgressBar : true
+                                                });
+                                            },
+                                            error: function(xhr, status, error) {
+                                                Swal.fire({
+                                                    toast : true,
+                                                    position : "top-end",
+                                                    icon : "error",
+                                                    text : xhr.responseJSON?.message ?? "Terjadi kesalahan saat menghapus data",
+                                                    showConfirmButton : false,
+                                                    timer : 2000,
+                                                    timerProgressBar : true
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
                             }',
                         ],
                     ])

@@ -6,6 +6,7 @@ use App\Models\Groups;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class InstallController extends Controller
 {
@@ -63,7 +64,8 @@ class InstallController extends Controller
             'group_id' => 1, // Assuming group_id 1 exists
             'system_reserve' => 1
         ]);
-        return redirect()->route('login')->with('success','Installasi selesai');
+        Alert::toast('Installasi selesai')->success()->flash();
+        return redirect()->route('login');
     }
 
     public function dbseed(string $pwd){
@@ -74,6 +76,7 @@ class InstallController extends Controller
         Artisan::call('db:seed');
         Artisan::call('optimize:clear');
 
-        return redirect()->route('login')->with('success','Installasi selesai');
+        Alert::toast('Installasi selesai')->success()->flash();
+        return redirect()->route('login');
     }
 }

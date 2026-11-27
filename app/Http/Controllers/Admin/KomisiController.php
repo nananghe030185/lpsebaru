@@ -8,6 +8,7 @@ use App\Models\Komisi;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KomisiController extends Controller
 {
@@ -26,7 +27,8 @@ class KomisiController extends Controller
     public function destroy(Komisi $komisi)
     {
         $komisi->delete();
-        return redirect()->route('admin.laporan.komisi.index')->with('success', 'Komisi deleted successfully.');
+        Alert::toast('Komisi berhasil dihapus')->success()->flash();
+        return redirect()->route('admin.laporan.komisi.index');
     }
 
     public function bulkDelete(Request $request)

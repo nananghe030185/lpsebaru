@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TenderKataKunciController extends Controller
 {
@@ -32,7 +33,9 @@ class TenderKataKunciController extends Controller
             $tender_kata_kunci = TenderKeyword::findOrFail($tender_kata_kunci);
             $tender_kata_kunci->delete();
             DB::commit();
-            return redirect()->route('app.tender-kata-kunci.index')->with('success', __('Data telah di hapus'));
+
+            Alert::toast('Data berhasil dihapus')->success()->flash();
+            return redirect()->route('app.tender-kata-kunci.index');
         }catch(Exception $e){
             DB::rollback();
             throw $e;
@@ -60,7 +63,8 @@ class TenderKataKunciController extends Controller
 
             DB::commit();
 
-            return redirect()->route('app.tender-kata-kunci.index')->with('danger', 'Paket berhasil difokuskan'); 
+            Alert::toast('Tender berhassil difokuskan')->success()->flash();
+            return redirect()->route('app.tender-kata-kunci.index'); 
         }catch(Exception $e){
             DB::rollBack();
             throw $e;
@@ -77,7 +81,8 @@ class TenderKataKunciController extends Controller
         $ids = explode(',', $ids);
 
         if (empty($ids)) {
-            return redirect()->route('app.tender-kata-kunci.index')->with('warning', 'Tidak ada data yang dipilih');
+            Alert::toast('Tidak ada data yang dipilih')->warning()->flash();
+            return redirect()->route('app.tender-kata-kunci.index');
         }
 
         DB::beginTransaction();
@@ -92,10 +97,14 @@ class TenderKataKunciController extends Controller
                 ]);
             }
             DB::commit();
-            return redirect()->route('app.tender-kata-kunci.index')->with('success', 'Data berhasil difokuskan');
+
+            Alert::toast('Data berhasil difokuskan')->success()->flash();
+            return redirect()->route('app.tender-kata-kunci.index');
         } catch (Exception $e) {
             DB::rollBack();
-            return redirect()->route('app.tender-kata-kunci.index')->with('danger', 'Gagal memfokuskan data: ' . $e->getMessage());
+
+            Alert::toast('Gagal memfokuskan data ' . $e->getMessage())->error()->flash();
+            return redirect()->route('app.tender-kata-kunci.index');
         }
     }
 
@@ -105,10 +114,13 @@ class TenderKataKunciController extends Controller
         // dd($ids);
 
         if (empty($ids)) {
-            return redirect()->back()->with('error', 'No items selected for deletion.');
+            Alert::toast('Tidak ada data yang dipilih')->error()->flash();
+            return redirect()->back();
         }
 
         TenderKeyword::whereIn('id', $ids)->delete();
-        return redirect()->route('app.tender-kata-kunci.index')->with('success', 'Selected Fokus Lelang deleted successfully.');
+
+        Alert::toast('Data yang dipilih berhasil dihapus')->success()->flash();
+        return redirect()->route('app.tender-kata-kunci.index');
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Perangkat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class WhatsappController extends Controller
 {
@@ -41,7 +42,8 @@ class WhatsappController extends Controller
             'phoneNumber' => $perangkat->number,
         ]);
 
-        return redirect()->route('admin.whatsapp.index')->with('success', 'Perangkat WhatsApp berhasil ditambahkan. Silakan login untuk menghubungkan.');
+        Alert::toast('Perangkat Whatsapp berhasil ditambahkan, silahkan login untuk menghubungkan')->success()->flash();
+        return redirect()->route('admin.whatsapp.index');
     }
 
     public function edit(Perangkat $whatsapp)
@@ -63,7 +65,8 @@ class WhatsappController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('admin.whatsapp.index')->with('success', 'Perangkat WhatsApp berhasil diperbarui.');
+        Alert::toast('Perangkat Whatsapp berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.whatsapp.index');
     }
     public function destroy(Perangkat $whatsapp)
     {
@@ -71,7 +74,8 @@ class WhatsappController extends Controller
         // remove session from whatsapp server
         Http::delete("http://localhost:3000/session/{$whatsapp->number}");
 
-        return redirect()->route('admin.whatsapp.index')->with('success', 'Perangkat WhatsApp berhasil dihapus.');
+        Alert::toast('Perangkat Whatsapp berhasil dihapus')->success()->flash();
+        return redirect()->route('admin.whatsapp.index');
     }
 
     public function sessions()
@@ -96,9 +100,11 @@ class WhatsappController extends Controller
     {
         $response = Http::delete("http://localhost:3000/session/{$sessionId}/logout");
         if ($response->successful()) {
-            return redirect()->route('admin.whatsapp.sessions')->with('success', 'Logout berhasil.');
+            Alert::toast('Logout berhasil')->success()->flash();
+            return redirect()->route('admin.whatsapp.sessions');
         } else {
-            return redirect()->route('admin.whatsapp.sessions')->with('error', 'Gagal logout.');
+            Alert::toast('Logout Gagal')->error()->flash();
+            return redirect()->route('admin.whatsapp.sessions');
         }
     }
 
@@ -133,12 +139,15 @@ class WhatsappController extends Controller
             $respon = $respon->json();
 
             if ($respon['data']['status']?? false) {
-                return redirect()->route('admin.whatsapp.send.form', $request->token)->with('success', 'Pesan berhasil dikirim.');
+                Alert::toast('Pesan berhasil dikirim')->success()->flash();
+                return redirect()->route('admin.whatsapp.send.form', $request->token);
             } else {
-                return redirect()->route('admin.whatsapp.send.form', $request->token)->with('error', 'Gagal mengirim pesan: ' . $respon['data']['result']['message']);
+                Alert::toast('Gagal mengirim pesan ' . $respon['data']['result']['message'])->error()->flash();
+                return redirect()->route('admin.whatsapp.send.form', $request->token);
             }
         } catch (\Exception $e) {
-            return redirect()->route('admin.whatsapp.send.form', $request->token)->with('error', 'Gagal mengirim pesan error: ' . $e->getMessage());
+            Alert::toast('Gagal mengirim pesan ' . $e->getMessage())->error()->flash();
+            return redirect()->route('admin.whatsapp.send.form', $request->token);
         }
         
 

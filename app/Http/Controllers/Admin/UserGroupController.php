@@ -6,6 +6,7 @@ use App\DataTables\Admin\UserGroupDataTable;
 use App\Models\Groups;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserGroupController extends Controller
 {
@@ -64,7 +65,8 @@ class UserGroupController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('admin.user.group.index')->with('success', 'Group berhasil diperbarui.');
+        Alert::toast('User Group berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.user.group.index');
     }
 
     /**

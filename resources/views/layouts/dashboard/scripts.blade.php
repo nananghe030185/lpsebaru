@@ -19,8 +19,9 @@
  @yield('scripts')
  <script src="{{ asset('assets/js/script.js') }}"></script>
  <script src="{{ asset('assets/js/script1.js') }}"></script>
+ <script src="{{ asset('assets/js/sweet-alert/sweetalert.min.js') }}"></script>
  {{-- <script src="{{ asset('assets/js/theme-customizer/customizer.js') }}"></script> --}}
- <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
+ {{-- <script src="{{ asset('assets/js/toastr.min.js') }}"></script> --}}
 
 <!-- Status Update-->
  <script>
@@ -39,26 +40,36 @@
                 },
                 success: function(data) {
                     clickedToggle.prop('checked', status);
-                    toastr.success("Status berhasil diupdate",
-                    "Berhasil",
-                        {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": true,
-                            "positionClass": "toast-top-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut",
-                        }
-                    );
+                    Swal.fire({
+                        toast: true,
+                        position : 'top-end',
+                        icon : 'success',
+                        text : 'Status berhasil diupdate',
+                        showConfirmButton : false,
+                        timerProgressBar : true,
+                        timer : 2000,
+                    });
+                    
+                    // toastr.success("Status berhasil diupdate",
+                    // "Berhasil",
+                    //     {
+                    //         "closeButton": true,
+                    //         "debug": false,
+                    //         "newestOnTop": false,
+                    //         "progressBar": true,
+                    //         "positionClass": "toast-top-right",
+                    //         "preventDuplicates": false,
+                    //         "onclick": null,
+                    //         "showDuration": "300",
+                    //         "hideDuration": "1000",
+                    //         "timeOut": "5000",
+                    //         "extendedTimeOut": "1000",
+                    //         "showEasing": "swing",
+                    //         "hideEasing": "linear",
+                    //         "showMethod": "fadeIn",
+                    //         "hideMethod": "fadeOut",
+                    //     }
+                    // );
                 },
                 error: function(xhr, status, error) {
                     console.log(error);

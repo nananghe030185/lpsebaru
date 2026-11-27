@@ -9,6 +9,7 @@ use App\Models\Tender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TenderController extends Controller
 {
@@ -29,7 +30,8 @@ class TenderController extends Controller
         $tender_lpse->description = $request->description;
         $tender_lpse->save();
 
-        return redirect()->route('admin.tender-lpse.index')->with('success','Data Berhasil diupdate');
+        Alert::toast('Data Tender berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.tender-lpse.index');
     }
     /**
      * Fokuskan paket  tender
@@ -49,10 +51,13 @@ class TenderController extends Controller
             DB::commit();
         }catch (\Throwable $e) {
             DB::rollBack();
-            return redirect()->route('admin.tender-lpse.index')->with('error', 'Gagal memfokuskan paket: ' . $e->getMessage());
+
+            Alert::toast('Gagal memfokuskan paket '. $e->getMessage())->error()->flash();
+            return redirect()->route('admin.tender-lpse.index');
         }
 
-        return redirect()->route('admin.tender-lpse.index')->with('success', 'Paket telah difokuskan');
+        Alert::toast('Paket Tender telah di fokuskan')->success()->flash();
+        return redirect()->route('admin.tender-lpse.index');
     }
 
     /**

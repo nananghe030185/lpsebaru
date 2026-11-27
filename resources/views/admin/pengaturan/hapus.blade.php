@@ -10,7 +10,12 @@
     <!-- Bradcrumb -->
     <x-breadcrumb>Hapus Data</x-breadcrumb>
 
-    <form action="{{ route('admin.pengaturan.hapus-data') }}" method="post">
+    <form action="{{ route('admin.pengaturan.hapus-data') }}" method="post" 
+                    data-confirm-delete 
+                    data-confirm-title="Apakah anda yakin ingin menghapus data ini ?"
+                    data-confirm-text="Data yang dihapus tidak bisa di kembalikan"
+                    data-confirm-button="Hapus"
+                    data-confirm-cancel="Batal">
         @csrf
         <div class="container-fluid">
             <div class="card">
@@ -30,8 +35,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-end d-inline-flex gap-1 justify-content-end">
-                    <x-form.buttonsimpan></x-form.buttonsimpan>
-                    <x-form.buttonbatal href="{{ route('admin.pengaturan.hapus-data')}}"></x-form.buttonbatal>
+                    <x-form.buttonsimpan>Hapus</x-form.buttonsimpan>
                 </div>
             </div>
         </div>

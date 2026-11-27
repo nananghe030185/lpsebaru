@@ -101,24 +101,55 @@ class FokusDataTable extends DataTable
                                 $(".row-checkbox:checked").each(function() {
                                     ids.push($(this).val());
                                 });
-                                if (ids.length > 0) {
-                                    $.ajax({
-                                        url: "' . route('app.fokus-paket.bulk-unfokus') . '?ids=" + ids.join(","),
-                                        type: "GET",
-                                        data: {
-                                            _token: "' . csrf_token() . '"
-                                        },
-                                        success: function(response) {
-                                            dt.ajax.reload();
-                                            toastr.warning(response.message || "Unfocused successfully!");
-                                        },
-                                        error: function(xhr) {
-                                            toastr.warning("Error unfocusing items: " + xhr.responseText);
-                                        }
+                                if (ids.length === 0) {
+                                    Swal.fire({
+                                        icon : "error",
+                                        title : "Tidak ada data yang dipilih",
+                                        confirmButtonText : "Batal"
                                     });
-                                } else {
-                                    toastr.warning("No items selected for unfocusing.");
+                                    return
                                 }
+                                Swal.fire({
+                                    icon : "warning",
+                                    title : "Anda yakin ingin melepaskan fokus data yang dipilih ?",
+                                    showCancelButton : true,
+                                    confirmButtonText : "OK",
+                                    cancelButtonText : "Batal",
+                                    cancelButtonColor : "#d33",
+                                }).then((result) => {
+                                    if(result.isConfirmed){
+                                        $.ajax({
+                                            url: "' . route('app.fokus-paket.bulk-unfokus') . '?ids=" + ids.join(","),
+                                            type: "GET",
+                                            data: {
+                                                _token: "' . csrf_token() . '"
+                                            },
+                                            success: function(response) {
+                                                dt.ajax.reload();
+                                                Swal.fire({
+                                                    toast : true,
+                                                    position : "top-end",
+                                                    icon : "success",
+                                                    text : response.message,
+                                                    showConfirmButton : false,
+                                                    timer : 3000,
+                                                    timerProgressBar : true
+                                                });
+                                            },
+                                            error: function(xhr) {
+                                                Swal.fire({
+                                                    toast : true,
+                                                    position : "top-end",
+                                                    icon : "error",
+                                                    text : xhr.responseJSON?.message ?? "Terjadi kesalahan saat menghapus data",
+                                                    showConfirmButton : false,
+                                                    timer : 2000,
+                                                    timerProgressBar : true
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
                             }'
                         ],                       
                             

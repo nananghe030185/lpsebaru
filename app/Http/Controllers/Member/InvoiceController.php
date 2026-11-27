@@ -4,16 +4,15 @@ namespace App\Http\Controllers\Member;
 
 use App\DataTables\Member\InvoiceDataTable;
 use App\Helpers\Helpers;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\Kupon;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Midtrans\Config;
 use Midtrans\Snap;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class InvoiceController extends Controller
 {
@@ -85,7 +84,8 @@ class InvoiceController extends Controller
             $kupon->save();
         }
 
-        return redirect()->route('app.invoice.index')->with('success', 'Invoice created successfully.');
+        Alert::toast('Invoice berhasil disimpan')->success()->flash();
+        return redirect()->route('app.invoice.index');
     }
 
     /**
@@ -94,7 +94,8 @@ class InvoiceController extends Controller
     public function destroy(Invoice $invoice)
     {
         $invoice->delete();
-        return redirect()->route('app.invoice.index')->with('success', 'Invoice deleted successfully.');
+        Alert::toast('Invoice berhasil dihapus')->success()->flash();
+        return redirect()->route('app.invoice.index');
     }
 
     public function pay(Invoice $invoice)

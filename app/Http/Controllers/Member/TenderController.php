@@ -9,6 +9,7 @@ use App\Models\Tender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TenderController extends Controller
 {
@@ -35,10 +36,12 @@ class TenderController extends Controller
             DB::commit();
         }catch (\Throwable $e) {
             DB::rollBack();
-            return redirect()->route('app.tender-lpse.index')->with('error', 'Gagal memfokuskan paket: ' . $e->getMessage());
+            Alert::toast('Gagal memfokuskan Tender ' . $e->getMessage())->error()->flash();
+            return redirect()->route('app.tender-lpse.index');
         }
 
-        return redirect()->route('app.tender-lpse.index')->with('success', 'Paket telah difokuskan');
+        Alert::toast('Tender berhasil difokuskan')->success()->flash();
+        return redirect()->route('app.tender-lpse.index');
     }
 
     public function bulkFokus(Request $request)
@@ -47,7 +50,8 @@ class TenderController extends Controller
 
        // exit if no IDs are provided
         if (empty($ids)) {
-            return redirect()->route('app.tender-lpse.index')->with('warning', 'Tidak ada paket yang dipilih untuk difokuskan.');
+            Alert::toast('Tidak ada paket yang dipilih')->warning()->flash();
+            return redirect()->route('app.tender-lpse.index');
         }   
         // explode the ids to ensure they are in array format
         $ids = explode(',', $ids);
@@ -64,10 +68,14 @@ class TenderController extends Controller
                 ]);
             }
             DB::commit();
-            return redirect()->route('app.tender-lpse.index')->with('success', 'Paket berhasil difokuskan');
+
+            Alert::toast('Tender berhasil difokuskan')->success()->flash();
+            return redirect()->route('app.tender-lpse.index');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('app.tender-lpse.index')->with('error', 'Gagal memfokuskan paket: ' . $e->getMessage());
+
+            Alert::toast('Gagal memfokuskan paket ' . $e->getMessage())->error()->flash();
+            return redirect()->route('app.tender-lpse.index');
         }
     }
 }

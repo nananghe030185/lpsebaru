@@ -7,6 +7,7 @@ use App\Models\ErrorLog;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ErrorLogController extends Controller
 {
@@ -27,7 +28,8 @@ class ErrorLogController extends Controller
         try{
             $errorlog->delete();
             DB::commit();
-            return redirect()->route('admin.errorlog.index')->with('success', __('Data telah di hapus'));
+            Alert::toast('Data berhasil dihapus')->success()->flash();
+            return redirect()->route('admin.errorlog.index');
         }catch(Exception $e){
             DB::rollback();
             throw $e;

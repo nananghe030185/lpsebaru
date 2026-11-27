@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Pengumuman;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PengumumanController extends Controller
 {
@@ -42,7 +43,9 @@ class PengumumanController extends Controller
             'status' => $request->status,
             'expire' => $request->expire,
         ]);
-        return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman created successfully.');
+
+        Alert::toast('Pengumuman berhasil disimpan')->success()->flash();
+        return redirect()->route('admin.pengumuman.index');
     }
 
 
@@ -71,7 +74,9 @@ class PengumumanController extends Controller
             'status' => $request->status,
             'expire' => $request->expire,
         ]);
-        return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman updated successfully.');
+
+        Alert::toast('Pengumuman berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.pengumuman.index');
 
     }
 
@@ -81,7 +86,8 @@ class PengumumanController extends Controller
     public function destroy(Pengumuman $pengumuman)
     {
         $pengumuman->delete();
-        return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman deleted successfully.');
+        Alert::toast('Pengumuman berhasil dihapus')->success()->flash();
+        return redirect()->route('admin.pengumuman.index');
     }
 
     /**

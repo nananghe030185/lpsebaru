@@ -18,6 +18,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PengaturanController extends Controller
 {
@@ -51,10 +52,12 @@ class PengaturanController extends Controller
             DB::commit();
         }catch(Exception $e){
             DB::rollBack();
-            return redirect()->route('admin.applikasi.index')->with('error', 'Gagal: ' . $e->getMessage());
+            Alert::toast('Gagal : ' . $e->getMessage())->error()->flash();
+            return redirect()->route('admin.applikasi.index');
         }
 
-        return redirect()->route('admin.applikasi.index')->with('success', 'Data Berhasil di Update');
+        Alert::toast('Data Pengaturan berhasil diupdate')->success()->flash();
+        return redirect()->route('admin.applikasi.index');
     }
 
     /**
@@ -70,9 +73,11 @@ class PengaturanController extends Controller
             // Get the output of the command
             $output = Artisan::output();
 
-            return redirect()->back()->with('success', "Command executed successfully. Output: " . $output);
+            Alert::toast('Perintah berhasil dijalankan. Output ' . $output)->success()->flash();
+            return redirect()->back();
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', "Error executing command: " . $e->getMessage());
+            Alert::toast('Error executing comman ' . $e->getMessage())->error()->flash();
+            return redirect()->back();
         }
     }
 
@@ -120,7 +125,8 @@ class PengaturanController extends Controller
             Notification::where('created_at', '<', $request->before)->delete();
         }
 
-        return redirect()->route('admin.pengaturan.hapus-data')->with('success','Data Berhasil di hapus');
+        Alert::toast('Data berhasil dihapus')->success()->flash();
+        return redirect()->route('admin.pengaturan.hapus-data');
     }
 
 }

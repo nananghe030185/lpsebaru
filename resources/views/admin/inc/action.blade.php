@@ -96,36 +96,14 @@
 
         @isset($delete)
             @if (isset($data->system_reserve) ? !$data->system_reserve : true)
-                <a href="#confirm{{ $data->id }}" data-bs-toggle="modal" class="delete-svg" title="Delete">
+                <a href="{{ route($delete, $data->id) }}" 
+                    data-confirm-delete
+                    data-confirm-title="Apakah anda yakin ingin menghapus data ini ?"
+                    data-confirm-text="Data yang dihapus tidak bisa di kembalikan"
+                    data-confirm-button="Hapus"
+                    data-confirm-cancel="Batal">
                     <i data-feather="trash-2" class="remove-icon delete-confirmation text-danger" ></i>
                 </a>
-                <!-- Delete Confirmation -->
-                <div class="modal fade" id="confirm{{ $data->id }}" tabindex="-1" role="dialog"
-                    aria-labelledby="confirmLabel{{ $data->id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Konfirmasi</h5>
-                                <button class="btn-close py-0" type="button" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <h4 class="mb-3"><b> Anda yakin ingin menghapus ?</b></h4>
-                                <p>Data ini akan di Hapus permanen, anda tidak dapat mengembalikan data yang telah di hapus</p>
-                            </div>
-                            <div class="modal-footer">
-                                <form action="{{ route($delete, $data->id) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-primary" data-bs-dismiss="modal"
-                                        type="button">{{ __('Tutup') }}</button>
-                                    <button class="btn btn-danger delete spinner-btn"
-                                        type="submit">{{ __('Hapus') }}</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             @endif
         @endisset
     @endisset

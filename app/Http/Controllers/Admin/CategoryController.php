@@ -5,20 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\CategoryRepository;
-use App\Http\Requests\Admin\CreateCategoryRequest;
-use App\Http\Requests\Admin\UpdateCategoryRequest;
+// use App\Http\Requests\Admin\CreateCategoryRequest;
+// use App\Http\Requests\Admin\UpdateCategoryRequest;
 
 class CategoryController extends Controller
 {
 
     public $repository;
 
-    public function __construct(CategoryRepository $repository)
-    {
-        // $this->authorizeResource(Category::class, 'category');
-        $this->repository = $repository;
-    }
 
    /**
      * Display a listing of the resource.
@@ -26,7 +20,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return $this->repository->index();
+        
     }
 
     /**
@@ -40,9 +34,9 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateCategoryRequest $request)
+    public function store(Request $request)
     {
-        return $this->repository->store($request);
+        // return $this->repository->store($request);
     }
 
     /**
@@ -64,7 +58,7 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(Request $request, Category $category)
     {
         return $this->repository->update($request, $category->id);
     }

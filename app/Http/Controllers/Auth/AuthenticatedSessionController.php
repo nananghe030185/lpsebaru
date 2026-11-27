@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -30,7 +31,10 @@ class AuthenticatedSessionController extends Controller
 
         if(!Auth::user()->status){
             Auth::logout();
-            return redirect('/login')->with('error', 'Anda tidak diijinkan untuk mengakses dashboard, silahkan hubungi admin untuk informasi lebih lanjut');
+            
+            Alert::error('Anda tidak diijinkan untuk mengakses dashboard, silahkan hubungi admin untuk informasi lebih lanjut');
+
+            return redirect('/login');
         }
 
         return redirect()->intended(route('app.home', absolute: false));

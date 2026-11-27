@@ -31,18 +31,22 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Add Blog</h4>
-                    </div>
-                    <div class="card-body add-post">
-                        <form class="row needs-validation theme-form" novalidate="" id="blogForm"
-                            action="{{ route('admin.blog.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
+                <form class="row needs-validation theme-form" novalidate="" id="blogForm"
+                    action="{{ route('admin.blog.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Add Blog</h4>
+                        </div>
+                        <div class="card-body add-post">
                             @include('admin.blog.fields')
-                        </form>
+                        </div>
+                        <div class="card-footer text-end d-inline-flex gap-1 justify-content-end">
+                            <x-form.buttonsimpan></x-form.buttonsimpan>
+                            <x-form.buttonbatal :href="route('admin.lpse.index')"></x-form.buttonbatal>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -54,6 +58,7 @@
     <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
     <script src="{{ asset('assets/js/editors/quill.js') }}"></script>
+    <script src="{{ asset('assets/js/editors/custom-quill.js') }}"></script>
     <script src="{{ asset('assets/js/custom-add-product5.js') }}"></script>
     <script src="{{ asset('assets/js/bookmark/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/custom-validation/validation.js') }}"></script>

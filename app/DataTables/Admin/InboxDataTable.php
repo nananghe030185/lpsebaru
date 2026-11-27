@@ -88,34 +88,65 @@ class InboxDataTable extends DataTable
                     ->addAction(['width' => '50px', 'addClass' => 'text-center'])
                     ->buttons([
                         'bulk-delete' => [
-                            'text' => '<i class="fa fa-trash"></i> Bulk Delete', // Button text with optional icon
+                            'text' => '<i class="fa fa-trash"></i> Delete', // Button text with optional icon
                             'className' => 'btn btn-danger', // CSS class for styling
                             'action' => 'function (e, dt, node, config) {
-                                var ids = [];
-                                $("#inbox-table tbody .row-checkbox:checked").each(function() {
-                                    ids.push($(this).val());
+                                var selectedIds = [];
+                                $(".row-checkbox:checked").each(function() {
+                                    selectedIds.push($(this).val());
                                 });
-                                if (ids.length > 0) {
-                                    if (confirm("Are you sure you want to delete selected Outbox?")) {
+
+                                if (selectedIds.length === 0) {
+                                    Swal.fire({
+                                        icon : "error",
+                                        title : "Tidak ada data yang dipilih",
+                                        confirmButtonText : "Batal"
+                                    });
+                                    return
+                                }
+
+                                Swal.fire({
+                                    icon : "warning",
+                                    title : "Anda yakin ingin menghapus data yang dipilih ?",
+                                    showCancelButton : true,
+                                    confirmButtonText : "Hapus",
+                                    cancelButtonText : "Batal",
+                                    cancelButtonColor : "#d33",
+                                }).then((result) => {
+                                    if(result.isConfirmed){
                                         $.ajax({
                                             url: "' . route('admin.inout.inbox.bulk-delete') . '",
                                             type: "POST",
-                                            data: { 
-                                                ids: ids,
+                                            data: {
+                                                ids: selectedIds,
                                                 _token: "' . csrf_token() . '"
                                             },
                                             success: function(response) {
-                                                dt.ajax.reload();
-                                                toastr.warning("Selected Outbox deleted successfully.");
+                                                dt.ajax.reload(); // Reload the DataTable
+                                                Swal.fire({
+                                                    toast : true,
+                                                    position : "top-end",
+                                                    icon : "success",
+                                                    text : response.message,
+                                                    showConfirmButton : false,
+                                                    timer : 3000,
+                                                    timerProgressBar : true
+                                                });
                                             },
-                                            error: function(xhr) {
-                                                toastr.warning("Error deleting Outbox: " + xhr.responseText);
+                                            error: function(xhr, status, error) {
+                                                Swal.fire({
+                                                    toast : true,
+                                                    position : "top-end",
+                                                    icon : "error",
+                                                    text : xhr.responseJSON?.message ?? "Terjadi kesalahan saat menghapus data",
+                                                    showConfirmButton : false,
+                                                    timer : 2000,
+                                                    timerProgressBar : true
+                                                });
                                             }
                                         });
                                     }
-                                } else {
-                                    toastr.warning("No Outbox selected for deletion.");
-                                }
+                                });
                             }',
                         ],
                     ])

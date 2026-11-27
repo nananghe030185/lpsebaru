@@ -92,11 +92,26 @@ class LelangDataTable extends DataTable
                                 $("#lelang-table tbody .row-checkbox:checked").each(function() {
                                     ids.push($(this).val());
                                 });
-                                if (ids.length > 0) {
-                                    window.location = "' . route('app.lelang-sirup.bulk-fokus') . '?ids=" + ids.join(",");
-                                } else {
-                                    toastr.warning("Please select at least one row.");
+                                if (ids.length === 0) {
+                                    Swal.fire({
+                                        icon : "error",
+                                        title : "Tidak ada data yang dipilih",
+                                        confirmButtonText : "Batal"
+                                    });
+                                    return
                                 }
+                                Swal.fire({
+                                    icon : "warning",
+                                    title : "Anda yakin ingin memfokuskan data yang dipilih ?",
+                                    showCancelButton : true,
+                                    confirmButtonText : "OK",
+                                    cancelButtonText : "Batal",
+                                    cancelButtonColor : "#d33",
+                                }).then((result) => {
+                                    if(result.isConfirmed){
+                                        window.location = "' . route('app.lelang-sirup.bulk-fokus') . '?ids=" + ids.join(",");
+                                    }
+                                });
                             }',
                         ],
                     ])

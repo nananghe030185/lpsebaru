@@ -7,6 +7,8 @@ use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Yajra\DataTables\Html\Button;
+use Yajra\DataTables\Html\Column;
 
 class BlogDataTable extends DataTable
 {
@@ -19,9 +21,12 @@ class BlogDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+        ->addColumn('checkbox', function ($row) {
+                return '<div class="form-check"><input type="checkbox" class="form-check-input checkbox-primary row-checkbox" value="' . $row->id . '"></div>';
+            })
         ->editColumn('created_at', function ($row) {
-            return $row->created_at->diffForHumans();
-        })
+                return $row->created_at->diffForHumans();
+            })
         ->editColumn('thumbnail', function ($row) {
             $media = $row->getFirstMedia('thumbnail');
                 if ($media) {
@@ -31,8 +36,8 @@ class BlogDataTable extends DataTable
         })
         ->editColumn('action', function ($row) {
             return view('admin.inc.action', [
-                'edit'   => 'blog.edit',
-                'delete' => 'blog.destroy',
+                'edit'   => 'admin.blog.edit',
+                'delete' => 'admin.blog.destroy',
                 'data'   => $row
             ]);
         })
@@ -40,11 +45,14 @@ class BlogDataTable extends DataTable
             return view('admin.inc.action', [
                 'toggle' => $row,
                 'name' => 'status',
-                'route' => 'blog.status',
+                'route' => 'admin.blog.status',
                 'value' => $row->status,
             ]);
         })
-        ->rawColumns(['action', 'created_at','thumbnail','status'])
+        ->editColumn('title' , function($row){
+            return $row->title . '<br/><small class="text-muted">'  . $row->slug . '</small>';
+        })
+        ->rawColumns(['action', 'created_at','thumbnail','status', 'title','checkbox'])
         ->setRowId('id');
     }
 
@@ -63,16 +71,14 @@ class BlogDataTable extends DataTable
     {
         return $this->builder()
         ->setTableId('blog-table')
-        ->addColumn(['data' => 'thumbnail', 'title' => __('Thumbnail'), 'orderable' => false, 'searchable' => false,])
-        ->addColumn(['data' => 'title', 'title' =>  __('Judul'), 'orderable' => true, 'searchable' => true,])
-        ->addColumn(['data' => 'slug', 'title' =>  __('Slug'), 'orderable' => true, 'searchable' => true,])
-        ->addColumn(['data' => 'created_at', 'title' =>  __('Created At'), 'orderable' => true, 'searchable' => false])
-        ->addColumn(['data' => 'status', 'title' =>  __('Status'), 'orderable' => true, 'searchable' => true])
-        // ->addColumn(['data' => 'action', 'title' =>  __('Action'), 'orderable' => false, 'searchable' => false])
+        ->columns($this->getColumns())
+        ->scrollX(true)
+        ->responsive(true)
         ->addAction()
         ->minifiedAjax()
         ->orderBy(1)
         ->selectStyleSingle()
+        ->parameters($this->getBuilderParameters())
         ->parameters([
             'language' => [
                 'emptyTable' => 'No Records Found',
@@ -87,7 +93,17 @@ class BlogDataTable extends DataTable
                 }
                 feather.replace();
             }',
-        ]);
+        ])
+        ->buttons([
+            Button::make('create')
+                ->text('<i class="fas fa-add"></i> Tambah Artikel') // Add icon and custom text
+                ->className('btn btn-success btn-sm'), // Apply specific Bootstrap classes,
+        ])
+        ->initComplete('function() {
+            $("#select-all").on("click", function() {
+                $(".row-checkbox").prop("checked", this.checked);
+            });
+        }');
     }
 
     /**
@@ -95,7 +111,23 @@ class BlogDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        return [];
+        return [
+            Column::make('id')
+                ->hidden(),
+            Column::computed('checkbox')
+                ->title('<div class="form-check"><input class="form-check-input checkbox-primary" id="select-all" type="checkbox"></div>')
+                ->exportable(false)
+                ->printable(false)
+                ->width(10)
+                ->addClass('text-center'),
+            Column::make('status')
+                ->title('Status'),
+            Column::make('created_at')
+                ->title('Created At'),
+            Column::make('title')
+                ->title('Judul'),
+
+        ];
     }
 
     /**
