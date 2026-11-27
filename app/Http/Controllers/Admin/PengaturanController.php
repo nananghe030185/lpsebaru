@@ -73,10 +73,10 @@ class PengaturanController extends Controller
             // Get the output of the command
             $output = Artisan::output();
 
-            Alert::toast('Perintah berhasil dijalankan. Output ' . $output)->success()->flash();
-            return redirect()->back();
+            // Alert::toast('Perintah berhasil dijalankan. Output ' . $output)->success()->flash();
+            return redirect()->back()->with('success','Perintah berhasil dijalankan. Output ' . $output);
         } catch (\Exception $e) {
-            Alert::toast('Error executing comman ' . $e->getMessage())->error()->flash();
+            // Alert::toast('Error executing comman ' . $e->getMessage())->error()->flash();
             return redirect()->back();
         }
     }
