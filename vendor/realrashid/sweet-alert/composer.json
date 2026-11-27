@@ -1,0 +1,91 @@
+{
+    "name": "realrashid/sweet-alert",
+    "description": "A beautiful, responsive, customizable, accessible (WAI-ARIA) replacement for JavaScript popup boxes for Laravel - rebuilt with a fluent, Laravel-native API.",
+    "type": "library",
+    "keywords": [
+        "realrashid",
+        "laravel",
+        "sweet-alert2",
+        "sweet-alert",
+        "toast",
+        "alert",
+        "notifier",
+        "fluent",
+        "laravel-package"
+    ],
+    "homepage": "https://github.com/realrashid/sweet-alert",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rashid Ali",
+            "email": "realrashid05@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "realrashid05@gmail.com",
+        "issues": "https://github.com/realrashid/sweet-alert/issues",
+        "source": "https://github.com/realrashid/sweet-alert",
+        "docs": "https://realrashid.github.io/sweet-alert/"
+    },
+    "require": {
+        "php": "^8.3",
+        "laravel/framework": "^11.0|^12.0|^13.0"
+    },
+    "require-dev": {
+        "inertiajs/inertia-laravel": "^2.0",
+        "laravel/pint": "^1.18",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.5.0",
+        "orchestra/testbench": "^9.0.0||^10.0||^11.0",
+        "pestphp/pest": "^3.0|^4.0",
+        "pestphp/pest-plugin-arch": "^3.0|^4.0",
+        "pestphp/pest-plugin-laravel": "^3.0|^4.0",
+        "phpstan/phpstan": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "RealRashid\\SweetAlert\\": "src/"
+        },
+        "files": [
+            "src/functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RealRashid\\SweetAlert\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@composer run prepare",
+        "clear": "@php vendor/bin/testbench package:purge-sweet-alert --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": [
+            "@composer run prepare",
+            "@php vendor/bin/testbench workbench:build --ansi"
+        ],
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint",
+        "analyse": "vendor/bin/phpstan analyse"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "RealRashid\\SweetAlert\\SweetAlertServiceProvider"
+            ],
+            "aliases": {
+                "Alert": "RealRashid\\SweetAlert\\Facades\\Alert"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
