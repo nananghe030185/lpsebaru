@@ -47,7 +47,7 @@ class BlogController extends Controller
             'content' => 'required'
         ]);
 
-        Blog::create([
+        $blog = Blog::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description,
@@ -57,7 +57,22 @@ class BlogController extends Controller
             'status' => 1,
             'created_by_id' => Auth::user()->id
         ]);
+        if ($request->hasFile('thumbnail') && $request->file('thumbnail')->isValid()) {
+            $blog->addMedia($request->file('thumbnail'))->toMediaCollection('thumbnail');
+        }
 
+        if ($request->hasFile('images') && $request->file('images')) {
+            foreach ($request->file('images') as $file) {
+                if($file->isValid()){
+                    $blog->addMedia($file)->toMediaCollection('images');
+                }
+            }
+        }
+
+        if ($request->hasFile('meta_image') && $request->file('meta_image')->isValid()) {
+            $blog->addMedia($request->file('meta_image'))->toMediaCollection('meta_image');
+        }
+        Alert::toast('Artikel berhasil disimpan')->success()->flash();
         return redirect()->route('admin.blog.index');
     }
 
@@ -91,6 +106,21 @@ class BlogController extends Controller
             'status' => $request->has('status'),
         ]);
 
+        if ($request->hasFile('thumbnail') && $request->file('thumbnail')->isValid()) {
+            $blog->addMedia($request->file('thumbnail'))->toMediaCollection('thumbnail');
+        }
+
+        if ($request->hasFile('images') && $request->file('images')) {
+            foreach ($request->file('images') as $file) {
+                if($file->isValid()){
+                    $blog->addMedia($file)->toMediaCollection('images');
+                }
+            }
+        }
+
+        if ($request->hasFile('meta_image') && $request->file('meta_image')->isValid()) {
+            $blog->addMedia($request->file('meta_image'))->toMediaCollection('meta_image');
+        }
         Alert::toast('Artikel berhasil diupdate')->success()->flash();
         return redirect()->route('admin.blog.index');
     }

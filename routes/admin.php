@@ -115,6 +115,7 @@ Route::middleware(['auth','admin'])->group(function () {
 
     // Blog, Category, Role, Tag
     Route::put('/admin/blog/status/{id}', [BlogController::class, 'status'])->name('admin.blog.status');
+    Route::get('/admin/blog/remove/image/{id}', [BlogController::class, 'removeImage'])->name('admin.blog.removeImage');
     Route::resource('/admin/blog', BlogController::class)->names('admin.blog')->except(['show']);;
     Route::post('/admin/category/update-orders', [CategoryController::class, 'updateOrders'])->name('admin.category.update.orders');
     Route::resource('/admin/category', CategoryController::class)->names('admin.category');

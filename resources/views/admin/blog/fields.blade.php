@@ -15,30 +15,15 @@
                         <div class="col-xxl-1 col-md-2 col-sm-3 col-auto mb-2">
                             <div class="multi-remove position-relative">
                                 <img src="{{ $image->getUrl() }}" alt="Image" class="img-thumbnail img-fix" width="100%">
-                                <a href="" class="dz-remove text-danger" data-bs-target="#tooltipmodal{{ $image->id }}"
-                                data-bs-toggle="modal">Remove</a>
-                                <!-- Remove File Confirmation-->
-                                <div class="modal fade" id="tooltipmodal{{ $image->id }}" tabindex="-1" role="dialog"
-                                    aria-labelledby="tooltipmodal" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Confirm delete</h4>
-                                                <button class="btn-close py-0" type="button" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h4 class="mb-3"> Are you sure want to delete ?</h4>
-                                                <p>This Item Will Be Deleted Permanently. You Can not Undo This Action.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>
-                                                <a href="{{ route('admin.blog.removeImage', $image->id) }}"
-                                                    class="btn btn-danger">Delete</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <a href="{{ route('admin.blog.removeImage', $image->id) }}" 
+                                    data-confirm-delete
+                                    data-confirm-method="get"
+                                    data-confirm-title="Apakah anda yakin ingin menghapus data ini ?"
+                                    data-confirm-text="Data yang dihapus tidak bisa di kembalikan"
+                                    data-confirm-button="Hapus"
+                                    data-confirm-cancel="Batal">
+                                    <i data-feather="trash-2" class="remove-icon delete-confirmation text-danger" ></i>
+                                </a>
                             </div>
                         </div>
                     @endforeach

@@ -14,6 +14,7 @@ use Illuminate\Contracts\Support\Renderable;
 use App\Http\Requests\Admin\CreateUserRequest;
 use App\Models\Fokus;
 use App\Models\FokusLelang;
+use App\Models\Groups;
 use App\Models\Notification;
 use App\Models\NotificationLelang;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -61,10 +62,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-
-        // $countries = Country::all()->pluck('name','id');
-        // return view('admin.user.edit', ['user' => $user, 'roles' => $this->role->get()], compact('countries'));
-        return view('admin.user.edit', ['user' => $user]);
+        $usergroups = Groups::all();
+        return view('admin.user.edit', compact(['user','usergroups']));
     }
 
     /**

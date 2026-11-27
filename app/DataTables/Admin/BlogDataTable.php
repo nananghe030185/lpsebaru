@@ -124,8 +124,15 @@ class BlogDataTable extends DataTable
                 ->title('Status'),
             Column::make('created_at')
                 ->title('Created At'),
+            Column::make('thumbnail')
+                ->name('thumbnail')
+                ->title('Thumbnail')
+                ->searchable(false)
+                ->orderable(false),
             Column::make('title')
-                ->title('Judul'),
+                ->title('Judul')
+                ->searchable()
+                ->orderable(),
 
         ];
     }

@@ -35,7 +35,7 @@ Route::get('/lelang', [FrontendController::class, 'lelang'])->name('frontend.lel
 Route::get('/lelang/{lelang:slug}', [FrontendController::class, 'lelangdetail'])->name('frontend.lelang.detail');
 Route::get('/harga', [FrontendController::class, 'harga'])->name('frontend.harga');
 Route::get('/blog', [FrontendController::class, 'blog'])->name('frontend.blog');
-
+Route::get('/p/{blog:slug}', [FrontendController::class, 'blogdetail'])->name('frontend.blog.detail');
 Route::get('/dashboard', function () {
     return redirect()->to(route('app.dashboard.index'));
 })->middleware(['auth', 'verified'])->name('dashboard');

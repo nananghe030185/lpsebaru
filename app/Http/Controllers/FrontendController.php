@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use App\Models\Lelang;
 use App\Models\Tender;
 
@@ -56,6 +57,14 @@ class FrontendController extends Controller
     {
         $title = 'LPSE Indonesia : Blog';
         $description = 'ini deskription blog';
-        return view('frontend.blog', compact('title','description'));
+        $blogs = Blog::take(3)->get();
+        return view('frontend.blog', compact('title','description','blogs'));
+    }
+
+    public function blogdetail(Blog $blog)
+    {
+        $title = $blog->title;
+        $description = $blog->description;
+        return view('frontend.blogdetail', compact('title','description','blog'));
     }
 }
