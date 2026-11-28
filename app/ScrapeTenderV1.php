@@ -37,7 +37,7 @@ class ScrapeTenderV1
             try {
                 if($lpse->link != null and $lpse->state == true and $lpse->scrape == false){
 
-                    if(!Http::connectTimeout(5)->timeout(10)->get($lpse->link)->successful()){
+                    if(!Http::get($lpse->link)->successful()){
                         
                         // skip if the lpse link is not valid
                         Helpers::createErrorLog('Link : ' . $lpse->link . ' : ' . 'Link LPSE tidak dapat diakses', null);
@@ -52,7 +52,7 @@ class ScrapeTenderV1
                             ->timeout(10)
                             ->connectTimeout(5)
                             ->throw();
-                    
+
                     // get cookies from the initial request to /lelang
                     $headers = [
                         'Accept' => 'application/json, text/javascript, */*; q=0.01',
@@ -80,7 +80,7 @@ class ScrapeTenderV1
                     $stringcookie = $getcookies->getCookieByName('SPSE_SESSION')?->getValue() ?? '';
                     $arrcookie = Str::of($stringcookie)->explode('=')->get(1, '');
                     $token = Str::replace('&___TS','',$arrcookie);
-                    
+
                     foreach ($getcookies as $ck) {
                         $cookiejar->setCookie($ck);
                     }
@@ -92,6 +92,8 @@ class ScrapeTenderV1
                     }
 
                 }
+
+                sleep(1);
             }catch (\Exception $e) {
                 // Log the error
                 Helpers::createErrorLog('Link : ' . $lpse->link . ' : ' . $e->getMessage(), $e->getTraceAsString());

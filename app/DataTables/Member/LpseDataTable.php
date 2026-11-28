@@ -23,6 +23,11 @@ class LpseDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->editColumn('nama_lpse', function($row){
+                $media = $row->getFirstMedia('logo');
+                if($media)
+                {
+                    return '<div class="d-inline-flex gap-1"><img src="' . $media->getUrl() . '"  class="img-thumbnail img-fix img-fluid rounded" width="40px"><div class="text-ellipsis w-96 text-nowrap">'. $row->nama_lpse . '</div></div>';
+                }
                 return '<div class="d-inline-flex gap-1"><img src="' . asset('assets/images/logo/' . $row->logo) . '"  class="bg-info img-fluid rounded" width="40px"><div class="text-ellipsis w-96 text-nowrap">'. $row->nama_lpse . '</div></div>';
             })
             ->editColumn('link', function($row){
