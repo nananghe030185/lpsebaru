@@ -6,6 +6,8 @@
     </div>
     <div class="col-lg-6">
         <x-form.toggle name="status" :toggle="old('status', $blog ?? '')" :value="old('status', $blog->status ?? '')">Status</x-form.toggle>
+        {{-- <x-form.image type="file" name="logo" :required="false" :value="old('logo', $lpse->logo ?? '')" :item="$lpse" routeremove="admin.lpse.removeImage">Logo</x-form.image> --}}
+
         <div class="mb-3 multi-images">
             <label for="">Images</label>
             <input class="form-control" type="file" name="images[]" multiple="multiple">

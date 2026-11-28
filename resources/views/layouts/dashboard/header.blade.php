@@ -93,12 +93,18 @@
                             </div>
                         </li>
                         <li class="profile-nav onhover-dropdown pe-0 py-0">
+                            @php
+                                $media = $user->getFirstMedia('images')
+                            @endphp
+                            
                             <div class="d-flex profile-media">
-                                <img class="b-r-10" src="{{ asset('assets/images/dashboard/profile.png') }}" alt="">
+                                @if($media)
+                                    <img class="b-r-10" src="{{ $media->getUrl() }}" alt="{{ $user->name }}" class="img-thumnail rounded" style="width: 27px">
+                                @else
+                                    <img class="b-r-10" src="{{ asset('assets/images/dashboard/profile.png') }}" alt="Image Profile" class="img-thumnail rounded" style="width: 27px">
+                                @endif
                                 <div class="flex-grow-1">
-                                    <span>{{ ucfirst(auth()?->user()?->first_name) }}</span>
                                     <p class="mb-0">
-                                        {{-- {{ auth()?->user()->role->name }}  --}}
                                         <i class="middle fa-solid fa-angle-down"></i>
                                     </p>
                                 </div>

@@ -16,6 +16,9 @@
                 <x-form.calendar name="masa_berlaku" :value="isset($user->masa_berlaku) ? $user->masa_berlaku : old('masa_berlaku')" :required="true">{{__('Masa Berlaku')}}</x-form.calendar>
             </div>
             <div class="col-xxl-6 box-col-12">
+                <x-form.image type="file" name="images" :required="false" :value="old('images', $user->images ?? '')" :item="$user" routeremove="admin.user.removeImage">Image Profile</x-form.image>
+            </div>
+            <div class="col-xxl-6 box-col-12">
                 <x-form.text name="kbli" :value="isset($user->kbli) ? $user->kbli : old('kbli')">{{__('KBLI')}}</x-form.text>
             </div>
             

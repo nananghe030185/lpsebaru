@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class UserController extends Controller
 {
@@ -128,6 +130,10 @@ class UserController extends Controller
         
         $user->save();
 
+        if ($request->hasFile('images') && $request->file('images')->isValid()) {
+            $user->addMedia($request->file('images'))->toMediaCollection('images');
+        }
+
         Alert::toast('Profile berhasil diupdate')->success()->flash();
         return redirect()->back();
     }
@@ -138,5 +144,31 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function removeImage(int $id)
+    {
+        $media = Media::find($id);
+        $media->delete();
+        Alert::toast('Gambar berhasil di hapus')->success()->flash();
+        return redirect()->back();
+    }
+
+    public function updateImage(User $user, Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        try {
+
+            $user->addMediaFromRequest('image')->toMediaCollection('image');
+
+            Alert::toast('Gambar berhasil diupdate')->success()->flash();
+            return redirect()->back();
+        } catch (Exception $e) {
+            Alert::toast('Gagal mengupdate gambar '. $e->getMessage())->error()->flash();
+            return redirect()->back();
+        }
     }
 }

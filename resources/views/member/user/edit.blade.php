@@ -42,7 +42,8 @@
                         <div class="row g-xl-5 g-3">
                             <div class="col-xxl-3 col-xl-4 box-col-4e sidebar-left-wrapper">
                                 <ul class="sidebar-left-icons nav nav-pills" id="add-product-pills-tab" role="tablist">
-                                    <li class="nav-item"> <a class="nav-link active" id="detail-akun-tab"
+                                    <li class="nav-item"> 
+                                        <a class="nav-link active" id="detail-akun-tab"
                                             data-bs-toggle="pill" href="#detail-akun" role="tab"
                                             aria-controls="detail-akun" aria-selected="false">
                                             <div class="nav-rounded">
@@ -57,22 +58,8 @@
                                                 <p>Edit Akun anda</p>
                                             </div>
                                         </a></li>
-                                    <li class="nav-item"> <a class="nav-link" id="gallery-product-tab" data-bs-toggle="pill"
-                                            href="#gallery-product" role="tab" aria-controls="gallery-product"
-                                            aria-selected="false">
-                                            <div class="nav-rounded">
-                                                <div class="product-icons"><svg class="stroke-icon">
-                                                        <use
-                                                            href="{{ asset('assets/svg/icon-sprite.svg#product-gallery') }}">
-                                                        </use>
-                                                    </svg></div>
-                                            </div>
-                                            <div class="product-tab-content">
-                                                <h6>Image User</h6>
-                                                <p>Upload Foto Profile anda</p>
-                                            </div>
-                                        </a></li>
-                                    <li class="nav-item"> <a class="nav-link" id="category-product-tab"
+                                    <li class="nav-item"> 
+                                        <a class="nav-link" id="category-product-tab"
                                             data-bs-toggle="pill" href="#category-product" role="tab"
                                             aria-controls="category-product" aria-selected="false">
                                             <div class="nav-rounded">
@@ -96,12 +83,6 @@
                                         aria-labelledby="detail-akun-tab">
                                         <div class="sidebar-body">
                                             @include('member.user.akun', ['user' => $user])
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="gallery-product" role="tabpanel"
-                                        aria-labelledby="gallery-product-tab">
-                                        <div class="sidebar-body common-form">
-                                            @include('member.user.image', ['user' => $user])
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="category-product" role="tabpanel"

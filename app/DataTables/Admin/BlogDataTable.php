@@ -27,13 +27,6 @@ class BlogDataTable extends DataTable
         ->editColumn('created_at', function ($row) {
                 return $row->created_at->diffForHumans();
             })
-        ->editColumn('thumbnail', function ($row) {
-            $media = $row->getFirstMedia('thumbnail');
-                if ($media) {
-                    return '<img src="' . $media->getUrl() . '" alt="thumbnail" class="img-thumbnail img-fix">';
-                }
-                return '<img src="' . asset("assets/images/user/user.png") . '" alt="Placeholder Image" class="img-thumbnail img-fix">';
-        })
         ->editColumn('action', function ($row) {
             return view('admin.inc.action', [
                 'edit'   => 'admin.blog.edit',
@@ -50,7 +43,12 @@ class BlogDataTable extends DataTable
             ]);
         })
         ->editColumn('title' , function($row){
-            return $row->title . '<br/><small class="text-muted">'  . $row->slug . '</small>';
+            $media = $row->getFirstMedia('thumbnail');
+            if($media)
+                {
+                    return '<div class="d-inline-flex gap-2"><img src="' . $media->getUrl() . '" alt="thumbnail" class="img-thumbnail img-fix"><div class="text-ellipsis w-96 text-nowrap">' .$row->title . '<br/><small class="text-muted">'  . $row->slug . '</small></div></div>';
+                }
+            return '<div class="d-inline-flex gap-1"><img src="' . asset("assets/images/user/user.png") . '" alt="thumbnail" class="img-thumbnail img-fix"><div class="text-ellipsis w-96 text-nowrap">' .$row->title . '<br/><small class="text-muted">'  . $row->slug . '</small></div></div>';
         })
         ->rawColumns(['action', 'created_at','thumbnail','status', 'title','checkbox'])
         ->setRowId('id');
@@ -124,11 +122,6 @@ class BlogDataTable extends DataTable
                 ->title('Status'),
             Column::make('created_at')
                 ->title('Created At'),
-            Column::make('thumbnail')
-                ->name('thumbnail')
-                ->title('Thumbnail')
-                ->searchable(false)
-                ->orderable(false),
             Column::make('title')
                 ->title('Judul')
                 ->searchable()

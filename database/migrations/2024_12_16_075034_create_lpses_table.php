@@ -22,7 +22,6 @@ return new class extends Migration
             $table->double('jumlah_pagu')->nullable(false)->default(0);
             $table->string('slug_lpse')->unique()->nullable();
             $table->string('description')->nullable();
-            $table->string('logo')->nullable();
             $table->boolean('scrape')->default(false);
             $table->datetimes();
             });

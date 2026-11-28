@@ -18,6 +18,7 @@ use App\Models\Groups;
 use App\Models\Notification;
 use App\Models\NotificationLelang;
 use RealRashid\SweetAlert\Facades\Alert;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class UserController extends Controller
 {
@@ -74,7 +75,7 @@ class UserController extends Controller
      */
     public function update (User $user, Request $request)
     {
-        // dd($request->all());
+
         // validate $request
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -160,6 +161,7 @@ class UserController extends Controller
     }
 
     public function updateProfile(User $user, Request $request){
+
         // Validate input
         $request->validate([
             'perusahaan' => 'required|string|max:255',
@@ -204,13 +206,18 @@ class UserController extends Controller
         
         $user->save();
 
+        if ($request->hasFile('images') && $request->file('images')->isValid()) {
+            $user->addMedia($request->file('images'))->toMediaCollection('images');
+        }
+        
         Alert::toast('User Profile berhasil diupdate')->success()->flash();
         return redirect()->back();        
     }
-    public function removeImage($id)
+
+    public function removeImage(int $id)
     {
-        $user = User::find($id);
-        $user->clearMediaCollection('image');
+        $media = Media::find($id);
+        $media->delete();
         Alert::toast('Gambar berhasil di hapus')->success()->flash();
         return redirect()->back();
     }

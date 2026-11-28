@@ -142,7 +142,7 @@ class BlogController extends Controller
         $model->update(['state' => $request->status]);
     }
 
-    public function removeImage($id)
+    public function removeImage(int $id)
     {
         $media = Media::find($id);
         $media->delete();

@@ -46,7 +46,7 @@
 
     <!-- page-wrapper Start-->
     <div class="page-wrapper compact-wrapper" id="pageWrapper">
-        @include('layouts.dashboard.header')
+        @include('layouts.dashboard.header', ['user' => Auth::user()])
         <!-- Page Body Start-->
         <div class="page-body-wrapper">
             @include('layouts.admin.sidebar')

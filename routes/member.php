@@ -73,4 +73,5 @@ Route::middleware(['auth'])->group(function(){
     // User
     Route::put('/app/user/update-profile/{user}', [UserController::class,'updateProfile'])->name('app.user.update-profile');
     Route::resource('/app/user', UserController::class)->names('app.user')->except(['index','create','store','show','destroy']);
+    Route::get('/app/user/remove-image/{id}', [UserController::class,'removeImage'])->name('app.user.removeImage');
 });

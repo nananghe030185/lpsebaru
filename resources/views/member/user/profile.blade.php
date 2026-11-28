@@ -69,6 +69,9 @@
                 </div>
             </div>
             <div class="col-xxl-6 box-col-12">
+                <x-form.image type="file" name="images" :required="false" :value="old('images', $user->images ?? '')" :item="$user" routeremove="admin.lpse.removeImage">Image Profile</x-form.image>
+            </div>
+            <div class="col-xxl-6 box-col-12">
                 <div class="mb-3">
                     <label class="form-label" for="kbli">{{__('KBLI')}}</label>
                     <input class="form-control" id="kbli" name="kbli" type="text" placeholder="pisahkan dengan koma" value="{{ old('kbli', $user->kbli ?? '') }}">

@@ -38,7 +38,6 @@ return new class extends Migration
             $table->boolean('notif_telegram_lelang')->default(false);
             $table->boolean('notif_email_tender')->default(false);
             $table->boolean('notif_email_lelang')->default(false);
-            $table->string('image')->nullable();
             $table->dateTime('masa_berlaku')->default(now());
             $table->integer('upline_id')->unsigned()->nullable();
             $table->rememberToken();

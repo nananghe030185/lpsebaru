@@ -27,7 +27,7 @@
 
                 <x-form.text type="number" name="jumlah_pagu" :required="true" :value="old('jumlah_pagu', $lpse->jumlah_pagu ?? 0)">Jumlah Pagu</x-form.text>
 
-                <x-form.image type="file" name="logo" :required="false" :value="old('logo', $lpse->logo ?? '')">Logo</x-form.image>
+                <x-form.image type="file" name="logo" :required="false" :value="old('logo', $lpse->logo ?? '')" :item="$lpse" routeremove="admin.lpse.removeImage">Logo</x-form.image>
 
                 <x-form.textarea name="description" :value="old('description', $lpse->description ?? '')">Keterangan</x-form.textarea>
             </div>

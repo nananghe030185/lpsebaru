@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class LpseController extends Controller
 {
@@ -63,11 +64,12 @@ class LpseController extends Controller
         ]);
 
         // Handle file upload
-        if ($request->hasFile('logo')) {
-            $file = $request->file('logo');
-            $filename = $file->getClientOriginalName();
-            $file->move(public_path('assets/images/logo'), $filename);
-            $lpse->update(['logo' => $filename]);
+        if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
+            // $file = $request->file('logo');
+            // $filename = $file->getClientOriginalName();
+            // $file->move(public_path('assets/images/logo'), $filename);
+            // $lpse->update(['logo' => $filename]);
+            $lpse->addMedia($request->file('logo'))->toMediaCollection('logo');
         }
         Alert::toast('LPSE berhasil disimpan')->success()->flash();
         return redirect()->route('admin.lpse.index');
@@ -106,16 +108,20 @@ class LpseController extends Controller
         ]);
 
         // Handle file upload
-        if ($request->hasFile('logo')) {
-            $file = $request->file('logo');
-            $filename = $file->getClientOriginalName();
-            $file->move(public_path('assets/images/logo'), $filename);
-            $lpse->update(['logo' => $filename]);
+        if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
+            $lpse->addMedia($request->file('logo'))->toMediaCollection('logo');
         }
         Alert::toast('LPSE berhasil diupdate')->success()->flash();
         return redirect()->route('admin.lpse.index');
     }
 
+    public function removeImage(int $id)
+    {
+        $media = Media::find($id);
+        $media->delete();
+        Alert::toast('Gambar berhasil di hapus')->success()->flash();
+        return redirect()->back();
+    }
 
     public function status(int $id, Request $request)
     {
