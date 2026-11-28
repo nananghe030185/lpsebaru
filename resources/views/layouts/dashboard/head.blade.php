@@ -2,10 +2,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description"
-    content="Cuba admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    content="LPSE Indonesia Applikasi Data LPSE dalam satu tempat">
 <meta name="keywords"
-    content="admin template, Cuba admin template, dashboard template, flat admin template, responsive admin template, web app">
-<meta name="author" content="pixelstrap">
+    content="LPSE Indonesia, Data LPSE">
+<meta name="author" content="Admin">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('assets/images/apple-icon-57x57.png') }}">
 <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('assets/images/apple-icon-60x60.png') }}">
@@ -21,9 +21,9 @@
 <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assets/images/favicon-96x96.png') }}">
 <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/favicon-16x16.png') }}">
 <link rel="manifest" href="{{ asset('assets/images/manifest.json') }}">
-<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileColor" content="#00aa5b">
 <meta name="msapplication-TileImage" content="{{ asset('assets/images/ms-icon-144x144.png') }}">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#00aa5b">
 <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
 <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
 
