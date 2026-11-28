@@ -99,7 +99,6 @@
                             
                             <div class="d-flex profile-media">
                                 @if($media)
-                                {{ $media->getUrl() }}
                                     <img class="b-r-10" src="{{ $media->getUrl() }}" alt="{{ $user->name }}" class="img-thumnail rounded" style="width: 27px">
                                 @else
                                     <img class="b-r-10" src="{{ asset('assets/images/dashboard/profile.png') }}" alt="Image Profile" class="img-thumnail rounded" style="width: 27px">

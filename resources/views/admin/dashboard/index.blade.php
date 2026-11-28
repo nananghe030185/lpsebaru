@@ -12,7 +12,7 @@
 @section('main_content')
     <!-- Bradcrumb -->
     <x-breadcrumb>Dashboard</x-breadcrumb>
-    {{ base_path() }}
+
     <!-- Container-fluid starts-->
     <div class="container-fluid default-dashboard">
         <div class="row widget-grid">
