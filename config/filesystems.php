@@ -29,7 +29,13 @@ return [
     */
 
     'disks' => [
-
+        'lpse' => [
+            'driver' => 'lpse',
+            'root' => env('FILE_STORAGE'),
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
